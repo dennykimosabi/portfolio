@@ -116,25 +116,7 @@
     </div>
 
     <div class="price-box-quantity">
-        <span class="price-box-quantity-label" id="pdp-quantity-label">Quantity</span>
-
-        <div class="price-box-stepper">
-            <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm"
-                    aria-label="Decrease quantity"
-                    Disabled="@(Quantity <= MinQuantity)"
-                    @onclick="() => ChangeQuantity(-1)">−</SfButton>
-
-            <input type="text"
-                   inputmode="numeric"
-                   class="price-box-stepper-value"
-                   aria-labelledby="pdp-quantity-label"
-                   value="@Quantity"
-                   @onchange="HandleQuantityInput" />
-
-            <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm"
-                    aria-label="Increase quantity"
-                    @onclick="() => ChangeQuantity(1)">+</SfButton>
-        </div>
+        <SfQuantityStepper Value="@Quantity" ValueChanged="@SetQuantity" Min="@MinQuantity" AriaLabel="Quantity" />
     </div>
 
     <SfButton Variant="SfButtonVariant.Dark" Size="SfButtonSize.Lg" Class="price-box-cta" @onclick="OnAddToCart">
