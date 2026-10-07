@@ -4,6 +4,12 @@ namespace Storefront.Client.Components;
 
 public partial class ProductGallery : ComponentBase
 {
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
     /// Image URLs, primary first. Entries may be empty while the data layer is stubbed —
     /// the placeholder glyph renders in their place.
     [Parameter] public IReadOnlyList<string> Images { get; set; } = [];
@@ -14,6 +20,7 @@ public partial class ProductGallery : ComponentBase
     /// How many thumbnails to show before collapsing the rest into the "N More" tile.
     [Parameter] public int MaxThumbnails { get; set; } = 9;
 
+    /// <summary>Invoked when the view-all tile is clicked.</summary>
     [Parameter] public EventCallback OnViewAll { get; set; }
 
     private int _selectedIndex;

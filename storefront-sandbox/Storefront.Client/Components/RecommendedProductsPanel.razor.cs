@@ -8,6 +8,12 @@ namespace Storefront.Client.Components;
 
 public partial class RecommendedProductsPanel : ComponentBase
 {
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
     [Inject] public ICartService CartService { get; set; } = default!;
     [Inject] public IWebsiteContextProvider WebsiteContext { get; set; } = default!;
     [Inject] public CartState CartState { get; set; } = default!;

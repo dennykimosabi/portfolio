@@ -7,6 +7,12 @@ namespace Storefront.Client.Components;
 
 public partial class ProductPriceBox : ComponentBase
 {
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
     [Inject] public IClientAssetResolver AssetResolver { get; set; } = default!;
 
     // Brand/UI icons live on the asset host, not the site origin — same convention as
@@ -14,38 +20,55 @@ public partial class ProductPriceBox : ComponentBase
     private string DeliveryIcon => AssetResolver.Resolve("/images/2022-base-template-assets/icons/icon-delivery-active.png");
     private string PickupIcon => AssetResolver.Resolve("/images/2022-base-template-assets/icons/icon-pickup-active.png");
 
+    /// <summary>Current selling price.</summary>
     [Parameter] public decimal Price { get; set; }
 
+    /// <summary>Manufacturer suggested retail price for the savings line.</summary>
     [Parameter] public decimal Msrp { get; set; }
 
+    /// <summary>Dealer star rating shown beside the price.</summary>
     [Parameter] public decimal DealerRating { get; set; }
 
+    /// <summary>Pre-formatted savings text, e.g. "You save $12.00".</summary>
     [Parameter] public string? SavingsText { get; set; }
 
+    /// <summary>Promotional message rendered under the price.</summary>
     [Parameter] public string? PriceBoxMessage { get; set; }
 
+    /// <summary>Stock level driving the availability badge.</summary>
     [Parameter] public AvailabilityLevel Availability { get; set; } = AvailabilityLevel.AvailableForOrder;
 
+    /// <summary>Availability label, e.g. "In Stock".</summary>
     [Parameter] public string AvailabilityText { get; set; } = string.Empty;
 
+    /// <summary>Delivery option with ETA and cost.</summary>
     [Parameter, EditorRequired] public DeliveryOption Delivery { get; set; } = default!;
 
+    /// <summary>Pickup option with store details.</summary>
     [Parameter, EditorRequired] public PickupOption Pickup { get; set; } = default!;
 
+    /// <summary>Selected quantity. Supports two-way binding.</summary>
     [Parameter] public int Quantity { get; set; } = 1;
 
+    /// <summary>Invoked when the quantity changes.</summary>
     [Parameter] public EventCallback<int> QuantityChanged { get; set; }
 
+    /// <summary>Invoked when add-to-cart is clicked.</summary>
     [Parameter] public EventCallback OnAddToCart { get; set; }
 
+    /// <summary>Invoked when buy-now is clicked.</summary>
     [Parameter] public EventCallback OnBuyNow { get; set; }
 
+    /// <summary>Invoked to estimate shipping for the entered ZIP.</summary>
     [Parameter] public EventCallback OnEstimateShipping { get; set; }
 
+    /// <summary>Shows the estimating spinner.</summary>
     [Parameter] public bool IsEstimatingShipping { get; set; }
 
+    /// <summary>Result text after a shipping estimate.</summary>
     [Parameter] public string? ShippingEstimateText { get; set; }
 
+    /// <summary>Invoked when the ZIP code input changes.</summary>
     [Parameter] public EventCallback<string> OnZipCodeChanged { get; set; }
 
     private const int MinQuantity = 1;
