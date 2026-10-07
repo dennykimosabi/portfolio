@@ -12,14 +12,14 @@
 
 .star-rating-star {
     font-size: 0.8125rem;
-    color: #d0d0d0;
+    color: var(--sf-color-border);
 
     &.is-full {
-        color: #1a1a1a;
+        color: var(--sf-color-text);
     }
 
     &.is-half {
-        background: linear-gradient(90deg, #1a1a1a 50%, #d0d0d0 50%);
+        background: linear-gradient(90deg, var(--sf-color-bg-inverse) 50%, var(--sf-color-border) 50%);
         background-clip: text;
         -webkit-background-clip: text;
         color: transparent;
@@ -29,6 +29,6 @@
 .star-rating-label {
     margin-left: 0.375rem;
     font-size: 0.75rem;
-    color: #555;
+    color: var(--sf-color-text-3);
     white-space: nowrap;
 }

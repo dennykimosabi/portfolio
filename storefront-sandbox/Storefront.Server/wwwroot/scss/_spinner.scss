@@ -7,7 +7,7 @@
     justify-content: center;
     gap: 0.75rem;
     padding: 2rem 1rem;
-    color: #555;
+    color: var(--sf-color-text-3);
     font-size: 0.9375rem;
 }
 
@@ -15,8 +15,8 @@
     width: 28px;
     height: 28px;
     border: 3px solid #d9dee3;
-    border-top-color: #113458;
-    border-radius: 50%;
+    border-top-color: var(--sf-color-brand);
+    border-radius: var(--sf-radius-full);
     animation: sf-spin 0.7s linear infinite;
     flex-shrink: 0;
 }

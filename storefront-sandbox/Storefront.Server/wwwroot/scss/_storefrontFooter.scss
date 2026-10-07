@@ -1,6 +1,6 @@
 .storefront-footer {
-    background-color: #f5f5f5;
-    border-top: 1px solid #e0e0e0;
+    background-color: var(--sf-color-bg-2);
+    border-top: 1px solid var(--sf-color-border-light);
     margin-top: 2rem;
 
     .footer-inner {
@@ -26,7 +26,7 @@
             text-transform: uppercase;
             letter-spacing: 0.3px;
             margin: 0 0 0.75rem 0;
-            color: #333;
+            color: var(--sf-color-text-2);
         }
 
         ul {
@@ -40,7 +40,7 @@
 
             a {
                 text-decoration: none;
-                color: #555;
+                color: var(--sf-color-text-3);
                 font-size: 0.875rem;
 
                 &:hover {
@@ -51,7 +51,7 @@
     }
 
     .footer-copyright-panel {
-        border-top: 1px solid #e0e0e0;
+        border-top: 1px solid var(--sf-color-border-light);
         padding: 1rem 0;
 
         .footer-copyright {
@@ -67,7 +67,7 @@
 
         .footer-powered-by {
             font-size: 0.75rem;
-            color: #999;
+            color: var(--sf-color-text-muted);
         }
     }
 }
