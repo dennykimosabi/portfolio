@@ -1,0 +1,20 @@
+@if (HasContent)
+{
+    var imageStyle = !string.IsNullOrWhiteSpace(Placement!.ImageUrl)
+        ? $"background-image: url('{Placement.ImageUrl}');"
+        : null;
+
+    <section class="extra-home-content">
+        <div class="extra-home-content-image" style="@imageStyle"></div>
+        <div class="extra-home-content-panel">
+            @if (!string.IsNullOrWhiteSpace(Placement.IntroTextTitle))
+            {
+                <h2 class="extra-home-content-title">@((MarkupString)Placement.IntroTextTitle)</h2>
+            }
+            @if (!string.IsNullOrWhiteSpace(Placement.Text))
+            {
+                <div class="extra-home-content-text">@((MarkupString)Placement.Text)</div>
+            }
+        </div>
+    </section>
+}

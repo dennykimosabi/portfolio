@@ -1,0 +1,63 @@
+@if (_result is not null && (HasAssemblies || HasPartTypes))
+{
+    <section class="assembly-results" aria-label="@_result.CategoryName">
+        <div class="assembly-results-header">
+            <h2 class="assembly-results-heading">@_result.CategoryName</h2>
+
+            <button type="button" class="assembly-results-change-category" @onclick="ChangeCategory">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <polyline points="15 6 9 12 15 18" />
+                </svg>
+                Change Category
+            </button>
+
+            <div class="assembly-results-filter">
+                <svg class="assembly-results-filter-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <circle cx="11" cy="11" r="7" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input id="assembly-results-filter-input"
+                       type="text"
+                       placeholder="Search @_result.CategoryName"
+                       title="Search @_result.CategoryName"
+                       aria-label="Search @_result.CategoryName"
+                       @bind="_filterText"
+                       @bind:event="oninput" />
+            </div>
+        </div>
+
+        <div class="assembly-results-body">
+            @if (HasAssemblies)
+            {
+                var assemblies = FilteredAssemblies.ToList();
+                <div class="assembly-list">
+                    <h3 class="assembly-list-heading">Assemblies <span class="assembly-results-count">@assemblies.Count</span></h3>
+                    <ul class="assembly-list-items">
+                        @foreach (var assembly in assemblies)
+                        {
+                            <li class="assembly-list-item">
+                                <AssemblyCard Assembly="assembly" />
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            @if (HasPartTypes)
+            {
+                var partTypes = FilteredPartTypes.ToList();
+                <div class="part-type-list">
+                    <h3 class="part-type-list-heading">Part Types <span class="assembly-results-count">@partTypes.Count</span></h3>
+                    <ul class="part-type-list-items">
+                        @foreach (var partType in partTypes)
+                        {
+                            <li class="part-type-list-item">
+                                <PartTypeCard PartType="partType" />
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
+    </section>
+}

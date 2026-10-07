@@ -1,0 +1,35 @@
+@* One collapsible row of the PDP's section stack (Diagrams & Kits, Product Reviews, …).
+   The header is a real <button> so it's keyboard-operable and announces its state; the
+   body is only rendered when open, so collapsed sections cost nothing to render.
+
+   MetaContent is the right-aligned summary shown on the collapsed row ("34 Vehicles",
+   a star rating, etc.) — a RenderFragment rather than a string so callers can pass
+   markup like <StarRating />. *@
+
+<section class="accordion-section @(Expanded ? "is-open" : null)">
+    <button type="button"
+            class="accordion-section-header"
+            aria-expanded="@Expanded"
+            @onclick="Toggle">
+        <span class="accordion-section-title">@Title</span>
+
+        @if (MetaContent is not null)
+        {
+            <span class="accordion-section-meta">@MetaContent</span>
+        }
+        else if (!string.IsNullOrWhiteSpace(Meta))
+        {
+            <span class="accordion-section-meta">@Meta</span>
+        }
+
+        @* The +/− affordance is drawn in CSS off .is-open, so it stays in sync with state. *@
+        <span class="accordion-section-toggle" aria-hidden="true"></span>
+    </button>
+
+    @if (Expanded)
+    {
+        <div class="accordion-section-body">
+            @ChildContent
+        </div>
+    }
+</section>

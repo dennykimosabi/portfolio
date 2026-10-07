@@ -1,0 +1,302 @@
+/* Preview-harness chrome only (toolbar + component gallery). Storefront component styles come
+   from Storefront.Server/wwwroot/css/main.css — nothing here should restyle a storefront class. */
+
+/* The storefront stylesheet leaves the page background to the browser default; pin it so a
+   dark-mode browser doesn't render the page on black. */
+html {
+    color-scheme: light;
+    background: #fff;
+}
+
+body {
+    margin: 0;
+}
+
+/* ─── Floating page switcher ─────────────────────────────────────────── */
+
+.pv-toolbar {
+    position: fixed;
+    left: 12px;
+    bottom: 12px;
+    z-index: 10000;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    max-width: calc(100vw - 24px);
+    padding: 6px;
+    background: rgba(17, 24, 39, 0.94);
+    border-radius: 10px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+    font: 12px/1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.pv-toolbar-toggle {
+    border: 0;
+    background: #f59e0b;
+    color: #111;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 5px 8px;
+    cursor: pointer;
+}
+
+.pv-toolbar-link {
+    color: #e5e7eb;
+    text-decoration: none;
+    padding: 5px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+.pv-toolbar-link:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+/* ─── Gallery layout ─────────────────────────────────────────────────── */
+
+.pv-gallery-root {
+    background: #f3f4f6;
+    min-height: 100vh;
+}
+
+.pv-gallery {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.pv-nav {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 20px 16px 80px;
+    background: #111827;
+    color: #d1d5db;
+    box-sizing: border-box;
+}
+
+.pv-nav-title {
+    margin: 0 0 12px;
+    font-weight: 700;
+    color: #fff;
+    font-size: 15px;
+}
+
+.pv-nav-group {
+    margin: 18px 0 6px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9ca3af;
+}
+
+.pv-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pv-nav a {
+    display: block;
+    padding: 4px 8px;
+    border-radius: 5px;
+    color: #e5e7eb;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.pv-nav a:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.pv-main {
+    padding: 24px 28px 120px;
+    min-width: 0;
+}
+
+.pv-intro h1 {
+    margin: 0 0 6px;
+    font-size: 24px;
+}
+
+.pv-intro p {
+    margin: 0;
+    color: #4b5563;
+    max-width: 900px;
+    line-height: 1.5;
+}
+
+.pv-fitment-bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    margin: 18px 0 8px;
+    padding: 10px 14px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    font-size: 13px;
+}
+
+.pv-fitment-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.pv-chip {
+    border: 1px solid #d1d5db;
+    background: #fff;
+    border-radius: 999px;
+    padding: 5px 11px;
+    font: inherit;
+    cursor: pointer;
+}
+
+.pv-chip:hover {
+    border-color: #6b7280;
+}
+
+.pv-chip.is-active {
+    background: #113458;
+    border-color: #113458;
+    color: #fff;
+}
+
+/* ─── Sections ───────────────────────────────────────────────────────── */
+
+.pv-section {
+    margin-top: 22px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: visible;
+    scroll-margin-top: 72px;
+}
+
+.pv-section-header {
+    padding: 14px 18px 12px;
+    border-bottom: 1px solid #f0f1f3;
+}
+
+.pv-section-title {
+    display: inline;
+    margin: 0 10px 0 0;
+    font-size: 17px;
+}
+
+.pv-section-component {
+    font-size: 12px;
+    color: #7c3aed;
+    background: #f5f3ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: normal;
+}
+
+.pv-section-description {
+    margin: 6px 0 0;
+    color: #4b5563;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.pv-section-description code {
+    font-size: 12px;
+}
+
+.pv-stage {
+    padding: 18px;
+    position: relative;
+}
+
+.pv-stage-wide {
+    padding: 4px 0;
+}
+
+.pv-empty {
+    margin: 12px 18px;
+    padding: 12px 14px;
+    border: 1px dashed #d1d5db;
+    border-radius: 8px;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.pv-stack {
+    display: grid;
+    gap: 12px;
+}
+
+.pv-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+}
+
+.pv-narrow {
+    max-width: 460px;
+}
+
+.pv-sidebar-sample {
+    max-width: 320px;
+}
+
+.pv-panel-host {
+    display: inline-block;
+    position: relative;
+    padding: 8px 12px;
+    background: #fff;
+    border: 1px dashed #d1d5db;
+    border-radius: 8px;
+    min-width: 280px;
+}
+
+.pv-icon-box {
+    width: 32px;
+    height: 32px;
+    color: #113458;
+    fill: currentColor;
+}
+
+.pv-icon-box-lg {
+    width: 96px;
+    height: 96px;
+    color: #9ca3af;
+}
+
+.pv-icon-box svg {
+    width: 100%;
+    height: 100%;
+}
+
+.pv-link-button {
+    border: 0;
+    background: none;
+    color: #2563eb;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+}
+
+@media (max-width: 900px) {
+    .pv-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .pv-nav {
+        position: static;
+        height: auto;
+    }
+}

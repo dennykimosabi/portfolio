@@ -1,0 +1,24 @@
+@* Simplified from legacy: description expand/collapse is a manual toggle rather than a
+   ResizeObserver-driven overflow check — same visual outcome (clamped vs. full text)
+   without the JS interop. *@
+<div class="assembly-results-card">
+    <a class="assembly-results-card-image" href="@Assembly.ShowAssemblyURL" title="@Assembly.HoverText">
+        @if (!string.IsNullOrWhiteSpace(Assembly.ImageURL))
+        {
+            <img src="@Assembly.ImageURL" alt="@Assembly.AssemblyName" loading="lazy" />
+        }
+    </a>
+    <div class="assembly-results-card-group">
+        <a class="assembly-results-card-link" href="@Assembly.ShowAssemblyURL">@((MarkupString)Assembly.AssemblyName)</a>
+
+        @if (HasDescription)
+        {
+            <div id="@_descriptionId" class="assembly-results-card-description @(_isExpanded ? "assembly-results-card-description-expanded" : "assembly-results-card-description-clamped")">
+                @((MarkupString)Assembly.AssemblyDescription)
+            </div>
+            <button type="button" class="assembly-results-card-expand" aria-expanded="@(_isExpanded ? "true" : "false")" aria-controls="@_descriptionId" @onclick="ToggleExpand">
+                @(_isExpanded ? "Show less" : "Show more")
+            </button>
+        }
+    </div>
+</div>

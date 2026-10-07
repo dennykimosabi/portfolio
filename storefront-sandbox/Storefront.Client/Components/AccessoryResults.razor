@@ -1,0 +1,17 @@
+@if (HasProducts)
+{
+    <section class="accessory-results" aria-label="@_categoryName">
+        <div class="accessory-results-header">
+            <h2 class="accessory-results-heading">@_categoryName</h2>
+
+            <button type="button" class="accessory-results-change-category" @onclick="ChangeCategory">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <polyline points="15 6 9 12 15 18" />
+                </svg>
+                Change Category
+            </button>
+        </div>
+
+        <ProductGrid Results="_products!" OnAddToCart="HandleAddToCart" />
+    </section>
+}

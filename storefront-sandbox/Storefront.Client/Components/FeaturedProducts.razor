@@ -1,0 +1,21 @@
+@if (HasProducts)
+{
+    <section class="featured-products" aria-label="@ResolvedHeading">
+        <div class="featured-products-inner">
+            <h2 class="featured-products-heading">@((MarkupString)ResolvedHeading)</h2>
+
+            <div class="featured-products-grid">
+                @foreach (var product in Products!)
+                {
+                    <ProductCard Title="@TruncateDescription(product.ProductDescription)"
+                                 StockCode="@product.StockCode"
+                                 Price="@product.Price"
+                                 Url="@(BuildProductHref(product.ProductURL))"
+                                 ImageUrl="@(ResolveImageSrc(product))"
+                                 ShowAddToCart="true"
+                                 OnAddToCart="@(() => HandleAddToCart(product))" />
+                }
+            </div>
+        </div>
+    </section>
+}

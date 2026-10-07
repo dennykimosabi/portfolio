@@ -1,0 +1,26 @@
+@* Selling-dealer card, directly under the buy box — who the customer is actually buying
+   from, and how to reach them.
+
+   TODO (data): comes from the site's own dealer/website record, not the product. The
+   warranty and return links point at the dealer's policy pages. *@
+
+<div class="dealer-info">
+    <p class="dealer-info-name">@Dealer.Name</p>
+
+    <div class="dealer-info-columns">
+        <address class="dealer-info-address">
+            <span>@Dealer.AddressLine1</span>
+            <span>@Dealer.AddressLine2</span>
+        </address>
+
+        <div class="dealer-info-contact">
+            <a href="@($"tel:{Dealer.Phone}")">@Dealer.Phone</a>
+            <a href="@($"mailto:{Dealer.Email}")">@Dealer.Email</a>
+        </div>
+    </div>
+
+    <div class="dealer-info-policies">
+        <a href="@WarrantyUrl">Manufacturer's Warranty</a>
+        <a href="@ReturnPolicyUrl">Return Policy</a>
+    </div>
+</div>
