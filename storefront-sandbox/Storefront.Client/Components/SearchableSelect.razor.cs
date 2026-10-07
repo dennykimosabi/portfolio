@@ -7,12 +7,25 @@ public record SearchableSelectOption(string Value, string Text);
 
 public partial class SearchableSelect : ComponentBase
 {
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+    /// <summary>Element id linking the button and listbox.</summary>
     [Parameter] public string? Id { get; set; }
+    /// <summary>Button text when nothing is selected.</summary>
     [Parameter, EditorRequired] public string Placeholder { get; set; } = string.Empty;
+    /// <summary>Placeholder inside the search input.</summary>
     [Parameter] public string SearchPlaceholder { get; set; } = "Search...";
+    /// <summary>Selectable options.</summary>
     [Parameter] public List<SearchableSelectOption> Options { get; set; } = [];
+    /// <summary>Selected option value. Supports two-way binding.</summary>
     [Parameter] public string Value { get; set; } = string.Empty;
+    /// <summary>Invoked when the selection changes.</summary>
     [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    /// <summary>Disables the control.</summary>
     [Parameter] public bool Disabled { get; set; }
 
     private bool _isOpen;

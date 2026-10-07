@@ -20,11 +20,18 @@ public enum RefineSearchMode
 
 public partial class RefineSearch : ComponentBase, IDisposable
 {
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
     [Inject] public IProductSearchService ProductSearchService { get; set; } = default!;
     [Inject] public IPlacementService PlacementService { get; set; } = default!;
     [Inject] public IWebsiteContextProvider WebsiteContext { get; set; } = default!;
     [Inject] public VehicleFitmentState FitmentState { get; set; } = default!;
 
+    /// <summary>Which tile set to render: Categories, Links, or AccessoryCategories.</summary>
     [Parameter] public RefineSearchMode Mode { get; set; } = RefineSearchMode.Categories;
 
     /// <summary>

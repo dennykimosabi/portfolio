@@ -8,12 +8,19 @@ namespace Storefront.Client.Components;
 
 public partial class StorefrontHeader : ComponentBase
 {
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
     [Inject] public IWebsiteContextProvider WebsiteContext { get; set; } = default!;
     [Inject] public IWebsiteSettingsService WebsiteSettingsService { get; set; } = default!;
     [Inject] public ISessionStateProvider SessionState { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
     [Inject] public VehicleFitmentState FitmentState { get; set; } = default!;
 
+    /// <summary>Override for the page H1 text.</summary>
     [Parameter] public string H1TagText { get; set; } = string.Empty;
 
     [PersistentState]
