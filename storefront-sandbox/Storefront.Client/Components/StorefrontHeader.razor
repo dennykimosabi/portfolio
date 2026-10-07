@@ -1,5 +1,5 @@
 @if (Settings is null) { return; }
-<header class="storefront-header">
+<header class="storefront-header @Class" @attributes="AdditionalAttributes">
 
     @if (!string.IsNullOrWhiteSpace(H1TagText))
     {

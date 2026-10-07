@@ -1,6 +1,6 @@
 @if (Layout == VehiclePickerLayout.Panel)
 {
-    <div class="vehicle-picker vehicle-picker-panel">
+    <div class="vehicle-picker vehicle-picker-panel @Class" @attributes="AdditionalAttributes">
         <button class="vehicle-selector-btn @(_panelOpen ? "is-open" : "") @(CurrentGarageVehicle is not null ? "has-vehicle" : "")"
                 @onclick="TogglePanel"
                 aria-label="@PanelButtonLabel"
@@ -142,7 +142,7 @@
 }
 else
 {
-    <section class="vehicle-picker vehicle-picker-inline" aria-label="Choose your vehicle">
+    <section class="vehicle-picker vehicle-picker-inline @Class" @attributes="AdditionalAttributes" aria-label="Choose your vehicle">
         <div class="vehicle-picker-inline-top">
             <h2 class="vehicle-picker-inline-title">@((MarkupString)ResolvedTitle)</h2>
             <div class="vehicle-picker-inline-vin">

@@ -14,6 +14,12 @@ namespace Storefront.Client.Components;
 /// </summary>
 public partial class AccessoryResults : ComponentBase, IDisposable
 {
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
     [Inject] public IProductSearchService ProductSearchService { get; set; } = default!;
     [Inject] public ICategoryService CategoryService { get; set; } = default!;
     [Inject] public VehicleFitmentState Fitment { get; set; } = default!;

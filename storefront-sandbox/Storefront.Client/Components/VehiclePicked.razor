@@ -7,7 +7,7 @@
 
 @if (_loaded)
 {
-    <section class="vehicle-picked" aria-label="Selected vehicle">
+    <section class="vehicle-picked @Class" @attributes="AdditionalAttributes" aria-label="Selected vehicle">
         @if (!string.IsNullOrWhiteSpace(_placement?.ImageUrl))
         {
             <div class="vehicle-picked-image">
