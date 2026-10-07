@@ -162,3 +162,103 @@
     .pf-workshop-grid { grid-template-columns: 1fr; }
     .pf-workshop-nav { position: static; }
 }
+
+/* ─── SiteFeedback point-and-comment (?feedback=1) ─────────────────────── */
+.sfb-fab {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 10001;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid #7c3aed;
+    border-radius: 999px;
+    background: #7c3aed;
+    color: #fff;
+    font: 600 13px/1 system-ui, sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
+}
+.sfb-fab:hover { background: #6d28d9; }
+
+.sfb-banner {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: #1e1b2e;
+    color: #fff;
+    font: 500 13px/1.4 system-ui, sans-serif;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+.sfb-link {
+    border: 0;
+    background: none;
+    color: #c4b5fd;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+}
+
+.sfb-panel {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 10001;
+    width: 320px;
+    padding: 16px;
+    border: 1px solid #e4e4e7;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    font-family: system-ui, sans-serif;
+}
+.sfb-pick-label {
+    font-size: 13px;
+    font-weight: 650;
+    color: #18181b;
+    margin-bottom: 4px;
+    word-break: break-word;
+}
+.sfb-pick-selector {
+    font-family: ui-monospace, monospace;
+    font-size: 11px;
+    color: #7c3aed;
+    background: #f5f3ff;
+    border-radius: 6px;
+    padding: 4px 8px;
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+.sfb-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d4d4d8;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font: 13px/1.5 system-ui, sans-serif;
+    resize: vertical;
+}
+.sfb-textarea:focus { outline: 2px solid #7c3aed; outline-offset: 1px; }
+.sfb-actions { display: flex; gap: 8px; margin-top: 10px; }
+.sfb-btn {
+    border: 1px solid #d4d4d8;
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font: 600 13px/1 system-ui, sans-serif;
+    cursor: pointer;
+    color: #3f3f46;
+}
+.sfb-btn-primary { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+.sfb-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.sfb-hint { margin-top: 8px; font-size: 11px; color: #a1a1aa; }

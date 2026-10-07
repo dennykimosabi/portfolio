@@ -1,0 +1,116 @@
+@using Microsoft.JSInterop
+@using Microsoft.AspNetCore.Components.Routing
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+@implements IAsyncDisposable
+
+@* Point-and-comment site feedback. Only renders with ?feedback=1. *@
+@if (_enabled)
+{
+    <div data-site-feedback>
+        @if (!_picking && _pick is null)
+        {
+            <button class="sfb-fab" @onclick="StartPick" title="Point at something to comment on">
+                <span aria-hidden="true">💬</span> Annotate
+            </button>
+        }
+        @if (_picking)
+        {
+            <div class="sfb-banner">
+                Click anything on the page to comment on it.
+                <button class="sfb-link" @onclick="CancelPick">Cancel (Esc)</button>
+            </div>
+        }
+        @if (_pick is not null)
+        {
+            <div class="sfb-panel">
+                <div class="sfb-pick-label">@_pick.Label</div>
+                <div class="sfb-pick-selector">@_pick.Selector</div>
+                <textarea class="sfb-textarea" rows="3" placeholder="What should change here?"
+                          @bind="_comment" @bind:event="oninput"></textarea>
+                <div class="sfb-actions">
+                    <button class="sfb-btn sfb-btn-primary" @onclick="CopyFeedback" disabled="@string.IsNullOrWhiteSpace(_comment)">
+                        @(_copied ? "Copied ✓" : "Copy feedback")
+                    </button>
+                    <button class="sfb-btn" @onclick="CancelPick">Discard</button>
+                </div>
+                <div class="sfb-hint">Paste it into chat — I'll know exactly which element you mean.</div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private bool _enabled;
+    private bool _picking;
+    private PickInfo? _pick;
+    private string _comment = string.Empty;
+    private bool _copied;
+    private DotNetObjectReference<SiteFeedback>? _ref;
+
+    protected override void OnInitialized()
+    {
+        var uri = Nav.ToAbsoluteUri(Nav.Uri);
+        _enabled = uri.Query.Contains("feedback=1");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && _enabled)
+        {
+            _ref = DotNetObjectReference.Create(this);
+        }
+    }
+
+    private async Task StartPick()
+    {
+        _picking = true;
+        _pick = null;
+        _comment = string.Empty;
+        _copied = false;
+        await JS.InvokeVoidAsync("siteFeedback.start", _ref);
+    }
+
+    [JSInvokable]
+    public async Task OnElementPicked(PickInfo pick)
+    {
+        _pick = pick;
+        _picking = false;
+        await JS.InvokeVoidAsync("siteFeedback.stop");
+        StateHasChanged();
+    }
+
+    [JSInvokable]
+    public async Task CancelPick()
+    {
+        _picking = false;
+        _pick = null;
+        _comment = string.Empty;
+        _copied = false;
+        await JS.InvokeVoidAsync("siteFeedback.stop");
+        StateHasChanged();
+    }
+
+    private async Task CopyFeedback()
+    {
+        var text = $"[site-feedback]\nPage: {_pick!.Page}\nElement: {_pick.Label}\nSelector: {_pick.Selector}\nNote: {_comment.Trim()}";
+        await JS.InvokeVoidAsync("siteFeedback.copyText", text);
+        _copied = true;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_ref is not null)
+        {
+            try { await JS.InvokeVoidAsync("siteFeedback.stop"); } catch { }
+            _ref.Dispose();
+        }
+    }
+
+    public sealed class PickInfo
+    {
+        public string Selector { get; set; } = string.Empty;
+        public string Label { get; set; } = string.Empty;
+        public string Page { get; set; } = string.Empty;
+    }
+}
