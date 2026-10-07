@@ -3,7 +3,7 @@
    Add to Cart button render as siblings of the two links. Decoupled from any specific
    DTO; callers pass primitive parameters. *@
 
-<div class="product-card">
+<div class="product-card @Class" @attributes="AdditionalAttributes">
     <a class="product-card-image" href="@Url" aria-label="@Title">
         @if (!string.IsNullOrWhiteSpace(ImageUrl))
         {

@@ -1,6 +1,6 @@
 @* Search-results grid wrapper. Maps ProductSearchResult fields to ProductCard parameters. *@
 
-<div class="product-grid">
+<div class="product-grid @Class" @attributes="AdditionalAttributes">
     @foreach (var product in Results)
     {
         <ProductCard Title="@product.ProductDescription"

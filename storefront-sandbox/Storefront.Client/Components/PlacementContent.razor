@@ -4,7 +4,7 @@
         ? $"background-image: url('{Placement.ImageUrl}');"
         : null;
 
-    RenderFragment inner = @<div class="@ClassName">
+    RenderFragment inner = @<div class="@ClassName @Class" @attributes="AdditionalAttributes">
         <div class="placement-content-img" style="@imageStyle"></div>
         <div class="placement-content-panel">
             @if (!string.IsNullOrWhiteSpace(Placement.IntroTextTitle))

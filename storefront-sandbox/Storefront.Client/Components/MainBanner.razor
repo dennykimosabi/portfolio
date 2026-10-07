@@ -3,7 +3,7 @@
      && !_dismissed
      && !_banner.IsEmpty)
 {
-    <section class="main-banner" role="status" aria-label="Site banner">
+    <section class="main-banner @Class" @attributes="AdditionalAttributes" role="status" aria-label="Site banner">
         @if (!string.IsNullOrWhiteSpace(_banner.BannerTarget))
         {
             <a class="main-banner-link"

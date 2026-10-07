@@ -6,7 +6,7 @@
    the product's fitment lookup against VehicleFitmentState. Change Vehicle should clear
    the active vehicle the same way VehiclePicked does. *@
 
-<div class="fitment-banner @(Fits ? "fitment-banner--fits" : "fitment-banner--unknown")">
+<div class="fitment-banner @(Fits ? "fitment-banner--fits" : "fitment-banner--unknown") @Class" @attributes="AdditionalAttributes">
     <span class="fitment-banner-status">
         <span class="fitment-banner-icon" aria-hidden="true">@(Fits ? "✓" : "!")</span>
         @if (Fits)

@@ -7,7 +7,7 @@
    TODO (data): images come from IProductService.GetAdditionalImagesAsync (already
    implemented). The "N More" tile should open a lightbox/full gallery — not built yet. *@
 
-<div class="product-gallery">
+<div class="product-gallery @Class" @attributes="AdditionalAttributes">
     <div class="product-gallery-main">
         @if (!string.IsNullOrWhiteSpace(SelectedImage))
         {
