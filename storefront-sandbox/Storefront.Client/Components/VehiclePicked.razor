@@ -18,12 +18,12 @@
         <div class="vehicle-picked-content">
             <div class="vehicle-picked-heading">
                 <h3 class="vehicle-picked-title">@((MarkupString)DisplayTitle)</h3>
-                <button type="button"
-                        class="vehicle-picked-change"
+                <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Sm"
+                        Class="vehicle-picked-change-btn"
                         title="Click to change your vehicle"
                         @onclick="ChangeVehicle">
                     Change Vehicle
-                </button>
+                </SfButton>
             </div>
 
             @if (!string.IsNullOrWhiteSpace(_placement?.Text))

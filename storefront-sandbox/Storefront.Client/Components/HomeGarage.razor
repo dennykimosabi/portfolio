@@ -13,9 +13,9 @@
 
         @if (Garage.Vehicles.Count > CollapsedCount)
         {
-            <button type="button" class="home-garage-toggle" @onclick="ToggleExpanded">
+            <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm" @onclick="ToggleExpanded">
                 @(_expanded ? "SHOW LESS" : "SHOW MORE")
-            </button>
+            </SfButton>
         }
     </section>
 }

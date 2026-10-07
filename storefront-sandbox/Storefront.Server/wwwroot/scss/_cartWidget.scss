@@ -3,29 +3,9 @@
     display: inline-block;
 }
 
-.cart-widget-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    background: none;
-    border: none;
-    border-radius: var(--sf-radius-sm);
-    cursor: pointer;
-    color: var(--sf-color-text-3);
-    padding: 0.5rem 0.625rem;
-    transition: background-color 0.15s ease, color 0.15s ease;
-
-    &:hover {
-        background-color: var(--sf-color-bg-2);
-        color: var(--sf-color-text);
-    }
-
-    svg { display: block; }
-
-    .cart-widget-count {
-        font-size: 0.875rem;
-        font-weight: 500;
-    }
+.cart-widget-count {
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
 .cart-widget-overlay {
@@ -69,17 +49,6 @@
         color: #222;
     }
 
-    .cart-widget-close {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        line-height: 1;
-        color: var(--sf-color-text-3);
-        cursor: pointer;
-        padding: 0 0.25rem;
-
-        &:hover { color: #000; }
-    }
 }
 
 .cart-widget-body {
@@ -106,17 +75,6 @@
 
     &:last-child { border-bottom: none; }
 
-    .cart-widget-item-remove {
-        background: none;
-        border: none;
-        color: var(--sf-color-text-muted);
-        font-size: 1.125rem;
-        line-height: 1;
-        cursor: pointer;
-        padding: 0 0.25rem;
-
-        &:hover { color: #000; }
-    }
 
     .cart-widget-item-img {
         width: 60px;
@@ -193,7 +151,7 @@
     border-top: 1px solid var(--sf-color-border-light);
     background: var(--sf-color-bg-2);
 
-    button, a {
+    a {
         display: block;
         width: 100%;
         padding: 0.625rem 1rem;
@@ -208,24 +166,14 @@
         color: var(--sf-color-text-2);
     }
 
-    .cart-widget-continue,
     .cart-widget-view {
         &:hover { background: var(--sf-color-bg-2); }
     }
 
-    .cart-widget-checkout {
-        background: var(--sf-color-brand);
-        border-color: var(--sf-color-brand-deep);
-        color: var(--sf-color-text-inverse);
+}
 
-        &:hover:not(:disabled) {
-            background: var(--sf-color-brand-deep);
-            border-color: #0a1e30;
-        }
-
-        &:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-    }
+// Layout for footer CTA buttons (visuals come from SfButton).
+.cart-widget-footer-btn {
+    display: block;
+    width: 100%;
 }

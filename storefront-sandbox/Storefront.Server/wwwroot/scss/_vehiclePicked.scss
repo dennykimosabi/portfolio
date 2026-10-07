@@ -67,25 +67,7 @@
     }
 }
 
-.vehicle-picked-change {
-    flex-shrink: 0;
-    background: none;
-    border: 1px solid #ccc;
-    border-radius: var(--sf-radius-sm);
-    padding: 0.5rem 1.125rem;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--sf-color-text-2);
-    cursor: pointer;
-    white-space: nowrap;
-    transition: border-color 0.15s ease, color 0.15s ease;
 
-    &:hover {
-        border-color: var(--sf-color-bg-inverse);
-        color: var(--sf-color-text);
-    }
-}
 
 .vehicle-picked-body {
     font-size: 0.9375rem;
@@ -99,4 +81,9 @@
             margin-bottom: 0;
         }
     }
+}
+
+// Layout for the "Change Vehicle" SfButton (visuals from SfButton).
+.vehicle-picked-change-btn {
+    flex-shrink: 0;
 }
