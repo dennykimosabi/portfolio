@@ -1,0 +1,446 @@
+// Dealer buy box (<ProductPriceBox />) — price, availability, fulfilment two-up,
+// quantity, and the two purchase actions.
+
+.price-box-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+
+    &--sub {
+        margin-top: 0.1875rem;
+    }
+}
+
+.price-box-label {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.price-box-price {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #17803d;
+}
+
+.price-box-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.6875rem;
+    color: #666;
+}
+
+.price-box-rating-value {
+    color: #333;
+}
+
+.price-box-rating-star {
+    color: #e8a33d;
+}
+
+.price-box-msrp {
+    font-size: 0.6875rem;
+    color: #666;
+    text-decoration: line-through;
+}
+
+.price-box-savings {
+    margin: 0.25rem 0 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #17803d;
+}
+
+.price-box-disclaimer {
+    margin: 0.625rem 0 0;
+    font-size: 0.625rem;
+    line-height: 1.5;
+    color: #777;
+}
+
+// ───── Availability pill ───────────────────────────────────────────────────
+// Two stacked lines: the availability state itself, then (below it) whichever of
+// Deliver/Pick Up is currently selected — see price-box-availability-fulfillment-text.
+.price-box-availability {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin: 0.875rem 0 0;
+    padding: 0.4375rem 0.625rem;
+    border-radius: 2px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #1a1a1a;
+
+    // Background tint follows the state; the label always names it in words.
+    &.is-orderable {
+        background: #eaf2fb;
+        border: 1px solid #cfe0f5;
+    }
+
+    &.is-in-stock,
+    &.is-limited {
+        background: #eaf6ed;
+        border: 1px solid #c7e5d1;
+    }
+}
+
+.price-box-availability-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+}
+
+.price-box-availability-fulfillment-text {
+    // Lines up with the label text, not the status dot — offset by the dot's width
+    // (0.5rem) plus the row gap (0.5rem) above.
+    margin: 0 0 0 1rem;
+    font-weight: 400;
+    color: #444;
+}
+
+.price-box-availability-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    box-sizing: border-box;
+    flex-shrink: 0;
+
+    // outOfStock — full blue dot. "Available for Order" text renders when nothing's on
+    // hand anywhere, which is legacy's outOfStock state (confirmed against pr_returnInventoryMessage's className).
+    .is-orderable & {
+        background: #1a73e8;
+    }
+
+    // inStock — full green dot.
+    .is-in-stock & {
+        background: #2e9e4f;
+    }
+
+    // limitedStock — same green as inStock, but half-filled rather than a different
+    // shade, matching legacy's half-circle dot for this state.
+    .is-limited & {
+        background: linear-gradient(180deg, #2e9e4f 50%, transparent 50%);
+        border: 1px solid #2e9e4f;
+    }
+}
+
+// ───── Delivery / pickup two-up ────────────────────────────────────────────
+.price-box-fulfillment {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 0.75rem;
+    border: 1px solid #e0e0e0;
+
+    // Single shared divider rather than a border on each cell.
+    .price-box-fulfillment-option + .price-box-fulfillment-option {
+        border-left: 1px solid #e0e0e0;
+    }
+
+    @media (max-width: 400px) {
+        grid-template-columns: 1fr;
+
+        .price-box-fulfillment-option + .price-box-fulfillment-option {
+            border-left: none;
+            border-top: 1px solid #e0e0e0;
+        }
+    }
+}
+
+.price-box-fulfillment-option {
+    position: relative; // anchors price-box-zip-edit-close
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0.625rem 0;
+    cursor: pointer;
+
+    // Inset rather than a real border — an added border would grow the box beyond its
+    // grid track (content-box sizing) and nudge the divider between the two cells.
+    &.is-selected {
+        box-shadow: inset 0 0 0 1px #000;
+    }
+}
+
+// Zip-edit mode replaces the box's normal content in place — same footprint, no resize.
+.price-box-zip-edit-close {
+    position: absolute;
+    top: 0.375rem;
+    right: 0.375rem;
+    width: 1rem;
+    height: 1rem;
+    padding: 0;
+    border: none;
+    background: none;
+    font-size: 0.625rem;
+    line-height: 1;
+    color: #999;
+    cursor: pointer;
+
+    &:hover {
+        color: #333;
+    }
+
+    &:focus-visible {
+        outline: 2px solid #2563a5;
+        outline-offset: 2px;
+    }
+}
+
+.price-box-zip-edit-row {
+    display: flex;
+    gap: 0.375rem;
+    margin-top: 0.375rem;
+}
+
+.price-box-fulfillment-zip-input {
+    width: 4.5rem;
+    padding: 0.3125rem 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    font: inherit;
+    font-size: 0.6875rem;
+
+    &:focus-visible {
+        outline: 2px solid #2563a5;
+        outline-offset: -2px;
+    }
+}
+
+.price-box-fulfillment-zip-save {
+    padding: 0.3125rem 0.75rem;
+    border: 1px solid #000;
+    border-radius: 2px;
+    background: #000;
+    font: inherit;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+
+    &:hover {
+        background: #222;
+    }
+
+    &:focus-visible {
+        outline: 2px solid #2563a5;
+        outline-offset: 2px;
+    }
+}
+
+.price-box-fulfillment-head {
+    display: flex;
+    align-items: center;
+    gap: 0.3125rem;
+    margin: 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.price-box-fulfillment-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.price-box-fulfillment-distance {
+    margin-left: auto;
+    font-weight: 400;
+    color: #666;
+}
+
+// The postal code is editable but reads as text, not a button — bold + underline is the
+// only affordance for that.
+.price-box-fulfillment-zip {
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    color: inherit;
+    cursor: pointer;
+
+    &:hover {
+        color: #2563a5;
+    }
+
+    &:focus-visible {
+        outline: 2px solid #2563a5;
+        outline-offset: 2px;
+    }
+}
+
+.price-box-fulfillment-promise {
+    margin: 0.25rem 0 0.5rem;
+    font-size: 0.625rem;
+    line-height: 1.45;
+    color: #666;
+
+    // Keeps the two footers aligned when the promises wrap to different heights.
+    flex: 1;
+}
+
+.price-box-fulfillment-action,
+.price-box-fulfillment-cost {
+    margin: 0;
+    padding: 0.375rem 0;
+    border-top: 1px solid #eee;
+    font-size: 0.625rem;
+    text-align: left;
+}
+
+.price-box-fulfillment-action {
+    width: 100%;
+    background: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    font-family: inherit;
+    color: #333;
+    cursor: pointer;
+
+    &:hover {
+        color: #2563a5;
+        text-decoration: underline;
+    }
+
+    &:focus-visible {
+        outline: 2px solid #2563a5;
+        outline-offset: -2px;
+    }
+}
+
+.price-box-fulfillment-cost {
+    font-weight: 700;
+    color: #17803d;
+}
+
+// ───── Quantity ────────────────────────────────────────────────────────────
+.price-box-quantity {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.875rem;
+}
+
+.price-box-quantity-label {
+    font-size: 0.75rem;
+    color: #333;
+}
+
+.price-box-stepper {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.price-box-stepper-button {
+    width: 1.75rem;
+    height: 1.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    font: inherit;
+    font-size: 0.875rem;
+    color: #333;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+        background: #f5f5f5;
+    }
+
+    &:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
+
+    &:focus-visible {
+        outline: 2px solid #2563a5;
+        outline-offset: -2px;
+    }
+}
+
+.price-box-stepper-value {
+    width: 2rem;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    font-size: 0.75rem;
+    text-align: center;
+    color: #1a1a1a;
+
+    &:focus-visible {
+        outline: 2px solid #2563a5;
+        outline-offset: -2px;
+    }
+}
+
+// ───── Purchase actions ────────────────────────────────────────────────────
+.price-box-add,
+.price-box-buy-now {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: 0.625rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: 2px;
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:focus-visible {
+        outline: 2px solid #2563a5;
+        outline-offset: 2px;
+    }
+}
+
+// Primary action — filled, matching the shared product-card add button.
+.price-box-add {
+    background: #113458;
+    border: 1px solid #0d2840;
+    color: #fff;
+
+    &:hover {
+        background: #0d2840;
+    }
+
+    .cart-icon {
+        fill: #fff;
+    }
+}
+
+// Secondary action — same footprint, outlined so the hierarchy is unambiguous.
+.price-box-buy-now {
+    background: #fff;
+    border: 1px solid #113458;
+    color: #113458;
+
+    &:hover {
+        background: #f4f7fa;
+    }
+}
+
+.cart-icon,
+.price-box-buy-icon {
+    width: 0.9375rem;
+    height: 0.9375rem;
+    flex-shrink: 0;
+}
+
+.price-box-buy-icon {
+    fill: #113458;
+}

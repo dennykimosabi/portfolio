@@ -1,0 +1,194 @@
+// PDP section stack — the expanded Product Information block plus the collapsible rows
+// beneath it (<AccordionSection /> + <ProductInformation />).
+
+.product-sections {
+    padding: 0;
+
+    .accordion-section {
+        border-bottom: 1px solid #e0e0e0;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}
+
+// ───── Collapsible row ─────────────────────────────────────────────────────
+.accordion-section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    background: none;
+    border: none;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover {
+        background: #fafafa;
+    }
+
+    &:focus-visible {
+        outline: 2px solid #2563a5;
+        outline-offset: -2px;
+    }
+}
+
+.accordion-section-title {
+    flex: 1;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.accordion-section-meta {
+    font-size: 0.6875rem;
+    color: #666;
+    white-space: nowrap;
+}
+
+// Plus/minus drawn from two bars; the vertical one is hidden when open.
+.accordion-section-toggle {
+    position: relative;
+    width: 0.75rem;
+    height: 0.75rem;
+    flex-shrink: 0;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        background: #333;
+    }
+
+    &::before {
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        transform: translateY(-50%);
+    }
+
+    &::after {
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        transform: translateX(-50%);
+    }
+
+    .accordion-section.is-open &::after {
+        display: none;
+    }
+}
+
+.accordion-section-body {
+    padding: 0 1.25rem 1.25rem;
+    font-size: 0.75rem;
+    color: #333;
+}
+
+.product-sections-placeholder {
+    margin: 0;
+    color: #999;
+    font-style: italic;
+}
+
+// ───── Product Information body ────────────────────────────────────────────
+// Tag rows are data-driven (pr_returnProductTags) — the Prop 65 warning is just one of
+// them, so nothing here is warning-specific.
+.product-information-tags {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.product-information-tag {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    padding-bottom: 0.875rem;
+    border-bottom: 1px solid #eee;
+    font-size: 0.6875rem;
+
+    & + & {
+        padding-top: 0.875rem;
+    }
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+        gap: 0.375rem;
+    }
+}
+
+.product-information-tag-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    flex-shrink: 0;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.product-information-tag-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    object-fit: contain;
+}
+
+.product-information-tag-text {
+    color: #444;
+    line-height: 1.5;
+
+    a {
+        color: #2563a5;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// Icon fallback for warning-type tags that arrive without an imageURL — keeps the amber
+// glyph from the mockup without hardcoding the warning itself. :not(:has(img)) means a tag
+// that DOES supply an icon renders that instead, never both. Purely presentational.
+.product-information-tag--warning .product-information-tag-label:not(:has(img))::before {
+    content: '⚠';
+    color: #e8a33d;
+}
+
+.product-information-features {
+    margin: 0.875rem 0 0;
+    padding: 0 0 0 1rem;
+    list-style: none;
+    font-size: 0.6875rem;
+    line-height: 1.7;
+    color: #333;
+
+    li::before {
+        content: '•';
+        margin-right: 0.5rem;
+        color: #333;
+    }
+}
+
+.product-information-note {
+    margin: 0.75rem 0 0;
+    font-size: 0.6875rem;
+    color: #333;
+}
+
+.product-information-supersessions {
+    margin: 1rem 0 0;
+    padding-top: 0.875rem;
+    border-top: 1px solid #eee;
+    font-size: 0.6875rem;
+    color: #333;
+}
+
+.product-information-supersessions-label {
+    font-weight: 700;
+    margin-right: 0.25rem;
+}

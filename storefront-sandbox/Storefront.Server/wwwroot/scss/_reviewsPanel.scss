@@ -1,0 +1,108 @@
+.reviews-panel {
+    background: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #333;
+}
+
+.reviews-panel-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #d0d0d0;
+    background: #f5f5f5;
+
+    .reviews-panel-title {
+        margin: 0 0 0.375rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #222;
+    }
+
+    .reviews-aggregate {
+        margin: 0 0 0.5rem;
+        font-size: 0.875rem;
+        color: #333;
+
+        strong { color: #222; }
+    }
+
+    .reviews-disclaimer {
+        margin: 0;
+        font-size: 0.75rem;
+        color: #777;
+        line-height: 1.4;
+    }
+}
+
+.reviews-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.review-item {
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid #eee;
+
+    &:last-child { border-bottom: none; }
+
+    .review-rating-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+
+    .review-stars {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.0625rem;
+
+        .star {
+            font-size: 1rem;
+            color: #d0d0d0;
+            line-height: 1;
+
+            &.is-filled { color: #f5b400; }
+        }
+    }
+
+    .review-date {
+        font-size: 0.75rem;
+        color: #777;
+    }
+
+    .review-body {
+        margin: 0 0 0.5rem;
+        font-size: 0.875rem;
+        color: #333;
+        line-height: 1.4;
+    }
+
+    .review-author {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: #222;
+    }
+
+    .review-location {
+        font-size: 0.75rem;
+        color: #777;
+    }
+}
+
+.reviews-panel-footer {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid #e0e0e0;
+    background: #fafafa;
+    text-align: right;
+
+    .reviews-more-link {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: #2563a5;
+        text-decoration: none;
+
+        &:hover { text-decoration: underline; }
+    }
+}

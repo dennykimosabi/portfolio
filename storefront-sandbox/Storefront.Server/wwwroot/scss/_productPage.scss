@@ -1,0 +1,191 @@
+// Product detail page — page shell, fitment banner, panel chrome, and the left-hand
+// identity block. Gallery, buy box, section stack, and cross-sell rows live in their
+// own partials.
+
+.product-page {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 2.5rem;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+// Shared white card chrome. Every top-level block on the page sits in one of these.
+.product-panel {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    padding: 1.25rem;
+}
+
+// ───── Fitment banner ──────────────────────────────────────────────────────
+.fitment-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 0.5rem 0.875rem;
+    border-radius: 2px;
+    font-size: 0.8125rem;
+
+    &--fits {
+        background: #e9f7ec;
+        border: 1px solid #bfe3c8;
+        color: #1a1a1a;
+    }
+
+    // Neutral treatment until a vehicle is selected — no green, since nothing is confirmed.
+    &--unknown {
+        background: #f5f5f5;
+        border: 1px solid #e0e0e0;
+        color: #555;
+    }
+}
+
+.fitment-banner-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    strong {
+        font-weight: 700;
+    }
+}
+
+.fitment-banner-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: #17803d;
+    color: #fff;
+    font-size: 0.625rem;
+    line-height: 1;
+
+    .fitment-banner--unknown & {
+        background: #888;
+    }
+}
+
+.fitment-banner-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.fitment-banner-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: #333;
+    cursor: pointer;
+
+    &:hover {
+        color: #2563a5;
+        text-decoration: underline;
+    }
+
+    &:focus-visible {
+        outline: 2px solid #2563a5;
+        outline-offset: 2px;
+    }
+}
+
+.fitment-banner-divider {
+    width: 1px;
+    height: 0.875rem;
+    background: #bfe3c8;
+}
+
+.fitment-banner-caret,
+.fitment-banner-refresh {
+    font-size: 0.75rem;
+}
+
+// ───── Two-column main area ────────────────────────────────────────────────
+.product-page-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ───── Left panel: identity ────────────────────────────────────────────────
+.product-summary-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.product-summary-title {
+    margin: 0 0 0.25rem;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.product-summary-subhead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.product-summary-partnumber {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #333;
+}
+
+.product-summary-partnumber-label {
+    font-weight: 700;
+}
+
+.product-summary-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.75rem;
+    color: #555;
+
+    li {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3125rem;
+    }
+}
+
+.product-summary-meta-icon {
+    font-size: 0.75rem;
+    opacity: 0.75;
+}
+
+// Right-hand column stacks the buy box over the dealer card as two separate panels.
+.product-buy-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+// The buy panel manages its own internal spacing.
+.product-buy {
+    padding: 1.25rem 1rem;
+}
