@@ -1,0 +1,78 @@
+@page "/landing/{Slug}"
+
+<PageTitle>@(_config?.Title ?? "Landing")</PageTitle>
+
+<div class="search-page">
+
+@if (_notFound)
+{
+    <div class="landing-not-found">
+        <h1>Page not found</h1>
+        <p>The landing page <code>@Slug</code> does not exist or is no longer available.</p>
+    </div>
+}
+else
+{
+    @if (_config is not null)
+    {
+        <header class="landing-hero">
+            <h1 class="landing-hero-title">@_config.Title</h1>
+            @if (!string.IsNullOrWhiteSpace(_config.Subtitle))
+            {
+                <p class="landing-hero-subtitle">@_config.Subtitle</p>
+            }
+        </header>
+    }
+
+    <SearchToolbar FitmentString="@(_config?.Title ?? string.Empty)"
+                   CatalogCount="@(_results?.Count ?? 0)"
+                   CatalogTermLabel="Matching"
+                   IsGridView="_isGridView"
+                   ShowSidebar="false"
+                   FilterCount="_filterCount"
+                   SortOrder="@(SortOrder ?? "relevance")"
+                   OnSetListView="SetListView"
+                   OnSetGridView="SetGridView"
+                   OnSortOrderChanged="OnSortOrderChanged" />
+
+    <section class="matching-products">
+        @if (_results is not null)
+        {
+            @if (_isGridView)
+            {
+                <ProductGrid Results="_results" OnAddToCart="HandleAddToCart" />
+            }
+            else
+            {
+                <ul class="product-list">
+                    @foreach (var result in _results)
+                    {
+                        <li class="product-row">
+                            <div class="product-image-wrap">
+                                @if (!string.IsNullOrWhiteSpace(result.ThumbnailURL))
+                                {
+                                    <img src="@result.ThumbnailURL" alt="@result.ProductDescription" />
+                                }
+                            </div>
+                            <div class="product-details">
+                                <a href="@result.ProductURL" class="product-title">@result.ProductDescription</a>
+                                <p class="product-meta"><span class="meta-label">Part #:</span> @result.StockCode</p>
+                            </div>
+                            <div class="product-actions">
+                                <p class="product-price">@result.Price.ToString("C")</p>
+                                <div class="product-action-buttons">
+                                    <a href="@result.ProductURL" class="view-product-btn">View Product</a>
+                                    <button type="button" class="add-to-cart-btn" aria-label="Add to cart" @onclick="() => HandleAddToCart(result)">
+                                        <img src="/imgs/cart-add-primary.png" alt="" />
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+        }
+    </section>
+}
+
+</div>
