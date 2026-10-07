@@ -1,0 +1,60 @@
+// Selling-dealer card (<DealerInfoCard />), sitting under the buy box.
+
+.dealer-info-name {
+    margin: 0 0 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.dealer-info-columns {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #eee;
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    color: #555;
+}
+
+.dealer-info-address {
+    display: flex;
+    flex-direction: column;
+    font-style: normal;
+}
+
+.dealer-info-contact {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+
+    a {
+        color: #555;
+        text-decoration: none;
+
+        &:hover {
+            color: #2563a5;
+            text-decoration: underline;
+        }
+    }
+}
+
+.dealer-info-policies {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding-top: 0.625rem;
+    font-size: 0.6875rem;
+
+    a {
+        color: #333;
+        text-decoration: none;
+
+        &:hover {
+            color: #2563a5;
+            text-decoration: underline;
+        }
+    }
+}

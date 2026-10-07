@@ -1,0 +1,80 @@
+// Skeleton structural styles only. The dealer's stylesheet (loaded via HeadConfig)
+// owns the actual visual treatment via the caller-supplied wrapper class
+// (e.g. .LifestylePromoContainer).
+
+.placement-content {
+    width: 100%;
+    margin: 1.5rem 0;
+}
+
+.placement-content-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.placement-content-img {
+    width: 100%;
+    min-height: 300px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.placement-content-panel {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.placement-content-heading {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.placement-content-text {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: #333;
+}
+
+// Stopgap layout for the Volvo "LifestylePromoContainer" class until the dealer's
+// own stylesheet (shipped via HeadConfig) takes over. Two-column split: image-left,
+// white text panel right, with the CTA link styled inside the placement's own Text HTML.
+.LifestylePromoContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    height: 300px;
+    background: #fff;
+    overflow: hidden;
+
+    .placement-content-img {
+        min-height: 0;
+        height: 100%;
+    }
+
+    .placement-content-panel {
+        padding: 2rem 2.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    @media (max-width: 720px) {
+        grid-template-columns: 1fr;
+        height: auto;
+
+        .placement-content-img {
+            height: 220px;
+        }
+    }
+}
+
+// Anchor wrapper that lets the whole section be clickable while staying invisible
+// (no underline, inherit color).
+.placement-content-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}

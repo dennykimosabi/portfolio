@@ -1,0 +1,32 @@
+// Featured-products section (home page). Card visuals are shared and live in
+// _productCard.scss — this partial only handles the section wrapper and grid.
+
+.featured-products {
+    width: 100%;
+    padding: 2rem 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.featured-products-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.featured-products-heading {
+    margin: 0 0 1.25rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.featured-products-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    // auto-fill keeps cards ~200px wide so they look right whether the sproc returns
+    // 4 products or a full 6+ — no awkward whitespace from fixed column counts.
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}

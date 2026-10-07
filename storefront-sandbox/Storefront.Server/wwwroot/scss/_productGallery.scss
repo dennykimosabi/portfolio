@@ -1,0 +1,97 @@
+// Product image gallery (<ProductGallery />) — primary image over a single-row thumbnail
+// strip. The strip never wraps: overflow collapses into the trailing "N More" tile, which
+// keeps the panel the same height for a part with 3 images and one with 30.
+
+.product-gallery-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .image-placeholder {
+        max-width: 2.75rem;
+        max-height: 2.75rem;
+    }
+}
+
+.product-gallery-thumbs {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+
+    @media (max-width: 700px) {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+.product-gallery-thumb {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 0;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    overflow: hidden;
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .image-placeholder {
+        max-width: 1.125rem;
+        max-height: 1.125rem;
+    }
+
+    &:hover {
+        border-color: #888;
+    }
+
+    // Selection is shown with a border weight change, not colour alone.
+    &.is-selected {
+        border-color: #1a1a1a;
+        box-shadow: inset 0 0 0 1px #1a1a1a;
+    }
+
+    &:focus-visible {
+        outline: 2px solid #2563a5;
+        outline-offset: 1px;
+    }
+}
+
+// Trailing tile standing in for the images that didn't fit.
+.product-gallery-thumb--more {
+    .image-placeholder {
+        max-width: 0.875rem;
+        max-height: 0.875rem;
+    }
+}
+
+.product-gallery-thumb-count {
+    position: absolute;
+    bottom: 0.125rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.5625rem;
+    font-weight: 600;
+    color: #333;
+}
