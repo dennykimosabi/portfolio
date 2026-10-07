@@ -30,7 +30,7 @@
               {
                 <div class="vehicle-panel-header">
                     <span class="vehicle-panel-title">Your Garage</span>
-                    <button class="vehicle-panel-clear" @onclick="ClearGarage">Clear All</button>
+                    <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm" @onclick="ClearGarage">Clear All</SfButton>
                 </div>
 
                 <ul class="vehicle-garage-list">
@@ -42,7 +42,7 @@
                     }
                 </ul>
 
-                <button type="button" class="vehicle-panel-addnew" @onclick="ShowAddVehicle">+ Add New Vehicle</button>
+                <SfButton Variant="SfButtonVariant.Secondary" Class="vehicle-panel-addnew-btn" @onclick="ShowAddVehicle">+ Add New Vehicle</SfButton>
               }
               else
               {
@@ -50,11 +50,11 @@
                     <span class="vehicle-panel-title">Select Your Vehicle</span>
                     @if (HasGarage)
                     {
-                        <button class="vehicle-panel-clear" @onclick="ShowGarage">&larr; Garage</button>
+                        <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm" @onclick="ShowGarage">&larr; Garage</SfButton>
                     }
                     else if (IsVehicleComplete)
                     {
-                        <button class="vehicle-panel-clear" @onclick="Clear">Clear</button>
+                        <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm" @onclick="Clear">Clear</SfButton>
                     }
                 </div>
 
@@ -109,11 +109,11 @@
                         </div>
                     }
 
-                    <button class="vehicle-panel-submit"
-                            disabled="@(!IsVehicleComplete)"
+                    <SfButton Variant="SfButtonVariant.Dark"
+                            Disabled="@(!IsVehicleComplete)"
                             @onclick="Submit">
                         @ResolvedSubmitLabel
-                    </button>
+                    </SfButton>
                 </div>
 
                 <div class="vehicle-panel-vin">
@@ -128,11 +128,11 @@
                                @bind="_vinInput"
                                @bind:event="oninput"
                                @onkeydown="OnVinKeyDown" />
-                        <button class="vehicle-vin-submit"
-                                disabled="@(_vinInput.Length < 17)"
+                        <SfButton Variant="SfButtonVariant.Dark" Size="SfButtonSize.Sm"
+                                Disabled="@(_vinInput.Length < 17)"
                                 @onclick="SearchVin">
                             Search VIN
-                        </button>
+                        </SfButton>
                     </div>
                 </div>
               }
@@ -208,11 +208,11 @@ else
                 </div>
             }
 
-            <button class="vehicle-picker-inline-submit"
-                    disabled="@(!IsVehicleComplete)"
+            <SfButton Variant="SfButtonVariant.Dark"
+                    Disabled="@(!IsVehicleComplete)"
                     @onclick="Submit">
                 @ResolvedSubmitLabel
-            </button>
+            </SfButton>
         </div>
     </section>
 }
