@@ -2,12 +2,13 @@
    from the storefront's own css/main.css; this file is portfolio framing only. */
 
 :root {
-    --pf-bg: #0e1116;
-    --pf-panel: #161b22;
-    --pf-border: #262d36;
-    --pf-text: #e6e9ee;
-    --pf-muted: #9aa4b2;
-    --pf-accent: #4f9cf7;
+    --pf-bg: #ffffff;
+    --pf-panel: #ffffff;
+    --pf-border: #e4e4e7;
+    --pf-text: #09090b;
+    --pf-muted: #71717a;
+    --pf-accent: #18181b;
+    --pf-muted-bg: #f4f4f5;
 }
 
 .pf-shell {
@@ -44,7 +45,7 @@
     width: 38px;
     height: 38px;
     border-radius: 10px;
-    background: linear-gradient(135deg, #4f9cf7, #7b5cf0);
+    background: #18181b;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,8 +70,8 @@
     font-size: 14px;
 }
 
-.pf-nav-item:hover { background: #1d242e; color: var(--pf-text); }
-.pf-nav-item.active { background: #1d2c44; color: var(--pf-accent); }
+.pf-nav-item:hover { background: var(--pf-muted-bg); color: var(--pf-text); }
+.pf-nav-item.active { background: var(--pf-muted-bg); color: var(--pf-text); font-weight: 600; }
 .pf-nav-icon { width: 18px; text-align: center; }
 
 .pf-sidebar-foot {
@@ -105,7 +106,7 @@
     color: var(--pf-text);
     display: block;
 }
-.pf-card:hover { border-color: var(--pf-accent); }
+.pf-card:hover { border-color: #a1a1aa; }
 .pf-card h3 { margin: 0 0 8px; font-size: 16px; }
 .pf-card p { margin: 0; font-size: 14px; color: var(--pf-muted); line-height: 1.55; }
 .pf-card .pf-tag {
@@ -140,7 +141,7 @@
 .pf-workshop-grid { display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: start; }
 .pf-workshop-nav { position: sticky; top: 24px; }
 .pf-workshop-nav a { display: block; padding: 6px 0; color: var(--pf-muted); text-decoration: none; font-size: 13px; }
-.pf-workshop-nav a:hover { color: var(--pf-accent); }
+.pf-workshop-nav a:hover { color: var(--pf-text); }
 .pf-ws-section { margin-bottom: 40px; }
 .pf-ws-section > h3 { font-size: 18px; padding-bottom: 8px; border-bottom: 1px solid var(--pf-border); }
 .pf-ws-demo {

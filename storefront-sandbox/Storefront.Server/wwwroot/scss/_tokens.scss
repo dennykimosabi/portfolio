@@ -1,0 +1,101 @@
+// ─── Storefront design tokens ─────────────────────────────────────────────
+// Single source of truth for the component library's visual language.
+// Components reference these via var(--sf-*) so the library can be re-skinned
+// (dark mode, dealer themes) without touching component styles.
+//
+// Naming: --sf-{category}-{role}[-{variant}]
+//   Categories: color, radius, shadow, space, font
+
+:root {
+  // Brand
+  --sf-color-primary: #2563a5;        // links, CTAs, active states
+  --sf-color-primary-dark: #1d4f84;   // primary hover
+  --sf-color-brand: #113458;          // header, brand surfaces
+  --sf-color-brand-deep: #0d2840;     // brand hover / deep accents
+
+  // Text
+  --sf-color-text: #1a1a1a;           // primary text
+  --sf-color-text-2: #333;            // secondary text
+  --sf-color-text-3: #555;            // tertiary text
+  --sf-color-text-muted: #888;        // muted / placeholder text
+  --sf-color-text-inverse: #fff;      // text on dark surfaces
+
+  // Surfaces
+  --sf-color-bg: #fff;                // default surface
+  --sf-color-bg-2: #f5f5f5;           // subtle surface
+  --sf-color-bg-3: #eee;              // muted surface
+  --sf-color-bg-inverse: #1a1a1a;     // dark surface
+
+  // Borders
+  --sf-color-border: #d0d0d0;         // default border
+  --sf-color-border-light: #e0e0e0;   // subtle border
+  --sf-color-border-strong: #999;     // emphasized border
+
+  // Feedback
+  --sf-color-success: #2e7d32;
+  --sf-color-warning: #f5b400;
+  --sf-color-danger: #c62828;
+
+  // Radii
+  --sf-radius-sm: 2px;
+  --sf-radius-md: 4px;
+  --sf-radius-lg: 8px;
+  --sf-radius-pill: 999px;
+  --sf-radius-full: 50%;
+
+  // Shadows
+  --sf-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.15);
+  --sf-shadow-md: 0 6px 16px rgba(20, 30, 40, 0.08);
+  --sf-shadow-lg: 0 8px 20px rgba(20, 30, 40, 0.1);
+
+  // Spacing scale
+  --sf-space-1: 4px;
+  --sf-space-2: 8px;
+  --sf-space-3: 12px;
+  --sf-space-4: 16px;
+  --sf-space-5: 20px;
+  --sf-space-6: 24px;
+  --sf-space-8: 32px;
+}
+
+// ─── Dark theme ───────────────────────────────────────────────────────────
+// Blueprint zinc dark. Opt in with <html data-theme="dark"> or on any container.
+[data-theme="dark"] {
+  --sf-color-text: #fafafa;
+  --sf-color-text-2: #d4d4d4;
+  --sf-color-text-3: #a1a1aa;
+  --sf-color-text-muted: #71717a;
+  --sf-color-text-inverse: #09090b;
+
+  --sf-color-bg: #09090b;
+  --sf-color-bg-2: #131316;
+  --sf-color-bg-3: #27272a;
+  --sf-color-bg-inverse: #fafafa;
+
+  --sf-color-border: #27272a;
+  --sf-color-border-light: #1c1c1f;
+  --sf-color-border-strong: #3f3f46;
+
+  --sf-color-primary: #5ea3e6;
+  --sf-color-primary-dark: #8dc0f0;
+  --sf-color-brand: #18181b;
+  --sf-color-brand-deep: #09090b;
+
+  --sf-color-success: #4ade80;
+  --sf-color-warning: #fbbf24;
+  --sf-color-danger: #f87171;
+
+  --sf-shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.5);
+  --sf-shadow-md: 0 6px 16px rgba(0, 0, 0, 0.5);
+  --sf-shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+// ─── Dealer theme example ─────────────────────────────────────────────────
+// Dealers re-skin by overriding brand + primary. Everything else follows.
+// <html data-theme="dealer-acme">
+[data-theme="dealer-acme"] {
+  --sf-color-primary: #b3541e;
+  --sf-color-primary-dark: #93431a;
+  --sf-color-brand: #5c2e12;
+  --sf-color-brand-deep: #42200c;
+}
