@@ -66,6 +66,14 @@
                     <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Lg">Large</SfButton>
                     <SfButton Variant="SfButtonVariant.Primary" Disabled>Disabled</SfButton>
                     <SfButton Variant="SfButtonVariant.Primary" Loading>Loading</SfButton>
+                    <SfButton Variant="SfButtonVariant.Primary" Loading LoadingText="Saving…">Save</SfButton>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px;">
+                    <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Search"><SfIcon Name="search-line" /></SfButton>
+                    <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Icon" AriaLabel="Search"><SfIcon Name="search-line" /></SfButton>
+                    <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconLg" AriaLabel="Search"><SfIcon Name="search-line" /></SfButton>
+                    <SfButton Variant="SfButtonVariant.Primary" Icon="@_cartIcon">Add to cart</SfButton>
+                    <SfButton Variant="SfButtonVariant.Ghost" Href="#">Link button</SfButton>
                 </div>
             </ChildContent>
         </GallerySection>
@@ -180,6 +188,32 @@
                 <div style="display:flex;gap:24px;align-items:center;padding:20px 0;">
                     <SfTooltip Text="In stock at Memphis warehouse"><SfBadge Variant="SfBadgeVariant.Success">In stock</SfBadge></SfTooltip>
                     <SfTooltip Text="Ships in 4-5 business days" Position="SfTooltipPosition.Bottom"><SfIcon Name="truck-line" /></SfTooltip>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-button-group" Title="SfButtonGroup" Component="@("<SfButtonGroup><SfButton>One</SfButton><SfButton>Two</SfButton></SfButtonGroup>")" ComponentType="typeof(SfButtonGroup)">
+            <Description>Joins buttons into a connected toolbar. Only the outer edges are rounded; shared borders collapse. Separators and muted labels divide sections.</Description>
+            <ChildContent>
+                <div style="display:grid;gap:20px;justify-items:start;">
+                    <SfButtonGroup AriaLabel="Text alignment">
+                        <SfButton Variant="SfButtonVariant.Outline">Left</SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline">Center</SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline">Right</SfButton>
+                    </SfButtonGroup>
+                    <SfButtonGroup AriaLabel="Editor toolbar">
+                        <SfButtonGroupText>Style</SfButtonGroupText>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Bold"><SfIcon Name="bold" /></SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Italic"><SfIcon Name="italic" /></SfButton>
+                        <SfButtonGroupSeparator />
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Align left"><SfIcon Name="align-left" /></SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Align center"><SfIcon Name="align-center" /></SfButton>
+                    </SfButtonGroup>
+                    <SfButtonGroup AriaLabel="Sort direction" Orientation="SfButtonGroupOrientation.Vertical">
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Sm">Newest</SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Sm">Price: low to high</SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Sm">Price: high to low</SfButton>
+                    </SfButtonGroup>
                 </div>
             </ChildContent>
         </GallerySection>
@@ -593,11 +627,19 @@
         new("2022", "2022"),
     ];
 
+    private static readonly RenderFragment _cartIcon = b =>
+    {
+        b.OpenComponent(0, typeof(SfIcon));
+        b.AddAttribute(1, "Name", "shopping-cart-line");
+        b.CloseComponent();
+    };
+
     private static readonly NavGroup[] NavGroups =
     [
         new("Atomic",
         [
             ("sf-button", "SfButton"),
+            ("sf-button-group", "SfButtonGroup"),
             ("sf-badge", "SfBadge"),
             ("sf-chip", "SfChip"),
             ("sf-input", "SfInput"),
