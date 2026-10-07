@@ -47,7 +47,7 @@
             margin: 0;
             font-size: 0.875rem;
             font-weight: 600;
-            color: #222;
+            color: var(--sf-color-text);
 
             .collapse-indicator {
                 font-weight: 400;
@@ -72,7 +72,7 @@
 
         label, .row-label {
             font-size: 0.7rem;
-            color: #777;
+            color: var(--sf-color-text-muted);
             text-transform: uppercase;
             letter-spacing: 0.02em;
         }
@@ -167,7 +167,7 @@
             align-items: center;
             justify-content: center;
 
-            &:hover { color: #000; }
+            &:hover { color: var(--sf-color-text); }
 
             svg { display: block; }
         }
@@ -190,7 +190,7 @@
         margin: 0;
         font-size: 1.5rem;
         font-weight: 700;
-        color: #222;
+        color: var(--sf-color-text);
     }
 
     .landing-hero-subtitle {
@@ -208,11 +208,11 @@
     h1 {
         margin: 0 0 0.5rem;
         font-size: 1.25rem;
-        color: #222;
+        color: var(--sf-color-text);
     }
 
     code {
-        background: #f4f4f4;
+        background: var(--sf-color-bg-2);
         padding: 0.125rem 0.375rem;
         border-radius: var(--sf-radius-sm);
         font-size: 0.875rem;
@@ -224,7 +224,7 @@
     margin: 0 0 0.75rem;
     font-size: 1rem;
     font-weight: 600;
-    color: #222;
+    color: var(--sf-color-text);
 }
 
 // ───── Loading indicator (shared .sf-loading — see _spinner.scss) ─────
@@ -367,7 +367,7 @@
     .product-description {
         margin: 0.25rem 0 0;
         font-size: 0.75rem;
-        color: #666;
+        color: var(--sf-color-text-muted);
         line-height: 1.4;
     }
 
@@ -409,7 +409,7 @@
         margin: 0;
         font-size: 1.125rem;
         font-weight: 600;
-        color: #111;
+        color: var(--sf-color-text);
     }
 
     .product-action-buttons {

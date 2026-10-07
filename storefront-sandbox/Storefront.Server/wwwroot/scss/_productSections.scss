@@ -45,7 +45,7 @@
 
 .accordion-section-meta {
     font-size: 0.6875rem;
-    color: #666;
+    color: var(--sf-color-text-muted);
     white-space: nowrap;
 }
 
@@ -139,7 +139,7 @@
 }
 
 .product-information-tag-text {
-    color: #444;
+    color: var(--sf-color-text-3);
     line-height: 1.5;
 
     a {
@@ -156,7 +156,7 @@
 // that DOES supply an icon renders that instead, never both. Purely presentational.
 .product-information-tag--warning .product-information-tag-label:not(:has(img))::before {
     content: '⚠';
-    color: #e8a33d;
+    color: var(--sf-color-warning);
 }
 
 .product-information-features {

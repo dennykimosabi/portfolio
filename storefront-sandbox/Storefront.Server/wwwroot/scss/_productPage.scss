@@ -63,13 +63,13 @@
     width: 1rem;
     height: 1rem;
     border-radius: var(--sf-radius-full);
-    background: #17803d;
+    background: var(--sf-color-success);
     color: var(--sf-color-text-inverse);
     font-size: 0.625rem;
     line-height: 1;
 
     .fitment-banner--unknown & {
-        background: #888;
+        background: var(--sf-color-text-muted);
     }
 }
 
