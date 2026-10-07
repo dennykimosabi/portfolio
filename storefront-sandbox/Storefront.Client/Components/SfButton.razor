@@ -1,0 +1,13 @@
+<button type="@Type"
+        class="sf-button sf-button-@VariantClass sf-button-@SizeClass @Class"
+        disabled="@(Disabled || Loading)"
+        aria-disabled="@(Disabled || Loading)"
+        aria-busy="@Loading"
+        @onclick="HandleClick"
+        @attributes="AdditionalAttributes">
+    @if (Loading)
+    {
+        <span class="sf-button-spinner" aria-hidden="true"></span>
+    }
+    <span class="sf-button-content">@ChildContent</span>
+</button>
