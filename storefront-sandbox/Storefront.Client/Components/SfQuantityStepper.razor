@@ -1,0 +1,49 @@
+<div class="sf-stepper @Class" role="group" aria-label="@AriaLabel" @attributes="AdditionalAttributes">
+    <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm"
+              Class="sf-stepper-btn"
+              aria-label="@DecreaseLabel"
+              Disabled="@(Value <= Min)"
+              @onclick="() => Change(-1)">−</SfButton>
+    <span class="sf-stepper-value" aria-live="polite">@Value</span>
+    <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm"
+              Class="sf-stepper-btn"
+              aria-label="@IncreaseLabel"
+              Disabled="@(Value >= Max)"
+              @onclick="() => Change(1)">+</SfButton>
+</div>
+
+@code {
+    /// <summary>Current value. Supports two-way binding.</summary>
+    [Parameter] public int Value { get; set; } = 1;
+
+    /// <summary>Invoked when the value changes.</summary>
+    [Parameter] public EventCallback<int> ValueChanged { get; set; }
+
+    /// <summary>Minimum value.</summary>
+    [Parameter] public int Min { get; set; } = 1;
+
+    /// <summary>Maximum value.</summary>
+    [Parameter] public int Max { get; set; } = 99;
+
+    /// <summary>Accessible label for the stepper group.</summary>
+    [Parameter] public string AriaLabel { get; set; } = "Quantity";
+
+    /// <summary>Accessible label for the decrease button.</summary>
+    [Parameter] public string DecreaseLabel { get; set; } = "Decrease quantity";
+
+    /// <summary>Accessible label for the increase button.</summary>
+    [Parameter] public string IncreaseLabel { get; set; } = "Increase quantity";
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private async Task Change(int delta)
+    {
+        var next = Math.Clamp(Value + delta, Min, Max);
+        if (next != Value)
+            await ValueChanged.InvokeAsync(next);
+    }
+}
