@@ -9,14 +9,14 @@
 .vehicle-select-label {
     font-size: 0.6875rem;
     font-weight: 600;
-    color: #666;
+    color: var(--sf-color-text-muted);
     letter-spacing: 0.06em;
     text-transform: uppercase;
 }
 
 .vehicle-select {
     width: 100%;
-    border: 1px solid #ccc;
+    border: 1px solid var(--sf-color-border);
     border-radius: var(--sf-radius-sm);
     padding: 0.5rem 2rem 0.5rem 0.75rem;
     font-size: 0.8125rem;
@@ -36,15 +36,15 @@
 
     &:disabled {
         background-color: #f7f7f7;
-        color: #bbb;
+        color: var(--sf-color-text-muted);
         cursor: not-allowed;
-        border-color: #e8e8e8;
+        border-color: var(--sf-color-border-light);
     }
 }
 
 .vehicle-vin-input {
     flex: 1;
-    border: 1px solid #ccc;
+    border: 1px solid var(--sf-color-border);
     border-radius: var(--sf-radius-sm);
     padding: 0.5rem 0.75rem;
     font-size: 0.8125rem;
@@ -53,7 +53,7 @@
     text-transform: uppercase;
 
     &::placeholder {
-        color: #bbb;
+        color: var(--sf-color-text-muted);
         text-transform: none;
         letter-spacing: normal;
     }
@@ -124,7 +124,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0.875rem 1.25rem 0.625rem;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid var(--sf-color-bg-3);
 
             .vehicle-panel-title {
                 font-size: 0.75rem;
@@ -166,7 +166,7 @@
                     content: '';
                     flex: 1;
                     height: 1px;
-                    background: #ebebeb;
+                    background: var(--sf-color-border-light);
                 }
 
                 span {
@@ -208,7 +208,7 @@
 
 .vehicle-garage-item {
     & + & {
-        border-top: 1px solid #f0f0f0;
+        border-top: 1px solid var(--sf-color-bg-3);
     }
 }
 

@@ -26,14 +26,14 @@
 
             .results-term {
                 font-weight: 600;
-                color: #111;
+                color: var(--sf-color-text);
             }
         }
 
         .results-catalog-info {
             margin: 0;
             font-size: 0.8125rem;
-            color: #666;
+            color: var(--sf-color-text-muted);
 
             strong {
                 font-weight: 600;
@@ -98,7 +98,7 @@
             }
 
             &.is-active {
-                background: #111;
+                background: var(--sf-color-bg-inverse);
                 color: var(--sf-color-text-inverse);
             }
         }
@@ -135,7 +135,7 @@
             }
 
             &.is-active {
-                background: #111;
+                background: var(--sf-color-bg-inverse);
                 color: var(--sf-color-text-inverse);
             }
         }

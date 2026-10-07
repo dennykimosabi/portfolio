@@ -56,12 +56,12 @@
 
         .footer-copyright {
             font-size: 0.8rem;
-            color: #777;
+            color: var(--sf-color-text-muted);
         }
     }
 
     .footer-powered-by-panel {
-        background-color: #ebebeb;
+        background-color: var(--sf-color-border-light);
         padding: 0.75rem 0;
         text-align: center;
 

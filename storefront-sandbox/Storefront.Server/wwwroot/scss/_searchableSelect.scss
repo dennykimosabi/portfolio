@@ -51,7 +51,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.625rem 0.75rem;
-    border-bottom: 1px solid #e8e8e8;
+    border-bottom: 1px solid var(--sf-color-border-light);
     color: var(--sf-color-text-muted);
 
     input {

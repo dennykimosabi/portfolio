@@ -22,25 +22,25 @@
 }
 
 .sf-badge-primary {
-    background: #eaf2fb;
+    background: var(--sf-color-primary-tint);
     border-color: #cfe0f5;
     color: var(--sf-color-primary);
 }
 
 .sf-badge-success {
-    background: #eaf6ed;
+    background: var(--sf-color-success-tint);
     border-color: #c7e5d1;
     color: var(--sf-color-success);
 }
 
 .sf-badge-warning {
-    background: #fef6e0;
+    background: var(--sf-color-warning-tint);
     border-color: #f5dfa8;
     color: #92680f;
 }
 
 .sf-badge-danger {
-    background: #fdeeee;
+    background: var(--sf-color-danger-tint);
     border-color: #f5c6c6;
     color: var(--sf-color-danger);
 }
