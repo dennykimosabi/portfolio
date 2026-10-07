@@ -1,0 +1,13 @@
+@* Search-results grid wrapper. Maps ProductSearchResult fields to ProductCard parameters. *@
+
+<div class="product-grid">
+    @foreach (var product in Results)
+    {
+        <ProductCard Title="@product.ProductDescription"
+                     StockCode="@product.StockCode"
+                     Price="@product.Price"
+                     Url="@product.ProductURL"
+                     ImageUrl="@product.ThumbnailURL"
+                     OnAddToCart="@(() => InvokeAdd(product))" />
+    }
+</div>

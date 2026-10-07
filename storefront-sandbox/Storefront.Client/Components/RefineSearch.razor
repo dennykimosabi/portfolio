@@ -1,0 +1,96 @@
+@if (Mode == RefineSearchMode.Links)
+{
+    @* Compact list of fitment-refinement links (e.g. "Shop by Year" → year tiles). *@
+    @if (Results is { Count: > 0 })
+    {
+        <section class="refine-search refine-search-links" aria-label="@Heading">
+            @if (!string.IsNullOrWhiteSpace(Heading))
+            {
+                <h2 class="refine-search-heading">@((MarkupString)Heading)</h2>
+            }
+
+            <ul class="refine-search-links-list">
+                @foreach (var item in Results)
+                {
+                    var label = TileLabel(item);
+                    var hasImage = !string.IsNullOrWhiteSpace(item.ImageURL)
+                        && !item.ImageURL.Contains("singlepixel", StringComparison.OrdinalIgnoreCase);
+                    <li class="refine-search-link-item">
+                        <a class="refine-search-link" href="@ResolvedLinkUrl(item)" title="@label" aria-label="@label">
+                            @if (hasImage)
+                            {
+                                <img src="@item.ImageURL" alt="@label" loading="lazy" />
+                            }
+                            <span class="refine-search-link-text">@label</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </section>
+    }
+}
+else
+{
+    @* Tile-grid render (Categories / AccessoryCategories) *@
+    @if (Results is { Count: > 0 } || HasFeaturedTile)
+    {
+        <section class="refine-search refine-search-@ResolvedStyleVariant" aria-label="@Heading">
+            @if (!string.IsNullOrWhiteSpace(Heading))
+            {
+                <h2 class="refine-search-heading">@((MarkupString)Heading)</h2>
+            }
+
+            <div class="refine-search-grid">
+                @if (HasFeaturedTile)
+                {
+                    @* Wrapper is a <div>, not an <a>: the placement's IntroTextTitle and Text
+                       typically come from the DB already wrapped in <a> tags, and nested
+                       anchors are invalid HTML — browsers auto-close the outer one and orphan
+                       the inner content, causing a brief full-width flash on first render.
+                       Mirrors the legacy SubCategoryFeaturedDefault.ascx structure. *@
+                    <div class="refine-search-tile refine-search-tile-featured">
+                        <div class="refine-search-tile-image">
+                            @if (!string.IsNullOrWhiteSpace(FeaturedPlacement!.ImageUrl))
+                            {
+                                <img src="@FeaturedPlacement.ImageUrl" alt="" loading="lazy" />
+                            }
+                        </div>
+                        <div class="refine-search-tile-label">
+                            @if (!string.IsNullOrWhiteSpace(FeaturedPlacement.IntroTextTitle))
+                            {
+                                <span class="refine-search-tile-title">@((MarkupString)FeaturedPlacement.IntroTextTitle)</span>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(FeaturedPlacement.Text))
+                            {
+                                <span class="refine-search-tile-subtitle">@((MarkupString)FeaturedPlacement.Text)</span>
+                            }
+                        </div>
+                    </div>
+                }
+
+                @if (Results is not null)
+                {
+                    foreach (var item in Results)
+                    {
+                        var label = TileLabel(item);
+                        <a class="refine-search-tile" href="@ResolvedLinkUrl(item)" aria-label="@label">
+                            <div class="refine-search-tile-image">
+                                @if (!string.IsNullOrWhiteSpace(item.ImageURL))
+                                {
+                                    <img src="@item.ImageURL" alt="@label" loading="lazy" />
+                                }
+                            </div>
+                            <div class="refine-search-tile-label">
+                                <span class="refine-search-tile-title">@label</span>
+                                @if (!string.IsNullOrWhiteSpace(item.ExtendedDescription))
+                                {
+                                    <span class="refine-search-tile-subtitle">@((MarkupString)item.ExtendedDescription)</span>
+                                }
+                            </div>
+                        </a>
+                    }
+                }
+            </div>
+        </section>
+    }
+}

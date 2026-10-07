@@ -1,0 +1,59 @@
+@* Product image gallery — one large primary image over a thumbnail strip.
+
+   The strip shows a fixed number of thumbnails and collapses the remainder into a final
+   "N More" tile rather than wrapping to a second row, which keeps the panel height stable
+   regardless of how many images a part has.
+
+   TODO (data): images come from IProductService.GetAdditionalImagesAsync (already
+   implemented). The "N More" tile should open a lightbox/full gallery — not built yet. *@
+
+<div class="product-gallery">
+    <div class="product-gallery-main">
+        @if (!string.IsNullOrWhiteSpace(SelectedImage))
+        {
+            <img src="@SelectedImage" alt="@AltText" />
+        }
+        else
+        {
+            <ImagePlaceholder />
+        }
+    </div>
+
+    @if (Images.Count > 1)
+    {
+        <ul class="product-gallery-thumbs">
+            @foreach (var (image, index) in VisibleThumbnails.Select((img, i) => (img, i)))
+            {
+                <li>
+                    <button type="button"
+                            class="product-gallery-thumb @(index == _selectedIndex ? "is-selected" : null)"
+                            aria-label="@($"View image {index + 1} of {Images.Count}")"
+                            aria-pressed="@(index == _selectedIndex)"
+                            @onclick="() => Select(index)">
+                        @if (!string.IsNullOrWhiteSpace(image))
+                        {
+                            <img src="@image" alt="" loading="lazy" />
+                        }
+                        else
+                        {
+                            <ImagePlaceholder />
+                        }
+                    </button>
+                </li>
+            }
+
+            @if (OverflowCount > 0)
+            {
+                <li>
+                    <button type="button"
+                            class="product-gallery-thumb product-gallery-thumb--more"
+                            aria-label="@($"View all {Images.Count} images")"
+                            @onclick="OnViewAll">
+                        <ImagePlaceholder />
+                        <span class="product-gallery-thumb-count">@OverflowCount More</span>
+                    </button>
+                </li>
+            }
+        </ul>
+    }
+</div>

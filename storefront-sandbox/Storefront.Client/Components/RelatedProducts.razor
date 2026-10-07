@@ -1,0 +1,79 @@
+@* "Related Products" strip — parts commonly bought or fitted alongside this one.
+   Horizontal cards (image beside text) rather than the vertical ProductCard used on
+   search/home, because this row sits directly under the buy box and needs to stay short. *@
+
+@if (Products.Count > 0)
+{
+    <section class="related-products">
+        <h2 class="related-products-heading">@Heading</h2>
+
+        <div class="related-products-viewport">
+            <ul class="related-products-list">
+                @foreach (var product in CurrentPageProducts)
+                {
+                    <li class="related-product">
+                    <a class="related-product-image" href="@product.Url" aria-label="@product.Title">
+                        @if (!string.IsNullOrWhiteSpace(product.ImageUrl))
+                        {
+                            <img src="@product.ImageUrl" alt="" loading="lazy" />
+                        }
+                        else
+                        {
+                            <ImagePlaceholder />
+                        }
+                    </a>
+
+                    <div class="related-product-body">
+                        <a class="related-product-title" href="@product.Url">@product.Title</a>
+                        <p class="related-product-sku">@product.StockCode</p>
+
+                        <div class="related-product-footer">
+                            <p class="related-product-pricing">
+                                <span class="related-product-price">@product.Price.ToString("C")</span>
+
+                                @if (product.ListPrice is { } listPrice && listPrice > product.Price)
+                                {
+                                    <span class="related-product-list-price">@listPrice.ToString("C")</span>
+                                }
+
+                                @if (!string.IsNullOrWhiteSpace(product.SavingsText))
+                                {
+                                    <span class="related-product-savings">@product.SavingsText</span>
+                                }
+                            </p>
+
+                            <button type="button"
+                                    class="related-product-add"
+                                    aria-label="@($"Add {product.Title} to cart")"
+                                    @onclick="() => HandleAdd(product)">
+                                <CartIcon />
+                            </button>
+                        </div>
+                    </div>
+                    </li>
+                }
+            </ul>
+
+            @* Navigation arrows *@
+            @if (Products.Count > ItemsPerPage && CurrentPageIndex > 0)
+            {
+                <button type="button"
+                        class="related-products-prev"
+                        aria-label="Show previous products"
+                        @onclick="PreviousPage">
+                    <span aria-hidden="true">‹</span>
+                </button>
+            }
+
+            @if (Products.Count > ItemsPerPage && CurrentPageIndex < TotalPages - 1)
+            {
+                <button type="button"
+                        class="related-products-next"
+                        aria-label="Show next products"
+                        @onclick="NextPage">
+                    <span aria-hidden="true">›</span>
+                </button>
+            }
+        </div>
+    </section>
+}

@@ -1,0 +1,20 @@
+@if (_loaded && _products is { Count: > 0 })
+{
+    <section class="recommended-products-panel" aria-label="Recommended products">
+        <header class="recommended-products-header">
+            <h2 class="recommended-products-title">Recommended Products</h2>
+        </header>
+        <div class="recommended-products-grid">
+            @foreach (var p in _products)
+            {
+                <ProductCard Title="@HtmlHelper.StripHtml(p.ProductDescription)"
+                             StockCode="@p.StockCode"
+                             Price="@p.Price"
+                             Url="@p.ProductURL"
+                             ImageUrl="@p.ImageURL"
+                             ShowAddToCart="true"
+                             OnAddToCart="@(() => HandleAddToCart(p))" />
+            }
+        </div>
+    </section>
+}

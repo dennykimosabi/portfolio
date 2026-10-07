@@ -1,0 +1,66 @@
+@* "Product Information" — the one section of the PDP stack that starts expanded, since
+   it carries the description a customer needs before any of the optional sections.
+
+   Renders the product's tags (compliance notices, merchandising badges), the feature
+   bullets, any trailing free-text note, and supersession part numbers.
+
+   Tags are DATA, not markup: the Prop 65 "California Specific Warning" is a
+   pr_returnProductTags row like any other, so this renders whatever comes back rather
+   than special-casing a warning. A product with no tags simply shows none. *@
+
+<AccordionSection Title="Product Information" Expanded="true">
+    @if (Tags.Count > 0)
+    {
+        <ul class="product-information-tags">
+            @foreach (var tag in Tags)
+            {
+                <li class="product-information-tag @TagModifier(tag)">
+                    <span class="product-information-tag-label">
+                        @if (!string.IsNullOrWhiteSpace(tag.ImageURL))
+                        {
+                            <img class="product-information-tag-icon"
+                                 src="@tag.ImageURL"
+                                 alt=""
+                                 loading="lazy" />
+                        }
+                        @tag.TagTitle
+                    </span>
+
+                    <span class="product-information-tag-text">
+                        @if (!string.IsNullOrWhiteSpace(tag.TargetURL))
+                        {
+                            <a href="@tag.TargetURL">@tag.Description</a>
+                        }
+                        else
+                        {
+                            @tag.Description
+                        }
+                    </span>
+                </li>
+            }
+        </ul>
+    }
+
+    @if (Features.Count > 0)
+    {
+        <ul class="product-information-features">
+            @foreach (var feature in Features)
+            {
+                <li>@feature</li>
+            }
+        </ul>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Note))
+    {
+        <p class="product-information-note">@Note</p>
+    }
+
+    @if (Supersessions.Count > 0)
+    {
+        <p class="product-information-supersessions">
+            <span class="product-information-supersessions-label">Supersession(s):</span>
+            @string.Join(", ", Supersessions)
+        </p>
+    }
+</AccordionSection>

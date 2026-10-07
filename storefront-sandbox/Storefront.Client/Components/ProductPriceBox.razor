@@ -1,0 +1,155 @@
+@* Dealer-site buy box: this dealer's price, availability, how they'll get it to you,
+   and the two purchase actions.
+
+   Single-dealer by design — on a dealer storefront the seller is already decided, so
+   there's a price and an Add to Cart rather than a ranked list of dealers to choose from.
+
+   TODO (data): price/MSRP/availability come from the product detail record. Estimate
+   Shipping needs the shipping-rate call; Add to Cart and Buy Now need ICartService. *@
+
+<div class="price-box">
+    <div class="price-box-row">
+        <span class="price-box-label">Your Price</span>
+        <span class="price-box-price">@Price.ToString("C")</span>
+    </div>
+
+    <div class="price-box-row price-box-row--sub">
+        <span class="price-box-rating">
+            Dealer Rating
+            <span class="price-box-rating-value">@DealerRating.ToString("0.#")</span>
+            <span class="price-box-rating-star" aria-hidden="true">★</span>
+        </span>
+        <span class="price-box-msrp">MSRP @Msrp.ToString("C")</span>
+    </div>
+
+    @* Legacy's PriceHeaderQuadrantComponent.vue renders this above the dealer row
+       (price-header-discount); placed here instead, directly under it, per design. Only
+       the savings line — DiscountName's separate "Limited Time Sale" tag+icon isn't wired. *@
+    @if (!string.IsNullOrEmpty(SavingsText))
+    {
+        <p class="price-box-savings">@SavingsText</p>
+    }
+
+    @* Dealer-authored (legacy: Website.Settings.PriceBoxMessage, rendered via Vue's v-html)
+       — unlike SavingsText's incidental markup pollution, this one is meant to carry real
+       formatting, so it's rendered as HTML rather than stripped. Legacy shows nothing at all
+       when unset (v-if guard) rather than falling back to a generic disclaimer. *@
+    @if (!string.IsNullOrEmpty(PriceBoxMessage))
+    {
+        <p class="price-box-disclaimer">@((MarkupString)PriceBoxMessage)</p>
+    }
+
+    @* Availability states its meaning in words — the dot is a redundant cue, never the
+       only signal. The second line mirrors whichever of Deliver/Pick Up is currently
+       selected below — legacy's messageFullfillmentText (InventoryQuadrantComponent.vue). *@
+    <div class="price-box-availability @AvailabilityClass">
+        <p class="price-box-availability-text">
+            <span class="price-box-availability-dot" aria-hidden="true"></span>
+            @AvailabilityText
+        </p>
+        @if (!string.IsNullOrEmpty(SelectedFulfillmentPromise))
+        {
+            <p class="price-box-availability-fulfillment-text">@SelectedFulfillmentPromise</p>
+        }
+    </div>
+
+    @* Deliver/Pick Up are mutually exclusive — clicking one selects it (bordered via
+       is-selected) and switches the line above; it's a display toggle only, no network
+       call, mirroring legacy's changeSelectedButton/updateFulfillmentType. Default is
+       Deliver, matching legacy's selectedButton default. *@
+    <div class="price-box-fulfillment">
+        <div class="price-box-fulfillment-option @(_selected == FulfillmentSelection.Delivery ? "is-selected" : "")"
+             @onclick="() => SelectFulfillment(FulfillmentSelection.Delivery)">
+            @if (_isEditingZip)
+            {
+                @* Replaces the whole box's content rather than just the ZIP text inline —
+                   same footprint (height/width unchanged) as the normal Deliver content,
+                   matching legacy/docs/legacy.png. Legacy has no way to back out of this;
+                   the X is our own addition since a save-with-no-changes workaround isn't
+                   great UX. *@
+                <button type="button" class="price-box-zip-edit-close" aria-label="Cancel" @onclick="CancelZipEdit">✕</button>
+                <p class="price-box-fulfillment-head">Enter Your Zip Code</p>
+                <div class="price-box-zip-edit-row">
+                    <input type="text"
+                           inputmode="text"
+                           class="price-box-fulfillment-zip-input"
+                           aria-label="Postal code"
+                           value="@_zipInput"
+                           @oninput="HandleZipInput"
+                           @onkeydown="HandleZipKeyDown" />
+                    <button type="button" class="price-box-fulfillment-zip-save" @onclick="SaveZipCode">Save</button>
+                </div>
+                @if (_zipError is not null)
+                {
+                    <p class="price-box-fulfillment-error">@_zipError</p>
+                }
+            }
+            else
+            {
+                <p class="price-box-fulfillment-head">
+                    <img src="@DeliveryIcon" alt="" class="price-box-fulfillment-icon" />
+                    Deliver to
+                    <button type="button" class="price-box-fulfillment-zip" @onclick="BeginZipEdit">@Delivery.ZipCode</button>
+                </p>
+                <p class="price-box-fulfillment-promise">@Delivery.Promise</p>
+                @if (!string.IsNullOrEmpty(ShippingEstimateText))
+                {
+                    <p class="price-box-fulfillment-estimate">@ShippingEstimateText</p>
+                }
+                <button type="button"
+                        class="price-box-fulfillment-action"
+                        disabled="@IsEstimatingShipping"
+                        @onclick="OnEstimateShipping">
+                    @(IsEstimatingShipping ? "Estimating…" : Delivery.EstimateLinkText)
+                </button>
+            }
+        </div>
+
+        <div class="price-box-fulfillment-option @(_selected == FulfillmentSelection.Pickup ? "is-selected" : "")"
+             @onclick="() => SelectFulfillment(FulfillmentSelection.Pickup)">
+            <p class="price-box-fulfillment-head">
+                <img src="@PickupIcon" alt="" class="price-box-fulfillment-icon" />
+                Pick Up
+            </p>
+            <p class="price-box-fulfillment-promise">@Pickup.Promise</p>
+            <p class="price-box-fulfillment-cost">@Pickup.CostText</p>
+        </div>
+    </div>
+
+    <div class="price-box-quantity">
+        <span class="price-box-quantity-label" id="pdp-quantity-label">Quantity</span>
+
+        <div class="price-box-stepper">
+            <button type="button"
+                    class="price-box-stepper-button"
+                    aria-label="Decrease quantity"
+                    disabled="@(Quantity <= MinQuantity)"
+                    @onclick="() => ChangeQuantity(-1)">−</button>
+
+            <input type="text"
+                   inputmode="numeric"
+                   class="price-box-stepper-value"
+                   aria-labelledby="pdp-quantity-label"
+                   value="@Quantity"
+                   @onchange="HandleQuantityInput" />
+
+            <button type="button"
+                    class="price-box-stepper-button"
+                    aria-label="Increase quantity"
+                    @onclick="() => ChangeQuantity(1)">+</button>
+        </div>
+    </div>
+
+    <button type="button" class="price-box-add" @onclick="OnAddToCart">
+        <CartIcon />
+        Add to Cart
+    </button>
+
+    <button type="button" class="price-box-buy-now" @onclick="OnBuyNow">
+        <svg class="price-box-buy-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5v-11Zm1.5 0v2h15v-2h-15Zm15 4h-15v7h15v-7Z" />
+            <path d="M6 14.5h4V16H6z" />
+        </svg>
+        Buy Now
+    </button>
+</div>
