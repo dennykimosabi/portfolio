@@ -47,6 +47,29 @@
             </div>
         </div>
 
+        @* ───────────────────────── Atomic ───────────────────────── *@
+
+        <GallerySection Id="sf-button" Title="SfButton" Component="@("<SfButton Variant=\"SfButtonVariant.Primary\">Add to cart</SfButton>")" ComponentType="typeof(SfButton)">
+            <Description>The atomic button. Six variants, three sizes, disabled and loading states. Replaces the 20+ hand-rolled <code>&lt;button&gt;</code> elements across the library.</Description>
+            <ChildContent>
+                <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+                    <SfButton Variant="SfButtonVariant.Primary">Primary</SfButton>
+                    <SfButton Variant="SfButtonVariant.Dark">Dark</SfButton>
+                    <SfButton Variant="SfButtonVariant.Secondary">Secondary</SfButton>
+                    <SfButton Variant="SfButtonVariant.Outline">Outline</SfButton>
+                    <SfButton Variant="SfButtonVariant.Ghost">Ghost</SfButton>
+                    <SfButton Variant="SfButtonVariant.Danger">Danger</SfButton>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px;">
+                    <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Sm">Small</SfButton>
+                    <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Md">Medium</SfButton>
+                    <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Lg">Large</SfButton>
+                    <SfButton Variant="SfButtonVariant.Primary" Disabled>Disabled</SfButton>
+                    <SfButton Variant="SfButtonVariant.Primary" Loading>Loading</SfButton>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
         @* ───────────────────────── Browse ───────────────────────── *@
 
         <GallerySection Id="refine-search-categories" Title="Refine Search — Categories" Component="@("<RefineSearch Mode=\"RefineSearchMode.Categories\" />")" ComponentType="typeof(RefineSearch)" Wide="true">
@@ -451,6 +474,10 @@
 
     private static readonly NavGroup[] NavGroups =
     [
+        new("Atomic",
+        [
+            ("sf-button", "SfButton"),
+        ]),
         new("Browse",
         [
             ("refine-search-categories", "RefineSearch · Categories"),
