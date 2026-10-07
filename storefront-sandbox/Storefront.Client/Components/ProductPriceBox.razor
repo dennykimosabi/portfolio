@@ -67,7 +67,7 @@
                    matching legacy/docs/legacy.png. Legacy has no way to back out of this;
                    the X is our own addition since a save-with-no-changes workaround isn't
                    great UX. *@
-                <button type="button" class="price-box-zip-edit-close" aria-label="Cancel" @onclick="CancelZipEdit">✕</button>
+                <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm" aria-label="Cancel" @onclick="CancelZipEdit">✕</SfButton>
                 <p class="price-box-fulfillment-head">Enter Your Zip Code</p>
                 <div class="price-box-zip-edit-row">
                     <input type="text"
@@ -77,7 +77,7 @@
                            value="@_zipInput"
                            @oninput="HandleZipInput"
                            @onkeydown="HandleZipKeyDown" />
-                    <button type="button" class="price-box-fulfillment-zip-save" @onclick="SaveZipCode">Save</button>
+                    <SfButton Variant="SfButtonVariant.Dark" Size="SfButtonSize.Sm" @onclick="SaveZipCode">Save</SfButton>
                 </div>
                 @if (_zipError is not null)
                 {
@@ -89,19 +89,18 @@
                 <p class="price-box-fulfillment-head">
                     <img src="@DeliveryIcon" alt="" class="price-box-fulfillment-icon" />
                     Deliver to
-                    <button type="button" class="price-box-fulfillment-zip" @onclick="BeginZipEdit">@Delivery.ZipCode</button>
+                    <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm" @onclick="BeginZipEdit">@Delivery.ZipCode</SfButton>
                 </p>
                 <p class="price-box-fulfillment-promise">@Delivery.Promise</p>
                 @if (!string.IsNullOrEmpty(ShippingEstimateText))
                 {
                     <p class="price-box-fulfillment-estimate">@ShippingEstimateText</p>
                 }
-                <button type="button"
-                        class="price-box-fulfillment-action"
-                        disabled="@IsEstimatingShipping"
+                <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm"
+                        Disabled="@IsEstimatingShipping"
                         @onclick="OnEstimateShipping">
                     @(IsEstimatingShipping ? "Estimating…" : Delivery.EstimateLinkText)
-                </button>
+                </SfButton>
             }
         </div>
 
@@ -120,11 +119,10 @@
         <span class="price-box-quantity-label" id="pdp-quantity-label">Quantity</span>
 
         <div class="price-box-stepper">
-            <button type="button"
-                    class="price-box-stepper-button"
+            <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm"
                     aria-label="Decrease quantity"
-                    disabled="@(Quantity <= MinQuantity)"
-                    @onclick="() => ChangeQuantity(-1)">−</button>
+                    Disabled="@(Quantity <= MinQuantity)"
+                    @onclick="() => ChangeQuantity(-1)">−</SfButton>
 
             <input type="text"
                    inputmode="numeric"
@@ -133,23 +131,22 @@
                    value="@Quantity"
                    @onchange="HandleQuantityInput" />
 
-            <button type="button"
-                    class="price-box-stepper-button"
+            <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm"
                     aria-label="Increase quantity"
-                    @onclick="() => ChangeQuantity(1)">+</button>
+                    @onclick="() => ChangeQuantity(1)">+</SfButton>
         </div>
     </div>
 
-    <button type="button" class="price-box-add" @onclick="OnAddToCart">
+    <SfButton Variant="SfButtonVariant.Dark" Size="SfButtonSize.Lg" Class="price-box-cta" @onclick="OnAddToCart">
         <CartIcon />
         Add to Cart
-    </button>
+    </SfButton>
 
-    <button type="button" class="price-box-buy-now" @onclick="OnBuyNow">
+    <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Lg" Class="price-box-cta" @onclick="OnBuyNow">
         <svg class="price-box-buy-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5v-11Zm1.5 0v2h15v-2h-15Zm15 4h-15v7h15v-7Z" />
             <path d="M6 14.5h4V16H6z" />
         </svg>
         Buy Now
-    </button>
+    </SfButton>
 </div>
