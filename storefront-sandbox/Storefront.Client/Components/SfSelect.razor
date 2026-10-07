@@ -3,19 +3,22 @@
     {
         <label class="sf-field-label" for="@_id">@Label</label>
     }
-    <select id="@_id"
-            class="sf-select"
-            disabled="@Disabled"
-            @bind="Value">
-        @if (!string.IsNullOrEmpty(Placeholder))
-        {
-            <option value="">@Placeholder</option>
-        }
-        @foreach (var opt in Options)
-        {
-            <option value="@opt.Value">@opt.Text</option>
-        }
-    </select>
+    <span class="sf-select-wrap">
+        <select id="@_id"
+                class="sf-select"
+                disabled="@Disabled"
+                @bind="Value">
+            @if (!string.IsNullOrEmpty(Placeholder))
+            {
+                <option value="">@Placeholder</option>
+            }
+            @foreach (var opt in Options)
+            {
+                <option value="@opt.Value">@opt.Text</option>
+            }
+        </select>
+        <SfIcon Name="arrow-down-s-line" Class="sf-select-icon" />
+    </span>
 </div>
 
 @code {

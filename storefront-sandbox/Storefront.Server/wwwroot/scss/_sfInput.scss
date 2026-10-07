@@ -41,6 +41,33 @@
     }
 }
 
+.sf-select-wrap {
+    position: relative;
+    display: block;
+}
+
+.sf-select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    padding-right: calc(var(--sf-space-3) + 1.5rem);
+    cursor: pointer;
+
+    &:disabled {
+        cursor: not-allowed;
+    }
+}
+
+.sf-select-icon {
+    position: absolute;
+    right: var(--sf-space-3);
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 1.125rem;
+    color: var(--sf-color-text-muted);
+}
+
 .sf-input.is-invalid {
     border-color: var(--sf-color-danger);
 
