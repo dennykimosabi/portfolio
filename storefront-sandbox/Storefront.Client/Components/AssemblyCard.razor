@@ -16,9 +16,9 @@
             <div id="@_descriptionId" class="assembly-results-card-description @(_isExpanded ? "assembly-results-card-description-expanded" : "assembly-results-card-description-clamped")">
                 @((MarkupString)Assembly.AssemblyDescription)
             </div>
-            <button type="button" class="assembly-results-card-expand" aria-expanded="@(_isExpanded ? "true" : "false")" aria-controls="@_descriptionId" @onclick="ToggleExpand">
+            <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm" aria-expanded="@(_isExpanded ? "true" : "false")" aria-controls="@_descriptionId" @onclick="ToggleExpand">
                 @(_isExpanded ? "Show less" : "Show more")
-            </button>
+            </SfButton>
         }
     </div>
 </div>

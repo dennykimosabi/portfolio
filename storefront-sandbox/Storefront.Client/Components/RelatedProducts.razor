@@ -42,12 +42,11 @@
                                 }
                             </p>
 
-                            <button type="button"
-                                    class="related-product-add"
+                            <SfButton Variant="SfButtonVariant.Dark" Size="SfButtonSize.Sm"
                                     aria-label="@($"Add {product.Title} to cart")"
                                     @onclick="() => HandleAdd(product)">
                                 <CartIcon />
-                            </button>
+                            </SfButton>
                         </div>
                     </div>
                     </li>

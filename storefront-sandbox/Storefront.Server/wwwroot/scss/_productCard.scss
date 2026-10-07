@@ -69,30 +69,7 @@
     color: #111;
 }
 
-.product-card-add {
+// Layout for the full-width Add to Cart button (visuals from SfButton).
+.product-card-add-btn {
     width: 100%;
-    background: var(--sf-color-brand);
-    border: 1px solid var(--sf-color-brand-deep);
-    border-radius: var(--sf-radius-sm);
-    color: var(--sf-color-text-inverse);
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    cursor: pointer;
-
-    &:hover:not(:disabled) {
-        background: var(--sf-color-brand-deep);
-        border-color: #0a1e30;
-    }
-
-    &:focus-visible {
-        outline: 2px solid var(--sf-color-brand);
-        outline-offset: 2px;
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
 }

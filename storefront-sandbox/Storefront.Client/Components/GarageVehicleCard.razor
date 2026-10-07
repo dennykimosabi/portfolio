@@ -10,8 +10,8 @@
                    @bind:event="oninput"
                    @onkeydown="OnEditKeyDown"
                    aria-label="Vehicle name" />
-            <button type="button" class="garage-card-edit-save" @onclick="SaveEdit">Save</button>
-            <button type="button" class="garage-card-edit-cancel" @onclick="CancelEdit">Cancel</button>
+            <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm" @onclick="SaveEdit">Save</SfButton>
+            <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm" @onclick="CancelEdit">Cancel</SfButton>
         </div>
     }
     else

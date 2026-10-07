@@ -18,11 +18,11 @@
     <p class="product-card-price">@Price.ToString("C")</p>
     @if (ShowAddToCart)
     {
-        <button type="button"
-                class="product-card-add"
+        <SfButton Variant="SfButtonVariant.Dark"
+                Class="product-card-add-btn"
                 aria-label="@($"Add {Title} to cart")"
                 @onclick="HandleAddClick">
             Add to Cart
-        </button>
+        </SfButton>
     }
 </div>

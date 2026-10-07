@@ -96,21 +96,3 @@
     }
 }
 
-.garage-card-edit-save,
-.garage-card-edit-cancel {
-    flex-shrink: 0;
-    background: none;
-    border: none;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.garage-card-edit-save {
-    color: var(--sf-color-primary);
-}
-
-.garage-card-edit-cancel {
-    color: var(--sf-color-text-muted);
-}
