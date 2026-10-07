@@ -7,6 +7,12 @@ namespace Storefront.Client.Components;
 
 public partial class GuidedNavigation : ComponentBase
 {
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
     [Parameter]
     public long UkeyProduct { get; set; }
 
