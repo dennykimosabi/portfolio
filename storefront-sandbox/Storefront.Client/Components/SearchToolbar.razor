@@ -7,44 +7,25 @@
         }
     </div>
     <div class="toolbar-row toolbar-row-bottom">
-        <div class="filters-dropdown">
-            <select aria-label="Filters" value="@(ShowSidebar ? "shown" : "hidden")" @onchange="HandleFiltersChange">
-                <option value="shown">Show Filters@(FilterCount > 0 ? $" ({FilterCount})" : "")</option>
-                <option value="hidden">Hide Filters@(FilterCount > 0 ? $" ({FilterCount})" : "")</option>
-            </select>
-        </div>
+        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Sm" OnClick="ToggleSidebar">
+            <SfIcon Name="filter-3-line" />
+            @(ShowSidebar ? "Hide Filters" : "Show Filters")@(FilterCount > 0 ? $" ({FilterCount})" : "")
+        </SfButton>
         <div class="results-controls">
-            <div class="page-size-toggle" role="group" aria-label="Results per page">
-                <button type="button" class="page-size-btn is-active">50</button>
-                <button type="button" class="page-size-btn">100</button>
-                <button type="button" class="page-size-btn">250</button>
-            </div>
-            <div class="sort-dropdown">
-                <select aria-label="Sort by" value="@SortValue" @onchange="HandleSortChange">
-                    <option value="relevance">Relevance</option>
-                    <option value="description">Description</option>
-                    <option value="partnumber">Part Number</option>
-                    <option value="priceasc">Price: Low to High</option>
-                    <option value="pricedesc">Price: High to Low</option>
-                </select>
-            </div>
-            <div class="view-toggle" role="group" aria-label="View mode">
-                <button type="button" class="view-btn @(!IsGridView ? "is-active" : "")" aria-label="List view" @onclick="OnSetListView">
-                    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-                        <rect x="1" y="2" width="14" height="2" />
-                        <rect x="1" y="7" width="14" height="2" />
-                        <rect x="1" y="12" width="14" height="2" />
-                    </svg>
-                </button>
-                <button type="button" class="view-btn @(IsGridView ? "is-active" : "")" aria-label="Grid view" @onclick="OnSetGridView">
-                    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-                        <rect x="1" y="1" width="6" height="6" />
-                        <rect x="9" y="1" width="6" height="6" />
-                        <rect x="1" y="9" width="6" height="6" />
-                        <rect x="9" y="9" width="6" height="6" />
-                    </svg>
-                </button>
-            </div>
+            <SfButtonGroup AriaLabel="Results per page">
+                <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Sm" Class="@(_pageSize == 50 ? "is-active" : null)" OnClick="@(() => _pageSize = 50)">50</SfButton>
+                <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Sm" Class="@(_pageSize == 100 ? "is-active" : null)" OnClick="@(() => _pageSize = 100)">100</SfButton>
+                <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Sm" Class="@(_pageSize == 250 ? "is-active" : null)" OnClick="@(() => _pageSize = 250)">250</SfButton>
+            </SfButtonGroup>
+            <SfSelect aria-label="Sort by" Value="@SortValue" ValueChanged="HandleSortChanged" Options="@SortOptions" Class="toolbar-sort" />
+            <SfButtonGroup AriaLabel="View mode">
+                <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="List view" Class="@(!IsGridView ? "is-active" : null)" OnClick="HandleListView">
+                    <SfIcon Name="list-unordered" />
+                </SfButton>
+                <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Grid view" Class="@(IsGridView ? "is-active" : null)" OnClick="HandleGridView">
+                    <SfIcon Name="layout-grid-line" />
+                </SfButton>
+            </SfButtonGroup>
         </div>
     </div>
 </div>

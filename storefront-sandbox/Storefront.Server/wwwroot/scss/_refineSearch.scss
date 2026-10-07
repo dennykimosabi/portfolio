@@ -98,10 +98,18 @@
         &:hover {
             transform: none;
 
+            .refine-search-tile-image img {
+                transform: scale(1.05);
+            }
+
             .refine-search-tile-title {
                 color: var(--sf-color-text-inverse);
             }
         }
+    }
+
+    .refine-search-tile-image img {
+        transition: transform 0.35s ease;
     }
 
     .refine-search-tile-image {

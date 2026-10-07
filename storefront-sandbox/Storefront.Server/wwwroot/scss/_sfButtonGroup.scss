@@ -41,6 +41,15 @@
     z-index: 1;
 }
 
+// Pressed/selected segment inside a group.
+.sf-button-group > .sf-button.is-active {
+    background: var(--sf-color-bg-2);
+    color: var(--sf-color-text);
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+}
+
 // Separator: visual divider between logical sections.
 .sf-button-group-separator {
     align-self: stretch;

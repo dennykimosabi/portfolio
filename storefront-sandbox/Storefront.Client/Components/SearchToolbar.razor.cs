@@ -37,9 +37,23 @@ public partial class SearchToolbar : ComponentBase
     // Falls back to "relevance" if the parent passes null/empty so the select always matches an option.
     private string SortValue => string.IsNullOrWhiteSpace(SortOrder) ? "relevance" : SortOrder;
 
-    private Task HandleFiltersChange(ChangeEventArgs e) =>
-        OnShowSidebarChanged.InvokeAsync(e.Value?.ToString() == "shown");
+    private int _pageSize = 50;
 
-    private Task HandleSortChange(ChangeEventArgs e) =>
-        OnSortOrderChanged.InvokeAsync(e.Value?.ToString() ?? "relevance");
+    private static readonly IReadOnlyList<SfSelect.SfSelectOption> SortOptions = new[]
+    {
+        new SfSelect.SfSelectOption("relevance", "Relevance"),
+        new SfSelect.SfSelectOption("description", "Description"),
+        new SfSelect.SfSelectOption("partnumber", "Part Number"),
+        new SfSelect.SfSelectOption("priceasc", "Price: Low to High"),
+        new SfSelect.SfSelectOption("pricedesc", "Price: High to Low"),
+    };
+
+    private Task ToggleSidebar() => OnShowSidebarChanged.InvokeAsync(!ShowSidebar);
+
+    private Task HandleSortChanged(string value) =>
+        OnSortOrderChanged.InvokeAsync(value);
+
+    private Task HandleListView() => OnSetListView.InvokeAsync();
+
+    private Task HandleGridView() => OnSetGridView.InvokeAsync();
 }
