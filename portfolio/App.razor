@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="portfolio.css" />
+    <link rel="stylesheet" href="workshop.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <ImportMap />
+    <HeadOutlet @rendermode="PortfolioRenderMode" />
+</head>
+
+<body>
+    <Routes @rendermode="PortfolioRenderMode" />
+    <script src="_framework/blazor.web.js"></script>
+</body>
+
+</html>
+
+@code {
+    // Server interactivity without prerender: each component initialises once, against the
+    // in-memory demo services.
+    private static readonly IComponentRenderMode PortfolioRenderMode = new InteractiveServerRenderMode(prerender: false);
+}
