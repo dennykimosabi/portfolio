@@ -2,7 +2,7 @@
    (search results, cart widget, cart page). Styles: .sf-loading / .sf-spinner in
    Storefront.Server/wwwroot/scss/_spinner.scss. Consumers can override spacing by
    targeting `.sf-loading` within their own context (e.g. `.search-main .sf-loading`). *@
-<div class="sf-loading" role="status" aria-live="polite">
+<div class="sf-loading @Class" @attributes="AdditionalAttributes" role="status" aria-live="polite">
     <span class="sf-spinner" aria-hidden="true"></span>
     <span>@Text</span>
 </div>

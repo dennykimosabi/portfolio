@@ -1,7 +1,7 @@
 @* One saved-garage vehicle row, shared by the header picker list and the home garage grid.
    Row body (image + name) selects/navigates; the pencil/trash act on the vehicle. All behavior
    lives here so both surfaces render identically. *@
-<div class="garage-card @(IsCurrent ? "is-current" : "")">
+<div class="garage-card @(IsCurrent ? "is-current" : "") @Class" @attributes="AdditionalAttributes">
     @if (_editing)
     {
         <div class="garage-card-edit">

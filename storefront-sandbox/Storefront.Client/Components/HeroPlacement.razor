@@ -4,7 +4,7 @@
         ? $"background-image: url('{_placement.ImageUrl}');"
         : null;
 
-    <section class="hero-placement" style="@bgStyle">
+    <section class="hero-placement @Class" @attributes="AdditionalAttributes" style="@bgStyle">
         <div class="hero-placement-inner">
             @if (!string.IsNullOrWhiteSpace(_placement.Title))
             {

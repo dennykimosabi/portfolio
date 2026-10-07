@@ -3,7 +3,7 @@
    header (and vice-versa). Hidden when the garage is empty. *@
 @if (Garage.Vehicles.Count > 0)
 {
-    <section class="home-garage" aria-label="Your garage">
+    <section class="home-garage @Class" @attributes="AdditionalAttributes" aria-label="Your garage">
         <div class="home-garage-grid">
             @foreach (var vehicle in Visible)
             {

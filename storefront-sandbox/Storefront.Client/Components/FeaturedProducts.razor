@@ -1,6 +1,6 @@
 @if (HasProducts)
 {
-    <section class="featured-products" aria-label="@ResolvedHeading">
+    <section class="featured-products @Class" @attributes="AdditionalAttributes" aria-label="@ResolvedHeading">
         <div class="featured-products-inner">
             <h2 class="featured-products-heading">@((MarkupString)ResolvedHeading)</h2>
 
