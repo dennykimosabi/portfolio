@@ -6,7 +6,7 @@
    a star rating, etc.) — a RenderFragment rather than a string so callers can pass
    markup like <StarRating />. *@
 
-<section class="accordion-section @(Expanded ? "is-open" : null)">
+<section class="accordion-section @(Expanded ? "is-open" : null) @Class" @attributes="AdditionalAttributes">
     <button type="button"
             class="accordion-section-header"
             aria-expanded="@Expanded"

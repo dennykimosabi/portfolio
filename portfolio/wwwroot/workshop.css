@@ -74,15 +74,16 @@ body {
     height: 100vh;
     overflow-y: auto;
     padding: 20px 16px 80px;
-    background: #111827;
-    color: #d1d5db;
+    background: #fff;
+    color: #3f3f46;
+    border-right: 1px solid #e4e4e7;
     box-sizing: border-box;
 }
 
 .pv-nav-title {
     margin: 0 0 12px;
     font-weight: 700;
-    color: #fff;
+    color: #09090b;
     font-size: 15px;
 }
 
@@ -91,7 +92,7 @@ body {
     font-size: 11px;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #9ca3af;
+    color: #a1a1aa;
 }
 
 .pv-nav ul {
@@ -104,13 +105,13 @@ body {
     display: block;
     padding: 4px 8px;
     border-radius: 5px;
-    color: #e5e7eb;
+    color: #52525b;
     text-decoration: none;
     font-size: 13px;
 }
 
 .pv-nav a:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: #f4f4f5;
 }
 
 .pv-main {
@@ -299,4 +300,170 @@ body {
         position: static;
         height: auto;
     }
+}
+
+/* ─── Blueprint-style component docs ─────────────────────────────────────── */
+/* Light docs surface inside the portfolio. shadcn/ui-inspired: clean type,
+   bordered preview boxes, dark code blocks, props tables. */
+
+.bp-doc {
+    background: #fff;
+    color: #18181b;
+    border: 1px solid #e4e4e7;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.bp-doc-title {
+    font-size: 24px;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    color: #09090b;
+}
+
+.bp-doc-desc {
+    color: #52525b;
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0 0 20px;
+    max-width: 68ch;
+}
+
+.bp-doc-desc code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    background: #f4f4f5;
+    border: 1px solid #e4e4e7;
+    border-radius: 6px;
+    padding: 1px 6px;
+}
+
+/* Preview box with tabs */
+.bp-preview {
+    border: 1px solid #e4e4e7;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.bp-preview-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 8px 12px;
+    background: #fafafa;
+    border-bottom: 1px solid #e4e4e7;
+}
+
+.bp-tab {
+    border: 0;
+    background: transparent;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 550;
+    color: #71717a;
+    cursor: pointer;
+}
+
+.bp-tab:hover { color: #18181b; }
+.bp-tab.is-active { background: #fff; color: #09090b; box-shadow: 0 1px 2px rgba(0,0,0,.08); border: 1px solid #e4e4e7; }
+
+.bp-preview-body {
+    padding: 32px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+}
+
+.bp-preview-wide { display: block; padding: 24px; }
+
+/* Code block */
+.bp-code { position: relative; background: #09090b; }
+.bp-code pre {
+    margin: 0;
+    padding: 20px 24px;
+    overflow-x: auto;
+    color: #e4e4e7;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.7;
+}
+.bp-copy {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #27272a;
+    color: #e4e4e7;
+    border: 1px solid #3f3f46;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.bp-copy:hover { background: #3f3f46; }
+
+/* Props table */
+.bp-props-heading {
+    font-size: 17px;
+    font-weight: 650;
+    margin: 0 0 12px;
+    color: #09090b;
+}
+
+.bp-table-wrap {
+    border: 1px solid #e4e4e7;
+    border-radius: 12px;
+    overflow: hidden;
+    overflow-x: auto;
+}
+
+.bp-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.bp-table th {
+    text-align: left;
+    padding: 10px 16px;
+    background: #fafafa;
+    border-bottom: 1px solid #e4e4e7;
+    font-weight: 600;
+    color: #52525b;
+    white-space: nowrap;
+}
+.bp-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #f4f4f5;
+    vertical-align: top;
+    color: #3f3f46;
+}
+.bp-table tr:last-child td { border-bottom: 0; }
+.bp-table td code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12.5px;
+    background: #f4f4f5;
+    border-radius: 6px;
+    padding: 2px 7px;
+    white-space: nowrap;
+}
+.bp-props-empty { color: #a1a1aa; font-size: 14px; }
+
+/* Workshop page chrome (light docs surface) */
+.pf-main:has(.bp-doc) { max-width: 1200px; }
+.bp-workshop-intro {
+    background: #fff;
+    border: 1px solid #e4e4e7;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 24px;
+    color: #18181b;
+}
+.bp-workshop-intro h1 { margin: 0 0 10px; font-size: 30px; letter-spacing: -0.02em; color: #09090b; }
+.bp-workshop-intro p { margin: 0; color: #52525b; font-size: 15px; line-height: 1.65; max-width: 70ch; }
+.bp-workshop-intro code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    background: #f4f4f5;
+    border: 1px solid #e4e4e7;
+    border-radius: 6px;
+    padding: 1px 6px;
 }

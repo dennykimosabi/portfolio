@@ -27,12 +27,13 @@
     </aside>
 
     <div class="pv-main">
-        <header class="pv-intro">
+        <header class="bp-workshop-intro">
             <h1>Component workshop</h1>
             <p>
                 Live <code>Storefront.Client</code> components compiled from <code>..\Storefront.Client</code>, backed by
                 in-memory dummy data. Service-driven components (RefineSearch, VehiclePicker, AssemblyResults, …) react to the
-                active fitment — switch it with the presets below. Use the <strong>Preview</strong> pill (bottom-left) to open the full pages.
+                active fitment — switch it with the presets below. Each card shows a live preview, the usage snippet,
+                and an auto-generated properties table. Use the <strong>Preview</strong> pill (bottom-left) to open the full pages.
             </p>
         </header>
 
@@ -48,42 +49,42 @@
 
         @* ───────────────────────── Browse ───────────────────────── *@
 
-        <GallerySection Id="refine-search-categories" Title="Refine Search — Categories" Component="@("<RefineSearch Mode=\"RefineSearchMode.Categories\" />")" Wide="true">
+        <GallerySection Id="refine-search-categories" Title="Refine Search — Categories" Component="@("<RefineSearch Mode=\"RefineSearchMode.Categories\" />")" ComponentType="typeof(RefineSearch)" Wide="true">
             <Description>Tile grid used for "Shop Parts by Category" on Home. Tile links include the active vehicle — pick a preset and hover a tile to see the URL change.</Description>
             <ChildContent>
                 <RefineSearch @key="@("g-rs-categories")" Mode="RefineSearchMode.Categories" />
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="refine-search-accessories" Title="Refine Search — Accessory Categories" Component="@("<RefineSearch Mode=\"RefineSearchMode.AccessoryCategories\" UseAccessoryLinks=\"true\" />")" Wide="true">
+        <GallerySection Id="refine-search-accessories" Title="Refine Search — Accessory Categories" Component="@("<RefineSearch Mode=\"RefineSearchMode.AccessoryCategories\" UseAccessoryLinks=\"true\" />")" ComponentType="typeof(RefineSearch)" Wide="true">
             <Description>Gradient-overlay tile style with the "View All Accessories" featured tile (FeaturedDefault placement) prepended.</Description>
             <ChildContent>
                 <RefineSearch @key="@("g-rs-accessories")" Mode="RefineSearchMode.AccessoryCategories" UseAccessoryLinks="true" />
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="refine-search-accessories-page" Title="Refine Search — Accessories page variant" Component="@("<RefineSearch Mode=\"AccessoryCategories\" ShowFeaturedTile=\"false\" StyleVariant=\"accessorycategories\" … />")" Wide="true">
+        <GallerySection Id="refine-search-accessories-page" Title="Refine Search — Accessories page variant" Component="@("<RefineSearch Mode=\"AccessoryCategories\" ShowFeaturedTile=\"false\" StyleVariant=\"accessorycategories\" … />")" ComponentType="typeof(RefineSearch)" Wide="true">
             <Description>How <code>/accessories</code> uses it: no featured tile, custom heading placement.</Description>
             <ChildContent>
                 <RefineSearch @key="@("g-rs-accessories-page")" Mode="RefineSearchMode.AccessoryCategories" PageUrl="/accessories" PlacementKey="AccessoriesCategoryHeader" StyleVariant="accessorycategories" ShowFeaturedTile="false" UseAccessoryLinks="true" />
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="refine-search-links" Title="Refine Search — Links" Component="@("<RefineSearch Mode=\"RefineSearchMode.Links\" />")" Wide="true">
+        <GallerySection Id="refine-search-links" Title="Refine Search — Links" Component="@("<RefineSearch Mode=\"RefineSearchMode.Links\" />")" ComponentType="typeof(RefineSearch)" Wide="true">
             <Description>Compact fitment-refinement links. The heading follows the first row's ClassName: no vehicle → "Shop by Model", vehicle without trim → "Shop by Trim Level", full vehicle → "Shop by Year".</Description>
             <ChildContent>
                 <RefineSearch @key="@("g-rs-links")" Mode="RefineSearchMode.Links" />
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="vehicle-picker-inline" Title="Vehicle Picker — Inline" Component="@("<VehiclePicker Layout=\"VehiclePickerLayout.Inline\" PlacementKey=\"VehiclePickerHeading\" />")" Wide="true">
+        <GallerySection Id="vehicle-picker-inline" Title="Vehicle Picker — Inline" Component="@("<VehiclePicker Layout=\"VehiclePickerLayout.Inline\" PlacementKey=\"VehiclePickerHeading\" />")" ComponentType="typeof(VehiclePicker)" Wide="true">
             <Description>Year → Model → Driveline → Trim cascade. Completing it sets the fitment and navigates to the vehicle's storefront URL (leaves this page).</Description>
             <ChildContent>
                 <VehiclePicker @key="@("g-vp-inline")" Layout="VehiclePickerLayout.Inline" PlacementKey="VehiclePickerHeading" />
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="vehicle-picker-panel" Title="Vehicle Picker — Panel (header)" Component="@("<VehiclePicker Layout=\"VehiclePickerLayout.Panel\" />")">
+        <GallerySection Id="vehicle-picker-panel" Title="Vehicle Picker — Panel (header)" Component="@("<VehiclePicker Layout=\"VehiclePickerLayout.Panel\" />")" ComponentType="typeof(VehiclePicker)">
             <Description>Button + dropdown. Opens to the saved garage when there is one, otherwise straight to the dropdowns.</Description>
             <ChildContent>
                 <div class="pv-panel-host">
@@ -92,28 +93,28 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="vehicle-picked" Title="Vehicle Picked" Component="@("<VehiclePicked />")" Wide="true">
+        <GallerySection Id="vehicle-picked" Title="Vehicle Picked" Component="@("<VehiclePicked />")" ComponentType="typeof(VehiclePicked)" Wide="true">
             <Description>Replaces the inline picker once a vehicle is chosen. Title/image/text come from the fitment-keyed VehiclePickerHeading placement — pick a vehicle preset to see it populate.</Description>
             <ChildContent>
                 <VehiclePicked @key="@("g-vp-picked")" />
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="home-garage" Title="Home Garage + Garage Vehicle Card" Component="@("<HomeGarage /> · <GarageVehicleCard />")" Wide="true">
+        <GallerySection Id="home-garage" Title="Home Garage + Garage Vehicle Card" Component="@("<HomeGarage /> · <GarageVehicleCard />")" ComponentType="typeof(HomeGarage)" Wide="true">
             <Description>Saved vehicles (seeded with three) with Show More/Less. Rename (pencil) and remove (trash) work against the in-memory garage; the row matching the active fitment is highlighted.</Description>
             <ChildContent>
                 <HomeGarage />
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="hero-placement" Title="Hero Placement" Component="@("<HeroPlacement />")" Wide="true">
+        <GallerySection Id="hero-placement" Title="Hero Placement" Component="@("<HeroPlacement />")" ComponentType="typeof(HeroPlacement)" Wide="true">
             <Description>HeroArea placement. Re-fetches on fitment change — the title switches to the chosen vehicle.</Description>
             <ChildContent>
                 <HeroPlacement />
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="assembly-results" Title="Assembly Results" Component="@("<AssemblyResults />")" Wide="true">
+        <GallerySection Id="assembly-results" Title="Assembly Results" Component="@("<AssemblyResults />")" ComponentType="typeof(AssemblyResults)" Wide="true">
             <Description>Only renders once a category is active. Use the <em>+ Brakes category</em> preset. Try the keyword filter box.</Description>
             <ChildContent>
                 <AssemblyResults />
@@ -124,7 +125,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="assembly-card" Title="Assembly Card · Part Type Card" Component="@("<AssemblyCard /> · <PartTypeCard />")">
+        <GallerySection Id="assembly-card" Title="Assembly Card · Part Type Card" Component="@("<AssemblyCard /> · <PartTypeCard />")" ComponentType="typeof(AssemblyCard)">
             <Description>The two tiles AssemblyResults renders, shown standalone with sample data.</Description>
             <ChildContent>
                 <div class="assembly-results">
@@ -150,7 +151,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="accessory-results" Title="Accessory Results" Component="@("<AccessoryResults />")" Wide="true">
+        <GallerySection Id="accessory-results" Title="Accessory Results" Component="@("<AccessoryResults />")" ComponentType="typeof(AccessoryResults)" Wide="true">
             <Description>Needs a vehicle <em>and</em> a category. Use the <em>+ Cargo &amp; Storage</em> preset.</Description>
             <ChildContent>
                 <AccessoryResults />
@@ -161,19 +162,19 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="placement-content" Title="Placement Content" Component="@("<PlacementContent PlacementKey=\"HomeAccessories\" ClassName=\"LifestylePromoContainer\" />")" Wide="true">
+        <GallerySection Id="placement-content" Title="Placement Content" Component="@("<PlacementContent PlacementKey=\"HomeAccessories\" ClassName=\"LifestylePromoContainer\" />")" ComponentType="typeof(PlacementContent)" Wide="true">
             <ChildContent>
                 <PlacementContent PlacementKey="HomeAccessories" ClassName="LifestylePromoContainer" />
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="extra-home-content" Title="Extra Home Content" Component="@("<ExtraHomeContent />")" Wide="true">
+        <GallerySection Id="extra-home-content" Title="Extra Home Content" Component="@("<ExtraHomeContent />")" ComponentType="typeof(ExtraHomeContent)" Wide="true">
             <ChildContent>
                 <ExtraHomeContent />
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="featured-products" Title="Featured Products" Component="@("<FeaturedProducts />")" Wide="true">
+        <GallerySection Id="featured-products" Title="Featured Products" Component="@("<FeaturedProducts />")" ComponentType="typeof(FeaturedProducts)" Wide="true">
             <ChildContent>
                 <FeaturedProducts />
             </ChildContent>
@@ -181,7 +182,7 @@
 
         @* ───────────────────────── Search ───────────────────────── *@
 
-        <GallerySection Id="search-toolbar" Title="Search Toolbar" Component="@("<SearchToolbar />")">
+        <GallerySection Id="search-toolbar" Title="Search Toolbar" Component="@("<SearchToolbar />")" ComponentType="typeof(SearchToolbar)">
             <Description>Parameter-driven; callbacks are wired to local state here. Last callback: <code>@_toolbarEvent</code></Description>
             <ChildContent>
                 <div class="search-page">
@@ -200,7 +201,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="active-filters" Title="Active Filters Chips" Component="@("<ActiveFiltersChips />")">
+        <GallerySection Id="active-filters" Title="Active Filters Chips" Component="@("<ActiveFiltersChips />")" ComponentType="typeof(ActiveFiltersChips)">
             <Description>Click × to remove a chip. <button type="button" class="pv-link-button" @onclick="ResetChips">Reset chips</button></Description>
             <ChildContent>
                 <div class="search-page">
@@ -219,7 +220,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="product-grid" Title="Product Grid" Component="@("<ProductGrid />")">
+        <GallerySection Id="product-grid" Title="Product Grid" Component="@("<ProductGrid />")" ComponentType="typeof(ProductGrid)">
             <Description>Maps ProductSearchResult rows onto ProductCard. Add to Cart updates the cart (count shows in the header's cart widget). @_cartMessage</Description>
             <ChildContent>
                 <div class="search-page">
@@ -228,7 +229,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="product-card" Title="Product Card" Component="@("<ProductCard />")">
+        <GallerySection Id="product-card" Title="Product Card" Component="@("<ProductCard />")" ComponentType="typeof(ProductCard)">
             <Description>With and without the Add to Cart button, and with no image.</Description>
             <ChildContent>
                 <div class="product-grid">
@@ -241,7 +242,7 @@
 
         @* ───────────────────────── Product page ───────────────────────── *@
 
-        <GallerySection Id="guided-navigation" Title="Guided Navigation" Component="@("<GuidedNavigation />")" Wide="true">
+        <GallerySection Id="guided-navigation" Title="Guided Navigation" Component="@("<GuidedNavigation />")" ComponentType="typeof(GuidedNavigation)" Wide="true">
             <Description>Fitment-aware PDP header. Wired to the active fitment here — switch presets to flip between "fits" and "does this fit?".</Description>
             <ChildContent>
                 <div class="product-page">
@@ -256,7 +257,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="fitment-banner" Title="Product Fitment Banner" Component="@("<ProductFitmentBanner />")">
+        <GallerySection Id="fitment-banner" Title="Product Fitment Banner" Component="@("<ProductFitmentBanner />")" ComponentType="typeof(ProductFitmentBanner)">
             <Description>Not currently used by Product.razor, shown in both states. Last callback: <code>@_bannerEvent</code></Description>
             <ChildContent>
                 <div class="pv-stack">
@@ -270,7 +271,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="product-gallery" Title="Product Gallery" Component="@("<ProductGallery />")">
+        <GallerySection Id="product-gallery" Title="Product Gallery" Component="@("<ProductGallery />")" ComponentType="typeof(ProductGallery)">
             <Description>Five images + seven empty slots (placeholders), so the strip shows nine thumbnails and a "3 More" tile.</Description>
             <ChildContent>
                 <div class="pv-narrow">
@@ -281,7 +282,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="price-box" Title="Product Price Box" Component="@("<ProductPriceBox />")">
+        <GallerySection Id="price-box" Title="Product Price Box" Component="@("<ProductPriceBox />")" ComponentType="typeof(ProductPriceBox)">
             <Description>Try the ZIP edit, Deliver/Pick Up toggle, quantity stepper and Estimate Shipping. Quantity = @_quantity · last action: <code>@_priceBoxEvent</code></Description>
             <ChildContent>
                 <div class="pv-narrow">
@@ -307,7 +308,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="dealer-info" Title="Dealer Info Card" Component="@("<DealerInfoCard />")">
+        <GallerySection Id="dealer-info" Title="Dealer Info Card" Component="@("<DealerInfoCard />")" ComponentType="typeof(DealerInfoCard)">
             <ChildContent>
                 <div class="pv-narrow">
                     <section class="product-panel">
@@ -317,7 +318,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="product-information" Title="Product Information" Component="@("<ProductInformation />")">
+        <GallerySection Id="product-information" Title="Product Information" Component="@("<ProductInformation />")" ComponentType="typeof(ProductInformation)">
             <Description>Tags are data rows (the Prop 65 warning is just one tag), then features, note and supersessions.</Description>
             <ChildContent>
                 <div class="product-panel product-sections">
@@ -326,7 +327,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="accordion" Title="Accordion Section" Component="@("<AccordionSection />")">
+        <GallerySection Id="accordion" Title="Accordion Section" Component="@("<AccordionSection />")" ComponentType="typeof(AccordionSection)">
             <Description>Plain meta text, markup meta (star rating), and a two-way bound instance (expanded = @_accordionOpen).</Description>
             <ChildContent>
                 <div class="product-panel product-sections">
@@ -343,7 +344,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="related-products" Title="Related Products" Component="@("<RelatedProducts />")">
+        <GallerySection Id="related-products" Title="Related Products" Component="@("<RelatedProducts />")" ComponentType="typeof(RelatedProducts)">
             <Description>Three per page with prev/next arrows. @_cartMessage</Description>
             <ChildContent>
                 <div class="product-page">
@@ -354,7 +355,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="also-bought" Title="People Also Bought" Component="@("<PeopleAlsoBought />")">
+        <GallerySection Id="also-bought" Title="People Also Bought" Component="@("<PeopleAlsoBought />")" ComponentType="typeof(PeopleAlsoBought)">
             <ChildContent>
                 <div class="product-page">
                     <div class="product-panel">
@@ -364,7 +365,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="star-rating" Title="Star Rating" Component="@("<StarRating />")">
+        <GallerySection Id="star-rating" Title="Star Rating" Component="@("<StarRating />")" ComponentType="typeof(StarRating)">
             <ChildContent>
                 <div class="pv-stack">
                     <StarRating Rating="5m" Label="5 (full)" />
@@ -377,7 +378,7 @@
 
         @* ───────────────────────── Cart & trust ───────────────────────── *@
 
-        <GallerySection Id="cart-widget" Title="Cart Widget" Component="@("<CartWidget />")">
+        <GallerySection Id="cart-widget" Title="Cart Widget" Component="@("<CartWidget />")" ComponentType="typeof(CartWidget)">
             <Description>Click to open the slide-out cart (seeded with two items).</Description>
             <ChildContent>
                 <div class="pv-panel-host">
@@ -386,7 +387,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="reviews-panel" Title="Reviews Panel · Confidence Panel" Component="@("<ReviewsPanel /> · <ConfidencePanel />")">
+        <GallerySection Id="reviews-panel" Title="Reviews Panel · Confidence Panel" Component="@("<ReviewsPanel /> · <ConfidencePanel />")" ComponentType="typeof(ReviewsPanel)">
             <Description>Side by side, as on the cart page.</Description>
             <ChildContent>
                 <div class="cart-page">
@@ -398,7 +399,7 @@
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="recommended-products" Title="Recommended Products Panel" Component="@("<RecommendedProductsPanel />")">
+        <GallerySection Id="recommended-products" Title="Recommended Products Panel" Component="@("<RecommendedProductsPanel />")" ComponentType="typeof(RecommendedProductsPanel)">
             <Description>The demo service returns one blank "ghost" row, which the panel filters out.</Description>
             <ChildContent>
                 <div class="cart-page">
@@ -409,21 +410,21 @@
 
         @* ───────────────────────── Site chrome ───────────────────────── *@
 
-        <GallerySection Id="header" Title="Storefront Header" Component="@("<StorefrontHeader />")" Wide="true">
+        <GallerySection Id="header" Title="Storefront Header" Component="@("<StorefrontHeader />")" ComponentType="typeof(StorefrontHeader)" Wide="true">
             <Description>Includes its own VehiclePicker (Panel) and CartWidget. Searching navigates to /search.</Description>
             <ChildContent>
                 <StorefrontHeader H1TagText="Genuine Volvo Parts Online" />
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="main-banner" Title="Main Banner" Component="@("<MainBanner />")" Wide="true">
+        <GallerySection Id="main-banner" Title="Main Banner" Component="@("<MainBanner />")" ComponentType="typeof(MainBanner)" Wide="true">
             <Description>Dismissal is remembered in localStorage (key <code>bannerDismissed:1:demo-banner-1</code>) — clear it to bring the banner back.</Description>
             <ChildContent>
                 <MainBanner />
             </ChildContent>
         </GallerySection>
 
-        <GallerySection Id="footer" Title="Storefront Footer" Component="@("<StorefrontFooter />")" Wide="true">
+        <GallerySection Id="footer" Title="Storefront Footer" Component="@("<StorefrontFooter />")" ComponentType="typeof(StorefrontFooter)" Wide="true">
             <ChildContent>
                 <StorefrontFooter />
             </ChildContent>
@@ -431,7 +432,7 @@
 
         @* ───────────────────────── Primitives ───────────────────────── *@
 
-        <GallerySection Id="primitives" Title="Loading Indicator · Image Placeholder · Cart Icon" Component="@("<LoadingIndicator /> · <ImagePlaceholder /> · <CartIcon />")">
+        <GallerySection Id="primitives" Title="Loading Indicator · Image Placeholder · Cart Icon" Component="@("<LoadingIndicator /> · <ImagePlaceholder /> · <CartIcon />")" ComponentType="typeof(LoadingIndicator)">
             <Description><code>HeadConfigInjector</code> isn't shown: it renders nothing visible (it only pushes favicon/stylesheet/script tags into &lt;head&gt;).</Description>
             <ChildContent>
                 <div class="pv-row">

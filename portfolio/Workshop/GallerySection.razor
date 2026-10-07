@@ -1,18 +1,44 @@
-<section id="@Id" class="pv-section">
-    <header class="pv-section-header">
-        <h2 class="pv-section-title">@Title</h2>
-        @if (!string.IsNullOrWhiteSpace(Component))
+@* Blueprint-style component documentation card: title, description, live preview
+   with Preview/Code tabs, and an auto-generated props table. *@
+
+<section id="@Id" class="bp-doc">
+    <h2 class="bp-doc-title">@Title</h2>
+    @if (Description is not null)
+    {
+        <div class="bp-doc-desc">@Description</div>
+    }
+
+    <div class="bp-preview">
+        <div class="bp-preview-tabs" role="tablist" aria-label="Preview or code">
+            <button type="button" role="tab" aria-selected="@(_showCode == false)"
+                    class="bp-tab @(_showCode ? null : "is-active")" @onclick="() => _showCode = false">
+                Preview
+            </button>
+            <button type="button" role="tab" aria-selected="@_showCode"
+                    class="bp-tab @(_showCode ? "is-active" : null)" @onclick="() => _showCode = true">
+                Code
+            </button>
+        </div>
+        @if (_showCode)
         {
-            <code class="pv-section-component">@Component</code>
+            <div class="bp-code">
+                <button type="button" class="bp-copy" @onclick="CopyCode" aria-label="Copy code">@(_copied ? "Copied" : "Copy")</button>
+                <pre><code>@Component</code></pre>
+            </div>
         }
-        @if (Description is not null)
+        else
         {
-            <p class="pv-section-description">@Description</p>
+            <div class="bp-preview-body @(Wide ? "bp-preview-wide" : null)">
+                @ChildContent
+            </div>
         }
-    </header>
-    <div class="pv-stage @(Wide ? "pv-stage-wide" : null)">
-        @ChildContent
     </div>
+
+    @if (ComponentType is not null)
+    {
+        <h3 class="bp-props-heading">Properties</h3>
+        <ComponentProps Type="ComponentType" />
+    }
 </section>
 
 @code {
@@ -21,7 +47,24 @@
     [Parameter] public string? Component { get; set; }
     [Parameter] public RenderFragment? Description { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
-
-    /// Full-bleed stage for components that manage their own max-width/centering.
     [Parameter] public bool Wide { get; set; }
+
+    /// <summary>The component type, used to auto-generate the props table.</summary>
+    [Parameter] public Type? ComponentType { get; set; }
+
+    private bool _showCode;
+    private bool _copied;
+
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+
+    private async Task CopyCode()
+    {
+        if (!string.IsNullOrEmpty(Component))
+        {
+            await JS.InvokeVoidAsync("navigator.clipboard.writeText", Component);
+            _copied = true;
+            await Task.Delay(1500);
+            _copied = false;
+        }
+    }
 }

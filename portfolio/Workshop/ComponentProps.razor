@@ -1,0 +1,80 @@
+@* Auto-generated properties table for a component type. Lists every [Parameter]
+   with its type and default value. Descriptions come from XML doc comments
+   once the XML documentation file is loaded (see XmlDocCache). *@
+@using System.Reflection
+
+@if (_props.Count == 0)
+{
+    <p class="bp-props-empty">No public parameters.</p>
+}
+else
+{
+    <div class="bp-table-wrap">
+        <table class="bp-table">
+            <thead>
+                <tr><th>Property</th><th>Type</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var p in _props)
+                {
+                    <tr>
+                        <td><code>@p.Name</code>@(p.Required ? " *" : null)</td>
+                        <td><code>@p.TypeName</code></td>
+                        <td><code>@p.Default</code></td>
+                        <td>@p.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    [Parameter, EditorRequired] public Type Type { get; set; } = default!;
+
+    private List<PropRow> _props = [];
+
+    private sealed record PropRow(string Name, string TypeName, string Default, string Description, bool Required);
+
+    protected override void OnParametersSet()
+    {
+        _props = Type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(p => p.GetCustomAttribute<ParameterAttribute>() is not null)
+            .Select(p => new PropRow(
+                p.Name,
+                FriendlyType(p.PropertyType),
+                DefaultValue(p),
+                XmlDocCache.GetSummary(p) ?? "—",
+                p.GetCustomAttribute<EditorRequiredAttribute>() is not null))
+            .OrderByDescending(p => p.Required)
+            .ThenBy(p => p.Name)
+            .ToList();
+    }
+
+    private static string FriendlyType(Type t)
+    {
+        if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
+            return FriendlyType(t.GetGenericArguments()[0]) + "?";
+        if (t == typeof(string)) return "string";
+        if (t == typeof(int)) return "int";
+        if (t == typeof(bool)) return "bool";
+        if (t == typeof(decimal)) return "decimal";
+        if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(EventCallback<>))
+            return $"EventCallback<{FriendlyType(t.GetGenericArguments()[0])}>";
+        if (t == typeof(EventCallback)) return "EventCallback";
+        if (t == typeof(RenderFragment)) return "RenderFragment";
+        return t.Name;
+    }
+
+    private static string DefaultValue(PropertyInfo p)
+    {
+        // Best-effort: instantiate and read the default (components have parameterless ctors).
+        try
+        {
+            var instance = Activator.CreateInstance(p.DeclaringType!);
+            var v = p.GetValue(instance);
+            return v is null ? "null" : v.ToString() ?? "—";
+        }
+        catch { return "—"; }
+    }
+}
