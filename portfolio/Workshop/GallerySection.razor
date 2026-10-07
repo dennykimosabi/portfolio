@@ -1,0 +1,27 @@
+<section id="@Id" class="pv-section">
+    <header class="pv-section-header">
+        <h2 class="pv-section-title">@Title</h2>
+        @if (!string.IsNullOrWhiteSpace(Component))
+        {
+            <code class="pv-section-component">@Component</code>
+        }
+        @if (Description is not null)
+        {
+            <p class="pv-section-description">@Description</p>
+        }
+    </header>
+    <div class="pv-stage @(Wide ? "pv-stage-wide" : null)">
+        @ChildContent
+    </div>
+</section>
+
+@code {
+    [Parameter, EditorRequired] public string Id { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Component { get; set; }
+    [Parameter] public RenderFragment? Description { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// Full-bleed stage for components that manage their own max-width/centering.
+    [Parameter] public bool Wide { get; set; }
+}

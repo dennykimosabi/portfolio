@@ -1,0 +1,163 @@
+/* Portfolio chrome — the OS-like shell around Denny's work. Component styles come
+   from the storefront's own css/main.css; this file is portfolio framing only. */
+
+:root {
+    --pf-bg: #0e1116;
+    --pf-panel: #161b22;
+    --pf-border: #262d36;
+    --pf-text: #e6e9ee;
+    --pf-muted: #9aa4b2;
+    --pf-accent: #4f9cf7;
+}
+
+.pf-shell {
+    display: flex;
+    min-height: 100vh;
+    background: var(--pf-bg);
+    color: var(--pf-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.pf-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--pf-panel);
+    border-right: 1px solid var(--pf-border);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 12px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.pf-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px 18px;
+    text-decoration: none;
+    color: var(--pf-text);
+}
+
+.pf-brand-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #4f9cf7, #7b5cf0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    color: #fff;
+}
+
+.pf-brand-text { display: flex; flex-direction: column; line-height: 1.25; }
+.pf-brand-text small { color: var(--pf-muted); font-size: 12px; }
+
+.pf-nav { display: flex; flex-direction: column; gap: 2px; }
+
+.pf-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    color: var(--pf-muted);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.pf-nav-item:hover { background: #1d242e; color: var(--pf-text); }
+.pf-nav-item.active { background: #1d2c44; color: var(--pf-accent); }
+.pf-nav-icon { width: 18px; text-align: center; }
+
+.pf-sidebar-foot {
+    margin-top: auto;
+    padding: 12px 10px 0;
+    color: var(--pf-muted);
+    font-size: 12px;
+    line-height: 1.5;
+    border-top: 1px solid var(--pf-border);
+}
+
+.pf-main {
+    flex: 1;
+    min-width: 0;
+    padding: 40px 48px 80px;
+    max-width: 1100px;
+}
+
+/* Shared page pieces */
+.pf-hero h1 { font-size: 40px; margin: 0 0 12px; letter-spacing: -0.5px; }
+.pf-hero p { font-size: 17px; color: var(--pf-muted); max-width: 640px; line-height: 1.6; }
+.pf-section { margin-top: 48px; }
+.pf-section h2 { font-size: 22px; margin-bottom: 16px; }
+
+.pf-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.pf-card {
+    background: var(--pf-panel);
+    border: 1px solid var(--pf-border);
+    border-radius: 12px;
+    padding: 20px;
+    text-decoration: none;
+    color: var(--pf-text);
+    display: block;
+}
+.pf-card:hover { border-color: var(--pf-accent); }
+.pf-card h3 { margin: 0 0 8px; font-size: 16px; }
+.pf-card p { margin: 0; font-size: 14px; color: var(--pf-muted); line-height: 1.55; }
+.pf-card .pf-tag {
+    display: inline-block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--pf-accent);
+    margin-bottom: 8px;
+}
+
+/* Build log timeline */
+.pf-timeline { position: relative; margin: 8px 0 0 8px; padding-left: 28px; border-left: 2px solid var(--pf-border); }
+.pf-tl-item { position: relative; padding: 0 0 32px; }
+.pf-tl-item::before {
+    content: "";
+    position: absolute;
+    left: -36px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--pf-accent);
+    border: 3px solid var(--pf-bg);
+    box-shadow: 0 0 0 2px var(--pf-accent);
+}
+.pf-tl-date { font-size: 12px; color: var(--pf-muted); text-transform: uppercase; letter-spacing: 0.6px; }
+.pf-tl-item h3 { margin: 4px 0 8px; font-size: 17px; }
+.pf-tl-item p { margin: 0; color: var(--pf-muted); font-size: 14px; line-height: 1.6; max-width: 640px; }
+
+/* Workshop */
+.pf-workshop-grid { display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: start; }
+.pf-workshop-nav { position: sticky; top: 24px; }
+.pf-workshop-nav a { display: block; padding: 6px 0; color: var(--pf-muted); text-decoration: none; font-size: 13px; }
+.pf-workshop-nav a:hover { color: var(--pf-accent); }
+.pf-ws-section { margin-bottom: 40px; }
+.pf-ws-section > h3 { font-size: 18px; padding-bottom: 8px; border-bottom: 1px solid var(--pf-border); }
+.pf-ws-demo {
+    background: #fff;
+    border: 1px solid var(--pf-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 12px;
+    color: #111;
+}
+
+@media (max-width: 860px) {
+    .pf-shell { flex-direction: column; }
+    .pf-sidebar { width: 100%; height: auto; position: static; flex-direction: row; align-items: center; }
+    .pf-nav { flex-direction: row; flex-wrap: wrap; }
+    .pf-sidebar-foot { display: none; }
+    .pf-main { padding: 24px 20px 60px; }
+    .pf-workshop-grid { grid-template-columns: 1fr; }
+    .pf-workshop-nav { position: static; }
+}
