@@ -1,0 +1,32 @@
+// ─── SfSkeleton: loading placeholder ──────────────────────────────────────
+// Shapes: rectangle | circle | pill. Shimmer disabled for reduced motion.
+
+.sf-skeleton {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    background: var(--sf-color-bg-2);
+    border-radius: var(--sf-radius-sm);
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, var(--sf-color-bg-3), transparent);
+        animation: sf-skeleton-shimmer 1.5s ease-in-out infinite;
+    }
+}
+
+.sf-skeleton-circle { border-radius: var(--sf-radius-full); }
+.sf-skeleton-pill { border-radius: var(--sf-radius-pill); }
+
+@keyframes sf-skeleton-shimmer {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sf-skeleton::after {
+        animation: none;
+    }
+}

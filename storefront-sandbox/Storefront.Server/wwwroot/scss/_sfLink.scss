@@ -1,0 +1,42 @@
+// ─── SfLink ─────────────────────────────────────────────────────────────────
+
+.sf-link {
+    color: var(--sf-color-primary);
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--sf-color-primary);
+        outline-offset: 2px;
+        border-radius: var(--sf-radius-sm);
+    }
+}
+
+// ─── SfQuantityStepper ──────────────────────────────────────────────────────
+
+.sf-stepper {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sf-space-1);
+    border: 1px solid var(--sf-color-border);
+    border-radius: var(--sf-radius-sm);
+    padding: 2px;
+    background: var(--sf-color-bg);
+}
+
+.sf-stepper-btn {
+    min-width: 1.75rem;
+}
+
+.sf-stepper-value {
+    min-width: 2rem;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--sf-color-text);
+    font-variant-numeric: tabular-nums;
+}

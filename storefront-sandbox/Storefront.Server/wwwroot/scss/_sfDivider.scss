@@ -1,0 +1,30 @@
+// ─── SfDivider: thematic break ────────────────────────────────────────────
+// Spacing: sm | md | lg. Optional centered label via Label.
+
+.sf-divider {
+    display: flex;
+    align-items: center;
+    gap: var(--sf-space-3);
+    border: 0;
+
+    // The line. When a label is present, ::after adds the trailing line.
+    &::before,
+    &.has-label::after {
+        content: "";
+        flex: 1 1 0;
+        border-top: 1px solid var(--sf-color-border);
+    }
+}
+
+.sf-divider-sm { margin-block: var(--sf-space-2); }
+.sf-divider-md { margin-block: var(--sf-space-4); }
+.sf-divider-lg { margin-block: var(--sf-space-6); }
+
+.sf-divider-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--sf-color-text-muted);
+    white-space: nowrap;
+}

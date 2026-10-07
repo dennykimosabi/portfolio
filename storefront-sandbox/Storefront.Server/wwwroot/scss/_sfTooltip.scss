@@ -1,0 +1,58 @@
+// ─── SfTooltip: CSS-only tooltip ──────────────────────────────────────────
+// Positions: top | bottom | left | right. Text comes from data-tip.
+// Shown on hover and keyboard focus (focus-visible). No JavaScript.
+
+.sf-tooltip {
+    position: relative;
+    display: inline-flex;
+
+    &::after {
+        content: attr(data-tip);
+        position: absolute;
+        z-index: 100;
+        padding: var(--sf-space-1) var(--sf-space-2);
+        background: var(--sf-color-bg-inverse);
+        color: var(--sf-color-text-inverse);
+        font-size: 0.75rem;
+        line-height: 1.4;
+        white-space: nowrap;
+        border-radius: var(--sf-radius-sm);
+        box-shadow: var(--sf-shadow-md);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s ease;
+    }
+
+    &:hover::after,
+    &:focus-visible::after {
+        opacity: 1;
+    }
+}
+
+.sf-tooltip-top::after {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: var(--sf-space-1);
+}
+
+.sf-tooltip-bottom::after {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: var(--sf-space-1);
+}
+
+.sf-tooltip-left::after {
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-right: var(--sf-space-1);
+}
+
+.sf-tooltip-right::after {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: var(--sf-space-1);
+}
