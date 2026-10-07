@@ -132,6 +132,58 @@
             </ChildContent>
         </GallerySection>
 
+        <GallerySection Id="sf-link" Title="SfLink" Component="@("<SfLink Href=\"#\">View all parts</SfLink>")" ComponentType="typeof(SfLink)">
+            <Description>The link primitive. Replaces text that looks like a link but was built as a <code>Ghost</code> button.</Description>
+            <ChildContent>
+                <div style="display:flex;gap:20px;align-items:center;">
+                    <SfLink Href="#">View all parts</SfLink>
+                    <SfLink Href="#">Track order</SfLink>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-quantity-stepper" Title="SfQuantityStepper" Component="@("<SfQuantityStepper Value=\"1\" />")" ComponentType="typeof(SfQuantityStepper)">
+            <Description>Quantity stepper. Two-way binds <code>Value</code> with <code>Min</code>/<code>Max</code> clamping. Consolidates the hand-rolled steppers.</Description>
+            <ChildContent>
+                <SfQuantityStepper Value="2" Min="1" Max="10" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-divider" Title="SfDivider" Component="@("<SfDivider />")" ComponentType="typeof(SfDivider)">
+            <Description>Thematic break with optional centered label and spacing scale.</Description>
+            <ChildContent>
+                <div style="width:100%;max-width:480px;">
+                    <SfDivider />
+                    <SfDivider Label="or" />
+                    <SfDivider Label="Specifications" Spacing="SfDividerSpacing.Lg" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-skeleton" Title="SfSkeleton" Component="@("<SfSkeleton Width=\"100%\" Height=\"16px\" />")" ComponentType="typeof(SfSkeleton)">
+            <Description>Loading placeholder with shimmer. Shapes: rectangle, circle, pill. Honors <code>prefers-reduced-motion</code>.</Description>
+            <ChildContent>
+                <div style="display:grid;gap:12px;width:100%;max-width:320px;">
+                    <SfSkeleton Width="100%" Height="16px" />
+                    <SfSkeleton Width="60%" Height="16px" />
+                    <div style="display:flex;gap:12px;align-items:center;">
+                        <SfSkeleton Width="48px" Height="48px" Shape="SfSkeletonShape.Circle" />
+                        <SfSkeleton Width="120px" Height="24px" Shape="SfSkeletonShape.Pill" />
+                    </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-tooltip" Title="SfTooltip" Component="@("<SfTooltip Text=\"In stock at Memphis warehouse\">Hover me</SfTooltip>")" ComponentType="typeof(SfTooltip)">
+            <Description>CSS-only tooltip. No JavaScript. Positions: top, bottom, left, right.</Description>
+            <ChildContent>
+                <div style="display:flex;gap:24px;align-items:center;padding:20px 0;">
+                    <SfTooltip Text="In stock at Memphis warehouse"><SfBadge Variant="SfBadgeVariant.Success">In stock</SfBadge></SfTooltip>
+                    <SfTooltip Text="Ships in 4-5 business days" Position="SfTooltipPosition.Bottom"><SfIcon Name="truck-line" /></SfTooltip>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
         @* ───────────────────────── Browse ───────────────────────── *@
 
         <GallerySection Id="refine-search-categories" Title="Refine Search — Categories" Component="@("<RefineSearch Mode=\"RefineSearchMode.Categories\" />")" ComponentType="typeof(RefineSearch)" Wide="true">
@@ -551,6 +603,11 @@
             ("sf-input", "SfInput"),
             ("sf-select", "SfSelect"),
             ("sf-icon", "SfIcon"),
+            ("sf-link", "SfLink"),
+            ("sf-quantity-stepper", "SfQuantityStepper"),
+            ("sf-divider", "SfDivider"),
+            ("sf-skeleton", "SfSkeleton"),
+            ("sf-tooltip", "SfTooltip"),
         ]),
         new("Browse",
         [

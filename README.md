@@ -1,18 +1,21 @@
 # Portfolio — Denny Kim's Design OS
 
+> **Run it:** from the repo folder in Terminal —
+> `dotnet run --project portfolio/Portfolio.csproj` → http://localhost:5290
+
 A Blazor portfolio site built around a real storefront component library.
 The portfolio itself is the showcase: AI-orchestrated development, mirroring
 a production .NET + Blazor stack.
 
 ## Run it
 
-Requires the .NET 9 SDK (or newer).
+Requires the .NET 10 SDK.
 
 ```bash
 dotnet run --project portfolio/Portfolio.csproj
 ```
 
-Then open http://localhost:5290
+Then open http://localhost:5290 (workshop: http://localhost:5290/workshop)
 
 ## Structure
 
