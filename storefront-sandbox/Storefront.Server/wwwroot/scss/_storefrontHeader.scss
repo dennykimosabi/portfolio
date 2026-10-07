@@ -1,0 +1,231 @@
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    z-index: 9999;
+    text-decoration: none;
+
+    &:focus {
+        top: 0;
+    }
+}
+
+.storefront-header {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #fff;
+
+    .header-inner {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+
+    // ─── H1 Bar ──────────────────────────────────────────────────
+    .header-h1-bar {
+        background-color: #fff;
+        border-bottom: 1px solid #e8e8e8;
+        padding: 0.35rem 0;
+
+        h1 {
+            display: block;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #666;
+            letter-spacing: 0.1px;
+        }
+    }
+
+    // ─── Dealer Info Bar ─────────────────────────────────────────
+    .header-dealer-bar {
+        border-bottom: 1px solid #e8e8e8;
+        padding: 0.5rem 0;
+
+        .header-inner {
+            justify-content: space-between;
+        }
+
+        .dealer-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            letter-spacing: 0.1px;
+        }
+
+        .dealer-contact {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+
+            span {
+                font-size: 0.8125rem;
+                color: #555;
+            }
+        }
+    }
+
+    // ─── Main Nav ────────────────────────────────────────────────
+    .header-main-nav {
+        border-bottom: 1px solid #e8e8e8;
+        padding: 0.625rem 0;
+
+        .header-inner {
+            gap: 1.25rem;
+        }
+
+        .header-logo {
+            text-decoration: none;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+
+            .header-logo-img {
+                width: 120px;
+                height: auto;
+                display: block;
+            }
+        }
+
+        // Nav links sit directly left of the icon cluster (search / vehicle / cart / menu) —
+        // margin-left: auto here pushes this whole right-hand group together, nav-links first.
+        .header-nav-links {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 1.75rem;
+
+            .header-nav-link {
+                text-decoration: none;
+                font-size: 0.875rem;
+                font-weight: 500;
+                color: #1a1a1a;
+                letter-spacing: 0.1px;
+                white-space: nowrap;
+
+                &:hover { color: #555; }
+            }
+        }
+
+        // Collapsed: a circular icon button. Pressed: springs open into a pill search bar —
+        // click-outside-to-close uses the same transparent full-viewport overlay pattern as
+        // CartWidget's panel (see _cartWidget.scss), just without the dimming.
+        .header-search {
+            position: relative;
+            z-index: 2;
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 2px;
+            overflow: hidden;
+            transition: width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.15s ease;
+
+            // Ghost by default (transparent, fills on hover); once open it needs a solid
+            // background behind the typed query, so the fill becomes permanent.
+            &.is-open {
+                width: min(30vw, 320px);
+                background: #fff;
+            }
+
+            .header-search-icon-btn {
+                flex-shrink: 0;
+                width: 36px;
+                height: 36px;
+                background: none;
+                border: none;
+                border-radius: 2px;
+                cursor: pointer;
+                color: #555;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: background-color 0.15s ease, color 0.15s ease;
+
+                &:hover {
+                    background-color: #f5f5f5;
+                    color: #1a1a1a;
+                }
+            }
+
+            .header-search-input {
+                flex: 1;
+                min-width: 0;
+                width: 0;
+                border: none;
+                outline: none;
+                padding: 0;
+                opacity: 0;
+                font-size: 0.8125rem;
+                color: #333;
+                background: transparent;
+                transition: opacity 0.2s ease, padding 0.35s ease;
+
+                &::placeholder { color: #999; }
+            }
+
+            &.is-open .header-search-input {
+                width: auto;
+                opacity: 1;
+                padding: 0.5rem 0.75rem 0.5rem 0;
+            }
+        }
+
+        .header-search-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            background: transparent;
+        }
+
+        .header-vehicle-selector {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            flex-shrink: 0;
+
+            .header-menu-btn {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 4px;
+                background: none;
+                border: none;
+                border-radius: 2px;
+                cursor: pointer;
+                width: 36px;
+                height: 36px;
+                transition: background-color 0.15s ease;
+
+                .menu-bar {
+                    display: block;
+                    width: 16px;
+                    height: 2px;
+                    background-color: #555;
+                    border-radius: 1px;
+                    transition: background-color 0.15s ease;
+                }
+
+                &:hover {
+                    background-color: #f5f5f5;
+
+                    .menu-bar { background-color: #1a1a1a; }
+                }
+            }
+        }
+    }
+}

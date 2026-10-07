@@ -1,0 +1,372 @@
+// Shared select + VIN styles used by both Panel and Inline layouts.
+
+.vehicle-select-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.vehicle-select-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #666;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.vehicle-select {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    color: #333;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.625rem center;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+
+    &:focus {
+        outline: none;
+        border-color: #1a1a1a;
+    }
+
+    &:disabled {
+        background-color: #f7f7f7;
+        color: #bbb;
+        cursor: not-allowed;
+        border-color: #e8e8e8;
+    }
+}
+
+.vehicle-vin-input {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    color: #333;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+
+    &::placeholder {
+        color: #bbb;
+        text-transform: none;
+        letter-spacing: normal;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: #1a1a1a;
+    }
+}
+
+.vehicle-vin-submit {
+    flex-shrink: 0;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+
+    &:hover:not(:disabled) {
+        background: #333;
+    }
+
+    &:disabled {
+        background: #d0d0d0;
+        color: #999;
+        cursor: not-allowed;
+    }
+}
+
+// ─── Panel Layout (used by header) ───────────────────────────────────
+.vehicle-picker-panel {
+    position: relative;
+    width: 100%;
+
+    // Icon-only trigger (no label) — swaps to a car+checkmark glyph when has-vehicle (the icon
+    // itself carries the checkmark badge, drawn in its own viewBox).
+    .vehicle-selector-btn {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: none;
+        border: none;
+        border-radius: 2px;
+        color: #555;
+        cursor: pointer;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:hover,
+        &.is-open {
+            background-color: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        &.has-vehicle {
+            color: #1a1a1a;
+        }
+
+        .selector-car-icon {
+            display: block;
+        }
+    }
+
+    .vehicle-panel-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 199;
+    }
+
+    .vehicle-panel {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 720px;
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.10);
+        z-index: 200;
+        animation: vehiclePanelFadeIn 0.15s ease;
+
+        .vehicle-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.875rem 1.25rem 0.625rem;
+            border-bottom: 1px solid #f0f0f0;
+
+            .vehicle-panel-title {
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: #888;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
+
+            .vehicle-panel-clear {
+                background: none;
+                border: none;
+                font-size: 0.75rem;
+                color: #888;
+                cursor: pointer;
+                padding: 0;
+                text-decoration: underline;
+
+                &:hover {
+                    color: #333;
+                }
+            }
+        }
+
+        .vehicle-panel-body {
+            display: flex;
+            align-items: flex-end;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem 1.25rem;
+
+            .vehicle-select-group {
+                flex: 1;
+            }
+
+            .vehicle-panel-submit {
+                flex-shrink: 0;
+                background: #1a1a1a;
+                color: #fff;
+                border: none;
+                border-radius: 2px;
+                padding: 0.5rem 1.25rem;
+                font-size: 0.8125rem;
+                font-weight: 600;
+                letter-spacing: 0.04em;
+                cursor: pointer;
+                white-space: nowrap;
+                transition: background 0.15s ease;
+
+                &:hover:not(:disabled) {
+                    background: #333;
+                }
+
+                &:disabled {
+                    background: #d0d0d0;
+                    color: #999;
+                    cursor: not-allowed;
+                }
+            }
+        }
+
+        .vehicle-panel-vin {
+            padding: 0 1.25rem 1.25rem;
+
+            .vehicle-panel-vin-divider {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                margin-bottom: 0.75rem;
+
+                &::before,
+                &::after {
+                    content: '';
+                    flex: 1;
+                    height: 1px;
+                    background: #ebebeb;
+                }
+
+                span {
+                    font-size: 0.6875rem;
+                    color: #aaa;
+                    letter-spacing: 0.05em;
+                    text-transform: uppercase;
+                    white-space: nowrap;
+                }
+            }
+
+            .vehicle-panel-vin-row {
+                display: flex;
+                gap: 0.5rem;
+            }
+        }
+    }
+}
+
+@keyframes vehiclePanelFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+// ─── Garage list (Panel) — rows are GarageVehicleCard; see _garageCard.scss ───
+.vehicle-garage-list {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.vehicle-garage-item {
+    & + & {
+        border-top: 1px solid #f0f0f0;
+    }
+}
+
+.vehicle-panel-addnew {
+    display: block;
+    width: calc(100% - 1.5rem);
+    margin: 0.25rem 0.75rem 1rem;
+    background: none;
+    border: 1px dashed #ccc;
+    border-radius: 2px;
+    padding: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #2563a5;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        border-color: #2563a5;
+        color: #1e4e80;
+    }
+}
+
+// ─── Inline Layout (used on the home page below the hero) ─────────────
+.vehicle-picker-inline {
+    background: #fff;
+    padding: 1.25rem 1.5rem;
+    margin: 1.25rem auto;
+    max-width: 1280px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+    .vehicle-picker-inline-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        @media (max-width: 720px) {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+
+    .vehicle-picker-inline-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #1a1a1a;
+    }
+
+    .vehicle-picker-inline-vin {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        min-width: 280px;
+
+        .vehicle-vin-input {
+            min-width: 200px;
+        }
+    }
+
+    .vehicle-picker-inline-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr) auto;
+        gap: 0.75rem;
+        align-items: end;
+
+        @media (max-width: 900px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: 520px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .vehicle-picker-inline-submit {
+        background: #2563a5;
+        color: #fff;
+        border: 1px solid #1e4e80;
+        border-radius: 2px;
+        padding: 0.5rem 1.25rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.15s ease;
+        align-self: end;
+
+        &:hover:not(:disabled) {
+            background: #1e4e80;
+        }
+
+        &:disabled {
+            background: #d0d0d0;
+            color: #999;
+            border-color: #d0d0d0;
+            cursor: not-allowed;
+        }
+    }
+}

@@ -1,0 +1,34 @@
+// Five-star rating display (<StarRating />).
+//
+// Half stars are drawn by clipping a filled star over the empty one with a gradient
+// background, so no half-star glyph or icon font is needed.
+
+.star-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    line-height: 1;
+}
+
+.star-rating-star {
+    font-size: 0.8125rem;
+    color: #d0d0d0;
+
+    &.is-full {
+        color: #1a1a1a;
+    }
+
+    &.is-half {
+        background: linear-gradient(90deg, #1a1a1a 50%, #d0d0d0 50%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+}
+
+.star-rating-label {
+    margin-left: 0.375rem;
+    font-size: 0.75rem;
+    color: #555;
+    white-space: nowrap;
+}

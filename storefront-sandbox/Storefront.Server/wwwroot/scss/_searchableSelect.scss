@@ -1,0 +1,108 @@
+// The trigger reuses .vehicle-select's existing border/radius/padding/font/chevron — this file
+// only adds the popover (search input + filterable, keyboard-navigable option list).
+
+.searchable-select {
+    position: relative;
+    width: 100%;
+}
+
+.searchable-select-trigger {
+    text-align: left;
+    font-family: inherit;
+
+    &.is-open {
+        border-color: #1a1a1a;
+    }
+}
+
+.searchable-select-value {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.is-placeholder {
+        color: #999;
+    }
+}
+
+.searchable-select-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 29;
+    background: transparent;
+}
+
+.searchable-select-popover {
+    position: absolute;
+    z-index: 30;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    box-shadow: 0 6px 16px rgba(20, 30, 40, 0.08);
+    overflow: hidden;
+}
+
+.searchable-select-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    border-bottom: 1px solid #e8e8e8;
+    color: #999;
+
+    input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        font-size: 0.8125rem;
+        color: #333;
+        background: transparent;
+
+        &::placeholder { color: #999; }
+    }
+}
+
+.searchable-select-list {
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 0.25rem;
+}
+
+.searchable-select-empty {
+    padding: 0.625rem;
+    font-size: 0.8125rem;
+    color: #999;
+    text-align: center;
+}
+
+.searchable-select-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 0.625rem;
+    border-radius: 2px;
+    font-size: 0.8125rem;
+    color: #333;
+    cursor: pointer;
+
+    &.is-highlighted {
+        background: #f5f5f5;
+        color: #1a1a1a;
+    }
+
+    &.is-selected {
+        font-weight: 600;
+        color: #1a1a1a;
+    }
+
+    .searchable-select-check {
+        flex-shrink: 0;
+        color: #1a1a1a;
+    }
+}

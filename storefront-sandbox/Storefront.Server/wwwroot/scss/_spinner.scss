@@ -1,0 +1,36 @@
+// Shared loading indicator (spinner + label). Used by the Search results area and the
+// cart widget. Context-specific spacing (e.g. larger padding on the roomy search area)
+// is applied by the consuming stylesheet via a `.sf-loading` override.
+.sf-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 2rem 1rem;
+    color: #555;
+    font-size: 0.9375rem;
+}
+
+.sf-spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid #d9dee3;
+    border-top-color: #113458;
+    border-radius: 50%;
+    animation: sf-spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes sf-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Respect reduced-motion preferences — slow the spin rather than freeze it
+// (a static spinner conveys nothing).
+@media (prefers-reduced-motion: reduce) {
+    .sf-spinner {
+        animation-duration: 1.6s;
+    }
+}
