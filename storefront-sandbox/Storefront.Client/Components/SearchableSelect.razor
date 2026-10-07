@@ -1,0 +1,64 @@
+@* Trigger button matches the existing .vehicle-select look exactly; opening it swaps the
+   native dropdown for a searchable popover (filter input + scrollable, keyboard-navigable
+   list), matching the combobox pattern at blazorblueprintui.com/docs/components/combobox. *@
+
+<div class="searchable-select">
+    <button type="button"
+            id="@Id"
+            class="vehicle-select searchable-select-trigger @(_isOpen ? "is-open" : "")"
+            disabled="@Disabled"
+            @onclick="Toggle"
+            role="combobox"
+            aria-haspopup="listbox"
+            aria-expanded="@_isOpen">
+        <span class="searchable-select-value @(SelectedOption is null ? "is-placeholder" : "")">@SelectedText</span>
+    </button>
+
+    @if (_isOpen)
+    {
+        <div class="searchable-select-overlay" @onclick="Close"></div>
+
+        <div class="searchable-select-popover" role="listbox" @onkeydown="HandleKeyDown">
+            <div class="searchable-select-search">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input @ref="_searchInputRef"
+                       type="text"
+                       placeholder="@SearchPlaceholder"
+                       value="@_search"
+                       @oninput="OnSearchInput" />
+            </div>
+
+            <div class="searchable-select-list">
+                @{ var filtered = FilteredOptions; }
+                @if (filtered.Count == 0)
+                {
+                    <div class="searchable-select-empty">No results found</div>
+                }
+                else
+                {
+                    @for (var i = 0; i < filtered.Count; i++)
+                    {
+                        var option = filtered[i];
+                        var index = i;
+                        <div class="searchable-select-option @(index == _highlightedIndex ? "is-highlighted" : "") @(option.Value == Value ? "is-selected" : "")"
+                             role="option"
+                             aria-selected="@(option.Value == Value)"
+                             @onmouseenter="() => _highlightedIndex = index"
+                             @onclick="() => Select(option.Value)">
+                            <span>@option.Text</span>
+                            @if (option.Value == Value)
+                            {
+                                <svg class="searchable-select-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+</div>

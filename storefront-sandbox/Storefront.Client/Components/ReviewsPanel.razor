@@ -1,0 +1,52 @@
+@if (_loaded && _testimonials is { Count: > 0 })
+{
+    <section class="reviews-panel" aria-label="Customer reviews">
+        <header class="reviews-panel-header">
+            <h2 class="reviews-panel-title">Reviews</h2>
+            @if (_average is not null && _average.ReviewCount > 0)
+            {
+                <p class="reviews-aggregate">
+                    Average <strong>@_average.AverageRating</strong>/5 stars on <strong>@_average.ReviewCount</strong> reviews.
+                </p>
+            }
+            <p class="reviews-disclaimer">
+                Reviews shown here have been placed by customers purchasing from our website.
+                Upon completing a purchase, each customer has the option to leave a review about their experience.
+            </p>
+        </header>
+
+        <ul class="reviews-list">
+            @foreach (var t in _testimonials)
+            {
+                var stars = ParseStarCount(t.Rating);
+                <li class="review-item">
+                    <div class="review-rating-row">
+                        <div class="review-stars" aria-label="@($"{stars} of 5 stars")">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                <span class="@(i <= stars ? "star is-filled" : "star")" aria-hidden="true">@(i <= stars ? "★" : "☆")</span>
+                            }
+                        </div>
+                        <div class="review-date">@t.DateString</div>
+                    </div>
+                    <p class="review-body">@HtmlHelper.StripHtml(t.Testimonial)</p>
+                    @if (!string.IsNullOrWhiteSpace(t.Name))
+                    {
+                        <div class="review-author">@t.Name</div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(t.Location))
+                    {
+                        <div class="review-location">@t.Location</div>
+                    }
+                </li>
+            }
+        </ul>
+
+        @if (ReturnAll == false && NumReviews > 0)
+        {
+            <footer class="reviews-panel-footer">
+                <a href="/testimonials" class="reviews-more-link">More Reviews</a>
+            </footer>
+        }
+    </section>
+}

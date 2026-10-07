@@ -1,0 +1,55 @@
+<footer class="storefront-footer" role="contentinfo">
+
+    <div class="footer-links-panel">
+        <div class="footer-inner">
+
+            <div class="footer-column">
+                @* TODO: Localize heading and link text via resource strings *@
+                <h2 class="footer-column-header">About</h2>
+                <ul role="list">
+                    <li role="listitem"><a href="/about">Contact Us</a></li>
+                    <li role="listitem"><a href="/policy">Policies</a></li>
+                    <li role="listitem"><a href="/policy#refundPolicy">Refunds</a></li>
+                    <li role="listitem"><a href="/policy#returnPolicy">Returns</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h2 class="footer-column-header">Legal</h2>
+                <ul role="list">
+                    <li role="listitem"><a href="/policy">Policies</a></li>
+                    <li role="listitem"><a href="/policy#terms">Terms</a></li>
+                    @* TODO: Conditionally add OneTrust cookie settings link from IWebsiteSettingsService *@
+                </ul>
+            </div>
+
+            @* TODO: Add from IWebsiteSettingsService when implemented:
+                - Links column (My Profile, Login, Wholesale, Dealer Home, Find a Dealer)
+                - Culture/language dropdown (conditional on ShowCultureDropdown setting)
+                - Social links (Facebook, YouTube, Twitter, Instagram, Pinterest, BBB)
+            *@
+
+        </div>
+    </div>
+
+    @* TODO: Dealer info bar — conditionally rendered when ShowDealerInfoBar is true.
+        Needs BusinessName, PhoneNumber, FormattedAddress, SalesEmail from IWebsiteSettingsService *@
+
+    @* TODO: Disclaimer panel — FooterDisclaimer from IWebsiteSettingsService *@
+
+    <div class="footer-copyright-panel">
+        <div class="footer-inner">
+            <span class="footer-copyright">
+                &copy; @CopyrightYear
+                @* TODO: Append BusinessName from IWebsiteSettingsService *@
+            </span>
+        </div>
+    </div>
+
+    <div class="footer-powered-by-panel">
+        <div class="footer-inner">
+            <span class="footer-powered-by">Technology Powered by SimplePart</span>
+        </div>
+    </div>
+
+</footer>

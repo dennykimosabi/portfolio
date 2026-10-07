@@ -1,0 +1,35 @@
+@* Picked-vehicle card shown on the home page in place of the inline VehiclePicker
+   once a vehicle is chosen. Mirrors the legacy VehiclePicker.ascx "VehiclePicked" mode:
+   the mode swaps but the placement key stays "VehiclePickerHeading" — pr_returnPlacementDynamicText
+   is fitment-keyed, so passing the full fitment returns the vehicle-specific title/image/text.
+   The UseFitmentResultVehiclePicked override (raw fitment string + vehicleImage) is intentionally
+   NOT ported yet — IVehicleService.GetFitmentStringAsync returns only the bare string today. *@
+
+@if (_loaded)
+{
+    <section class="vehicle-picked" aria-label="Selected vehicle">
+        @if (!string.IsNullOrWhiteSpace(_placement?.ImageUrl))
+        {
+            <div class="vehicle-picked-image">
+                <img src="@_placement.ImageUrl" alt="@DisplayTitle" />
+            </div>
+        }
+
+        <div class="vehicle-picked-content">
+            <div class="vehicle-picked-heading">
+                <h3 class="vehicle-picked-title">@((MarkupString)DisplayTitle)</h3>
+                <button type="button"
+                        class="vehicle-picked-change"
+                        title="Click to change your vehicle"
+                        @onclick="ChangeVehicle">
+                    Change Vehicle
+                </button>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(_placement?.Text))
+            {
+                <div class="vehicle-picked-body">@((MarkupString)_placement.Text)</div>
+            }
+        </div>
+    </section>
+}

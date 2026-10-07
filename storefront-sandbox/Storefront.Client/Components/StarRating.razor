@@ -1,0 +1,14 @@
+@* Five-star rating display. Renders full / half / empty stars from a decimal rating and
+   exposes the value to assistive tech as text, since the stars themselves are decorative.
+   Read-only — there's no rating-submission affordance on the PDP. *@
+
+<span class="star-rating" role="img" aria-label="@($"Rated {Rating:0.#} out of 5")">
+    @for (var i = 1; i <= 5; i++)
+    {
+        <span class="star-rating-star @StarClass(i)" aria-hidden="true">★</span>
+    }
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <span class="star-rating-label">@Label</span>
+    }
+</span>
