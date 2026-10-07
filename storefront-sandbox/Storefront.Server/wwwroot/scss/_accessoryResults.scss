@@ -27,25 +27,3 @@
     flex: 1 1 auto;
 }
 
-.accessory-results-change-category {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    background: var(--sf-color-bg);
-    border: 1px solid #d8d8d8;
-    border-radius: 20px;
-    padding: 0.4375rem 0.9375rem 0.4375rem 0.75rem;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--sf-color-text);
-    cursor: pointer;
-    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
-
-    svg { flex-shrink: 0; }
-
-    &:hover {
-        border-color: var(--sf-color-brand);
-        color: var(--sf-color-brand);
-        background: #f7f9fb;
-    }
-}

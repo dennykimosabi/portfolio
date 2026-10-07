@@ -1,26 +1,26 @@
 <div class="filter-chips @Class" @attributes="AdditionalAttributes">
     @if (Year > 0)
     {
-        <span class="filter-chip">Year: @Year <button type="button" class="chip-close" aria-label="Remove year" @onclick="OnRemoveYear">×</button></span>
+        <SfChip OnRemove="@OnRemoveYear" RemoveLabel="Remove year">Year: @Year</SfChip>
     }
     @if (UkeyMake > 0)
     {
-        <span class="filter-chip">Make: @(string.IsNullOrWhiteSpace(MakeName) ? "Make" : MakeName) <button type="button" class="chip-close" aria-label="Remove make" @onclick="OnRemoveMake">×</button></span>
+        <SfChip OnRemove="@OnRemoveMake" RemoveLabel="Remove make">Make: @(string.IsNullOrWhiteSpace(MakeName) ? "Make" : MakeName)</SfChip>
     }
     @if (UkeyModel > 0)
     {
-        <span class="filter-chip">Model: @(string.IsNullOrWhiteSpace(ModelName) ? "Model" : ModelName) <button type="button" class="chip-close" aria-label="Remove model" @onclick="OnRemoveModel">×</button></span>
+        <SfChip OnRemove="@OnRemoveModel" RemoveLabel="Remove model">Model: @(string.IsNullOrWhiteSpace(ModelName) ? "Model" : ModelName)</SfChip>
     }
     @if (UkeyDriveline > 0)
     {
-        <span class="filter-chip">Driveline: @(string.IsNullOrWhiteSpace(DrivelineName) ? "Driveline" : DrivelineName) <button type="button" class="chip-close" aria-label="Remove driveline" @onclick="OnRemoveDriveline">×</button></span>
+        <SfChip OnRemove="@OnRemoveDriveline" RemoveLabel="Remove driveline">Driveline: @(string.IsNullOrWhiteSpace(DrivelineName) ? "Driveline" : DrivelineName)</SfChip>
     }
     @if (UkeyTrimLevel > 0)
     {
-        <span class="filter-chip">Trim: @(string.IsNullOrWhiteSpace(TrimLevelName) ? "Trim" : TrimLevelName) <button type="button" class="chip-close" aria-label="Remove trim" @onclick="OnRemoveTrim">×</button></span>
+        <SfChip OnRemove="@OnRemoveTrim" RemoveLabel="Remove trim">Trim: @(string.IsNullOrWhiteSpace(TrimLevelName) ? "Trim" : TrimLevelName)</SfChip>
     }
     @if (UkeyCategory > 0)
     {
-        <span class="filter-chip">Category: @(string.IsNullOrWhiteSpace(CategoryName) ? "Category" : CategoryName) <button type="button" class="chip-close" aria-label="Remove category" @onclick="OnRemoveCategory">×</button></span>
+        <SfChip OnRemove="@OnRemoveCategory" RemoveLabel="Remove category">Category: @(string.IsNullOrWhiteSpace(CategoryName) ? "Category" : CategoryName)</SfChip>
     }
 </div>
