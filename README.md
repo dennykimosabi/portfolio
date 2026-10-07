@@ -9,7 +9,7 @@ a production .NET + Blazor stack.
 
 ## Run it
 
-Requires the .NET 10 SDK.
+Requires the .NET 9 SDK.
 
 ```bash
 dotnet run --project portfolio/Portfolio.csproj
