@@ -1,0 +1,33 @@
+@if (HasContent)
+{
+    var imageStyle = !string.IsNullOrWhiteSpace(Placement!.ImageUrl)
+        ? $"background-image: url('{Placement.ImageUrl}');"
+        : null;
+
+    RenderFragment inner = @<div class="@ClassName">
+        <div class="placement-content-img" style="@imageStyle"></div>
+        <div class="placement-content-panel">
+            @if (!string.IsNullOrWhiteSpace(Placement.IntroTextTitle))
+            {
+                <h2 class="placement-content-heading">@((MarkupString)Placement.IntroTextTitle)</h2>
+            }
+            @if (!string.IsNullOrWhiteSpace(Placement.Text))
+            {
+                <div class="placement-content-text">@((MarkupString)Placement.Text)</div>
+            }
+        </div>
+    </div>;
+
+    <section class="placement-content">
+        <div class="placement-content-container">
+            @if (!string.IsNullOrWhiteSpace(Placement.TargetUrl))
+            {
+                <a href="@Placement.TargetUrl" class="placement-content-link">@inner</a>
+            }
+            else
+            {
+                @inner
+            }
+        </div>
+    </section>
+}

@@ -1,0 +1,36 @@
+@* One saved-garage vehicle row, shared by the header picker list and the home garage grid.
+   Row body (image + name) selects/navigates; the pencil/trash act on the vehicle. All behavior
+   lives here so both surfaces render identically. *@
+<div class="garage-card @(IsCurrent ? "is-current" : "")">
+    @if (_editing)
+    {
+        <div class="garage-card-edit">
+            <input class="garage-card-edit-input"
+                   @bind="_nameInput"
+                   @bind:event="oninput"
+                   @onkeydown="OnEditKeyDown"
+                   aria-label="Vehicle name" />
+            <button type="button" class="garage-card-edit-save" @onclick="SaveEdit">Save</button>
+            <button type="button" class="garage-card-edit-cancel" @onclick="CancelEdit">Cancel</button>
+        </div>
+    }
+    else
+    {
+        <button type="button" class="garage-card-select" @onclick="Select">
+            @if (!string.IsNullOrWhiteSpace(Vehicle.ImageUrl))
+            {
+                <img class="garage-card-img" src="@Vehicle.ImageUrl" alt="" />
+            }
+            <span class="garage-card-name">@DisplayName</span>
+        </button>
+
+        <div class="garage-card-actions">
+            <button type="button" class="garage-card-action" title="Rename vehicle" @onclick="StartEdit">
+                <img src="@EditIcon" alt="Rename" />
+            </button>
+            <button type="button" class="garage-card-action" title="Remove vehicle" @onclick="Delete">
+                <img src="@DeleteIcon" alt="Remove" />
+            </button>
+        </div>
+    }
+</div>

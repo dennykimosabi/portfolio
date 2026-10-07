@@ -1,0 +1,89 @@
+@* Guided Navigation — fitment header + expandable detail items
+   Used at top of PDP, category browse, and cart pages.
+   Displays fitment-aware navigation header (e.g., "This fits your 2023 Lotus Emira")
+   and detail items (selectable makes/models/years/etc. or links). *@
+
+@if (_isLoading)
+{
+    <div class="guided-navigation-loading">
+        <p>Loading navigation...</p>
+    </div>
+}
+else if (_header == null)
+{
+    <!-- No guided navigation header data available for this product/fitment -->
+}
+else if (_header != null)
+{
+    <section class="guided-navigation">
+        @* ── Header Banner ──────────────────────────────────────────────── *@
+        <div class="guided-navigation-header @_header.CssClass">
+            <div class="guided-navigation-header-content">
+                <div class="guided-navigation-header-text">
+                    <p class="guided-navigation-header-title">@_header.GuideHeader</p>
+                    <p class="guided-navigation-header-body">@_header.GuideBody</p>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(_header.LinkUrl))
+                {
+                    <a href="@_header.LinkUrl"
+                       class="guided-navigation-header-link"
+                       title="@_header.LinkHover">
+                        @_header.LinkAnchor
+                    </a>
+                }
+            </div>
+
+            @* Result labels (up to 3) for status filtering *@
+            @if (!string.IsNullOrWhiteSpace(_header.ResultLabel1) ||
+                 !string.IsNullOrWhiteSpace(_header.ResultLabel2) ||
+                 !string.IsNullOrWhiteSpace(_header.ResultLabel3))
+            {
+                <div class="guided-navigation-header-labels">
+                    @if (!string.IsNullOrWhiteSpace(_header.ResultLabel1))
+                    {
+                        <span class="guided-navigation-label">@_header.ResultLabel1</span>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(_header.ResultLabel2))
+                    {
+                        <span class="guided-navigation-label">@_header.ResultLabel2</span>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(_header.ResultLabel3))
+                    {
+                        <span class="guided-navigation-label">@_header.ResultLabel3</span>
+                    }
+                </div>
+            }
+
+            @* VIP Promo (cart page only) *@
+            @if (_header.HasVipPromo &&
+                 !string.IsNullOrWhiteSpace(_header.GuidedNavPromoText))
+            {
+                <div class="guided-navigation-promo">
+                    @if (!string.IsNullOrWhiteSpace(_header.GuidedNavPromoTitle))
+                    {
+                        <h3 class="guided-navigation-promo-title">@_header.GuidedNavPromoTitle</h3>
+                    }
+                    <p class="guided-navigation-promo-text">@_header.GuidedNavPromoText</p>
+                </div>
+            }
+        </div>
+
+        @* ── Detail Items (Inline Links) ──────────────────────────────────── *@
+        @if (_detail != null && _detail.Details.Any())
+        {
+            <div class="guided-navigation-detail">
+                <div class="guided-navigation-detail-list">
+                    @foreach (var item in _detail.Details)
+                    {
+                        <a href="@item.LinkUrl"
+                           class="guided-navigation-detail-link"
+                           title="@item.LinkHover">
+                            @item.LinkAnchor
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </section>
+}

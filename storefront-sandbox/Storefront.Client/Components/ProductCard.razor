@@ -1,0 +1,28 @@
+@* Shared product card. Image and title are independent <a> elements pointing to the
+   same product URL — no nested-anchor pitfalls. Stock code, price, and an optional
+   Add to Cart button render as siblings of the two links. Decoupled from any specific
+   DTO; callers pass primitive parameters. *@
+
+<div class="product-card">
+    <a class="product-card-image" href="@Url" aria-label="@Title">
+        @if (!string.IsNullOrWhiteSpace(ImageUrl))
+        {
+            <img src="@ImageUrl" alt="@Title" loading="lazy" />
+        }
+    </a>
+    <a class="product-card-title" href="@Url">@Title</a>
+    @if (!string.IsNullOrWhiteSpace(StockCode))
+    {
+        <p class="product-card-sku">@StockCode</p>
+    }
+    <p class="product-card-price">@Price.ToString("C")</p>
+    @if (ShowAddToCart)
+    {
+        <button type="button"
+                class="product-card-add"
+                aria-label="@($"Add {Title} to cart")"
+                @onclick="HandleAddClick">
+            Add to Cart
+        </button>
+    }
+</div>

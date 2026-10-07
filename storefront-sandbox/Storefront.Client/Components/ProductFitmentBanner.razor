@@ -1,0 +1,35 @@
+@* Fitment confirmation bar above the PDP. Green = confirmed fit for the active vehicle.
+   Sits at the top of the page because "does this fit my car?" is the first question a
+   parts customer asks.
+
+   TODO (data): the fits/doesn't-fit determination and the vehicle description come from
+   the product's fitment lookup against VehicleFitmentState. Change Vehicle should clear
+   the active vehicle the same way VehiclePicked does. *@
+
+<div class="fitment-banner @(Fits ? "fitment-banner--fits" : "fitment-banner--unknown")">
+    <span class="fitment-banner-status">
+        <span class="fitment-banner-icon" aria-hidden="true">@(Fits ? "✓" : "!")</span>
+        @if (Fits)
+        {
+            <span>This Fits Your <strong>@VehicleDescription</strong></span>
+        }
+        else
+        {
+            <span>Select a vehicle to confirm this fits</span>
+        }
+    </span>
+
+    <span class="fitment-banner-actions">
+        <button type="button" class="fitment-banner-link" @onclick="OnMoreProducts">
+            More Products
+            <span class="fitment-banner-caret" aria-hidden="true">⌄</span>
+        </button>
+
+        <span class="fitment-banner-divider" aria-hidden="true"></span>
+
+        <button type="button" class="fitment-banner-link" @onclick="OnChangeVehicle">
+            <span class="fitment-banner-refresh" aria-hidden="true">⟳</span>
+            Change Vehicle
+        </button>
+    </span>
+</div>

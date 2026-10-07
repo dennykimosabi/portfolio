@@ -1,0 +1,19 @@
+<a class="part-type-card" href="@PartType.PageURL">
+    <div class="part-type-card-image">
+        @if (!string.IsNullOrWhiteSpace(PartType.ImageURL))
+        {
+            <img src="@PartType.ImageURL" alt="@PartType.TypeName" loading="lazy" />
+        }
+        @if (PartType.MaxPrice > 0)
+        {
+            <span class="part-type-card-price-range">@PriceRange</span>
+        }
+    </div>
+    <div class="part-type-card-body">
+        <span class="part-type-card-title">@PartType.TypeName</span>
+        @if (PartType.NumProducts > 0)
+        {
+            <span class="part-type-card-count">@(PartType.NumProducts == 1 ? "1 Product" : $"{PartType.NumProducts} Products")</span>
+        }
+    </div>
+</a>

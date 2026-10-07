@@ -1,0 +1,21 @@
+@* Home page garage: a 2-column grid of saved vehicles under the picker/picked block, capped at
+   two with a Show More/Less toggle. Reads the shared GarageState so it stays in sync with the
+   header (and vice-versa). Hidden when the garage is empty. *@
+@if (Garage.Vehicles.Count > 0)
+{
+    <section class="home-garage" aria-label="Your garage">
+        <div class="home-garage-grid">
+            @foreach (var vehicle in Visible)
+            {
+                <GarageVehicleCard @key="vehicle.Ukey" Vehicle="vehicle" />
+            }
+        </div>
+
+        @if (Garage.Vehicles.Count > CollapsedCount)
+        {
+            <button type="button" class="home-garage-toggle" @onclick="ToggleExpanded">
+                @(_expanded ? "SHOW LESS" : "SHOW MORE")
+            </button>
+        }
+    </section>
+}

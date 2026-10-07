@@ -1,0 +1,41 @@
+@* "People Also Bought" carousel. Uses the same ProductCard component as search/featured/recommended
+   for consistent styling and behavior. The track is a horizontally scrollable, snapping list —
+   the next/prev buttons drive native smooth scrolling rather than a JS carousel library,
+   so it degrades to a plain swipeable list on touch and needs no interop.
+
+   TODO (data): source is the product's cross-sell lookup. The scroll buttons need the
+   small JS shim noted below before they do anything. *@
+
+@if (Products.Count > 0)
+{
+    <section class="also-bought">
+        <h2 class="also-bought-heading">@Heading</h2>
+
+        <div class="also-bought-viewport">
+            <ul class="also-bought-track">
+                @foreach (var product in Products)
+                {
+                    <li class="also-bought-item">
+                        <ProductCard Title="@product.Title"
+                                     StockCode="@product.StockCode"
+                                     Price="@product.Price"
+                                     Url="@product.Url"
+                                     ImageUrl="@product.ImageUrl"
+                                     ShowAddToCart="true"
+                                     OnAddToCart="() => HandleAdd(product)" />
+                    </li>
+                }
+            </ul>
+
+            @* TODO: wire to a scrollBy() interop call — inert until then, so it's hidden
+               from assistive tech rather than advertised as a working control. *@
+            <button type="button"
+                    class="also-bought-next"
+                    aria-label="Show more products"
+                    tabindex="-1"
+                    aria-hidden="true">
+                <span aria-hidden="true">›</span>
+            </button>
+        </div>
+    </section>
+}

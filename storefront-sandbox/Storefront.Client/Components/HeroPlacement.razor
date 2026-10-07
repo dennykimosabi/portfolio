@@ -1,0 +1,27 @@
+@if (_loaded && _placement is { IsEmpty: false })
+{
+    var bgStyle = !string.IsNullOrWhiteSpace(_placement.ImageUrl)
+        ? $"background-image: url('{_placement.ImageUrl}');"
+        : null;
+
+    <section class="hero-placement" style="@bgStyle">
+        <div class="hero-placement-inner">
+            @if (!string.IsNullOrWhiteSpace(_placement.Title))
+            {
+                <h1 class="hero-placement-title">@((MarkupString)_placement.Title)</h1>
+            }
+            @if (!string.IsNullOrWhiteSpace(_placement.IntroTextSubTitle))
+            {
+                <div class="hero-placement-subtitle">@((MarkupString)_placement.IntroTextSubTitle)</div>
+            }
+            @if (!string.IsNullOrWhiteSpace(_placement.Text))
+            {
+                <div class="hero-placement-text">@((MarkupString)_placement.Text)</div>
+            }
+            @if (!string.IsNullOrWhiteSpace(_placement.TargetUrl) && !string.IsNullOrWhiteSpace(_placement.DisplayString))
+            {
+                <a class="hero-placement-cta" href="@_placement.TargetUrl">@_placement.DisplayString</a>
+            }
+        </div>
+    </section>
+}

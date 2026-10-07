@@ -1,0 +1,42 @@
+@if (_banner is not null
+     && string.Equals(_banner.BannerMode, "mainNav", StringComparison.OrdinalIgnoreCase)
+     && !_dismissed
+     && !_banner.IsEmpty)
+{
+    <section class="main-banner" role="status" aria-label="Site banner">
+        @if (!string.IsNullOrWhiteSpace(_banner.BannerTarget))
+        {
+            <a class="main-banner-link"
+               href="@_banner.BannerTarget"
+               target="@(_banner.BannerTargetLocation ?? string.Empty)">
+                <div class="main-banner-content">
+                    @if (!string.IsNullOrWhiteSpace(_banner.BannerTitle))
+                    {
+                        <span class="main-banner-title">@((MarkupString)_banner.BannerTitle)</span>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(_banner.BannerText))
+                    {
+                        <span class="main-banner-text">@((MarkupString)_banner.BannerText)</span>
+                    }
+                </div>
+            </a>
+        }
+        else
+        {
+            <div class="main-banner-content">
+                @if (!string.IsNullOrWhiteSpace(_banner.BannerTitle))
+                {
+                    <span class="main-banner-title">@((MarkupString)_banner.BannerTitle)</span>
+                }
+                @if (!string.IsNullOrWhiteSpace(_banner.BannerText))
+                {
+                    <span class="main-banner-text">@((MarkupString)_banner.BannerText)</span>
+                }
+            </div>
+        }
+        <button type="button"
+                class="main-banner-dismiss"
+                @onclick="HandleDismiss"
+                aria-label="Dismiss banner">&times;</button>
+    </section>
+}

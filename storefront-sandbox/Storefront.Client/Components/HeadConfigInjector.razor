@@ -1,0 +1,27 @@
+@* Lives inside MainLayout — i.e. inside the InteractiveWebAssembly render boundary.
+   Loading HeadConfig here (instead of in App.razor) ensures the IPlacementService /
+   IWebsiteSettingsService / ISessionStateProvider providers resolve in the interactive
+   scope, so their PersistentComponentState callbacks attach to the state container that
+   actually gets serialized into the HTML for WASM hydration.
+
+   Renders nothing inline — the favicon/stylesheets/scripts are pushed into <HeadOutlet />
+   via <HeadContent>, which sits in App.razor's <head>. The browser uses these in addition
+   to (and after) the default favicon, so the per-site favicon override wins. *@
+
+<HeadContent>
+    @if (_head is not null)
+    {
+        @if (!string.IsNullOrWhiteSpace(_head.Favicon))
+        {
+            <link rel="icon" href="@_head.Favicon" />
+        }
+        @foreach (var css in _head.Stylesheets)
+        {
+            <link rel="stylesheet" href="@css" />
+        }
+        @foreach (var script in _head.Scripts)
+        {
+            <script src="@script.Src" async="@script.Async" defer="@script.Defer"></script>
+        }
+    }
+</HeadContent>
