@@ -1,13 +1,20 @@
-<button type="@Type"
-        class="sf-button sf-button-@VariantClass sf-button-@SizeClass @Class"
-        disabled="@(Disabled || Loading)"
-        aria-disabled="@(Disabled || Loading)"
-        aria-busy="@Loading"
-        @onclick="HandleClick"
-        @attributes="AdditionalAttributes">
-    @if (Loading)
-    {
-        <span class="sf-button-spinner" aria-hidden="true"></span>
-    }
-    <span class="sf-button-content">@ChildContent</span>
-</button>
+@if (!string.IsNullOrEmpty(Href))
+{
+    <a href="@Href" target="@Target"
+       class="sf-button sf-button-@VariantClass sf-button-@SizeClass @Class"
+       aria-label="@AriaLabel"
+       aria-disabled="@IsDisabled"
+       @onclick="HandleClick"
+       @attributes="AdditionalAttributes">@ButtonContent</a>
+}
+else
+{
+    <button type="@TypeAttr"
+            class="sf-button sf-button-@VariantClass sf-button-@SizeClass @Class"
+            disabled="@IsDisabled"
+            aria-label="@AriaLabel"
+            aria-disabled="@IsDisabled"
+            aria-busy="@Loading"
+            @onclick="HandleClick"
+            @attributes="AdditionalAttributes">@ButtonContent</button>
+}
