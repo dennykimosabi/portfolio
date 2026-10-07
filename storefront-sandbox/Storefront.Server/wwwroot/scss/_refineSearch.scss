@@ -8,7 +8,7 @@
 .refine-search-heading {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--sf-color-text);
     margin: 0 0 1.25rem;
 }
 
@@ -28,7 +28,7 @@
 
 .refine-search-tile {
     display: block;
-    background: #fff;
+    background: var(--sf-color-bg);
     text-decoration: none;
     color: inherit;
     transition: transform 0.15s ease;
@@ -37,7 +37,7 @@
         transform: translateY(-2px);
 
         .refine-search-tile-title {
-            color: #2563a5;
+            color: var(--sf-color-primary);
         }
     }
 }
@@ -45,7 +45,7 @@
 .refine-search-tile-image {
     width: 100%;
     aspect-ratio: 4 / 3;
-    background: #f5f5f5;
+    background: var(--sf-color-bg-2);
     overflow: hidden;
 
     img {
@@ -60,7 +60,7 @@
     padding: 0.75rem 0;
     text-align: center;
     font-size: 0.875rem;
-    color: #1a1a1a;
+    color: var(--sf-color-text);
 }
 
 .refine-search-tile-title {
@@ -83,8 +83,8 @@
         position: relative;
         height: 411px;
         overflow: hidden;
-        background: #fff;
-        color: #fff;
+        background: var(--sf-color-bg);
+        color: var(--sf-color-text-inverse);
 
         &::after {
             content: '';
@@ -99,7 +99,7 @@
             transform: none;
 
             .refine-search-tile-title {
-                color: #fff;
+                color: var(--sf-color-text-inverse);
             }
         }
     }
@@ -125,20 +125,20 @@
         z-index: 2;
         padding: 1rem 1.25rem 1.125rem;
         text-align: left;
-        color: #fff;
+        color: var(--sf-color-text-inverse);
     }
 
     .refine-search-tile-title {
         font-size: 1rem;
         font-weight: 600;
-        color: #fff;
+        color: var(--sf-color-text-inverse);
         margin-bottom: 0.25rem;
     }
 
     .refine-search-tile-subtitle {
         margin-top: 0;
         font-size: 0.75rem;
-        color: #fff;
+        color: var(--sf-color-text-inverse);
         opacity: 0.92;
         line-height: 1.35;
 
@@ -166,16 +166,16 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.875rem 0.75rem;
-        background: #fff;
-        border: 1px solid #e0e0e0;
+        background: var(--sf-color-bg);
+        border: 1px solid var(--sf-color-border-light);
         border-radius: 3px;
-        color: #1a1a1a;
+        color: var(--sf-color-text);
         text-decoration: none;
         transition: border-color 0.15s ease, color 0.15s ease;
 
         &:hover {
-            border-color: #888;
-            color: #2563a5;
+            border-color: var(--sf-color-border-strong);
+            color: var(--sf-color-primary);
         }
 
         img {
