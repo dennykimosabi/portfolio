@@ -1,0 +1,229 @@
+@page "/search"
+
+<PageTitle>Search Results</PageTitle>
+
+<div class="search-page">
+<SearchToolbar FitmentString="@_fitmentString"
+               CatalogCount="1456"
+               CatalogTermLabel="Brake System"
+               IsGridView="_isGridView"
+               ShowSidebar="_showSidebar"
+               FilterCount="_filterCount"
+               SortOrder="@(SortOrder ?? "relevance")"
+               OnSetListView="SetListView"
+               OnSetGridView="SetGridView"
+               OnShowSidebarChanged="OnSidebarVisibilityChanged"
+               OnSortOrderChanged="OnSortOrderChanged" />
+
+<div class="search-body @(!_showSidebar ? "search-body--no-sidebar" : "")">
+    @if (_showSidebar)
+    {
+    <aside class="search-sidebar">
+        <section class="sidebar-section">
+            <header class="sidebar-section-header">
+                <h3>Active Filters <span class="collapse-indicator">(-)</span></h3>
+                @if (HasAnyFitment)
+                {
+                    <a href="#" class="clear-all-link" @onclick="ClearAllFilters" @onclick:preventDefault>Clear All</a>
+                }
+            </header>
+            <ActiveFiltersChips Year="EffectiveYear"
+                                UkeyMake="EffectiveUkeyMake"
+                                UkeyModel="EffectiveUkeyModel"
+                                UkeyDriveline="EffectiveUkeyDriveLine"
+                                UkeyTrimLevel="EffectiveUkeyTrimLevel"
+                                UkeyCategory="EffectiveUkeyCategory"
+                                MakeName="@MakeName"
+                                ModelName="@ModelName"
+                                DrivelineName="@DrivelineName"
+                                TrimLevelName="@TrimLevelName"
+                                CategoryName="@CategoryName"
+                                OnRemoveYear="RemoveYear"
+                                OnRemoveMake="RemoveMake"
+                                OnRemoveModel="RemoveModel"
+                                OnRemoveDriveline="RemoveDriveline"
+                                OnRemoveTrim="RemoveTrim"
+                                OnRemoveCategory="RemoveCategory" />
+        </section>
+
+        <section class="sidebar-section">
+            <header class="sidebar-section-header">
+                <h3>Refine Search</h3>
+            </header>
+            <div class="sidebar-row">
+                <label for="category-select">Category</label>
+                <div class="sidebar-select">
+                    <select id="category-select" aria-label="Category" @bind="_selectedUkeyCategory" @bind:after="OnCategoryChanged">
+                        <option value="0">All Categories</option>
+                        @if (_categories is not null)
+                        {
+                            @foreach (var c in _categories)
+                            {
+                                <option value="@c.Ukey">@c.CategoryName</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="sidebar-row">
+                <form class="sidebar-search" @onsubmit="OnRefineKeywordsSubmit" @onsubmit:preventDefault>
+                    <input type="text"
+                           class="sidebar-search-input"
+                           placeholder="Keywords, Part Numbers or Full VIN"
+                           aria-label="Refine keywords"
+                           @bind="_keywordInput"
+                           @bind:event="oninput" />
+                    <button type="submit" class="sidebar-search-btn" aria-label="Refine search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="sidebar-section">
+            <header class="sidebar-section-header">
+                <h3>Your Vehicle</h3>
+            </header>
+            @* Display-only summary. Removal lives in the Active Filters chips above. *@
+            @if (!string.IsNullOrWhiteSpace(CurrentVehicleLabel))
+            {
+                <div class="sidebar-row">
+                    <span class="row-label">Current Vehicle</span>
+                    <span class="row-value vehicle-name">@CurrentVehicleLabel</span>
+                </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(DrivelineName))
+            {
+                <div class="sidebar-row">
+                    <span class="row-label">Driveline</span>
+                    <span class="row-value">@DrivelineName</span>
+                </div>
+            }
+            @if (!string.IsNullOrWhiteSpace(TrimLevelName))
+            {
+                @* TODO: honor Website.Settings.trimLevelTerm override (e.g. "Sub-model") once website-settings service exposes it. *@
+                <div class="sidebar-row">
+                    <span class="row-label">Trim Level</span>
+                    <span class="row-value">@TrimLevelName</span>
+                </div>
+            }
+        </section>
+
+        <section class="sidebar-section">
+            <header class="sidebar-section-header">
+                <h3>More Savings</h3>
+            </header>
+            <label class="sidebar-checkbox">
+                <input type="checkbox" /> Free Shipping
+            </label>
+            <label class="sidebar-checkbox">
+                <input type="checkbox" /> Items + Special Offers
+            </label>
+        </section>
+    </aside>
+    }
+
+    <div class="search-main">
+        @if (_isSearching)
+        {
+            <LoadingIndicator Text="Loading results…" />
+        }
+
+        @* Legacy gate (productSearch.aspx.cs:147 + :498-505 + :791):
+             Website.Settings.ShowAssemblySearch     — dealer-level disable, now honored.
+             AND (category > 0 OR search term)      — sproc returns empty when neither, so the
+                                                       hide-if-empty check below covers this.
+             AND e.AffectedRows > 0                  — hide-if-empty.
+           DisplayFeaturedAccessories isn't ported yet (no featured-accessories flow on the new stack). *@
+        @if (!_isSearching && _websiteSettings?.ShowAssemblySearch == true && _assemblies is { Count: > 0 })
+        {
+            <section class="matching-assemblies">
+                <h2 class="search-section-title">Matching Assemblies</h2>
+                <div class="assembly-grid">
+                    @foreach (var assembly in _assemblies)
+                    {
+                        <a href="@assembly.AssemblyURL" title="@assembly.AssemblyName" class="assembly-card">
+                            <div class="assembly-image-wrap">
+                                @if (!string.IsNullOrWhiteSpace(assembly.ThumbnailURL))
+                                {
+                                    <img src="@assembly.ThumbnailURL" alt="@assembly.AssemblyName" />
+                                }
+                            </div>
+                            <span class="assembly-label">@assembly.AssemblyDescription</span>
+                        </a>
+                    }
+                </div>
+            </section>
+        }
+
+        @if (!_isSearching && _results is not null)
+        {
+            <section class="matching-products">
+                <h2 class="search-section-title">Matching Products</h2>
+                @if (_isGridView)
+                {
+                    <ProductGrid Results="_results" OnAddToCart="HandleAddToCart" />
+                }
+                else
+                {
+                    <ul class="product-list">
+                        @foreach (var result in _results)
+                        {
+                            <li class="product-row">
+                                <div class="product-image-wrap">
+                                    @if (!string.IsNullOrWhiteSpace(result.ThumbnailURL))
+                                    {
+                                        <img src="@result.ThumbnailURL" alt="@result.ProductDescription" />
+                                    }
+                                </div>
+                                <div class="product-details">
+                                    <a href="@result.ProductURL" class="product-title">@result.ProductDescription</a>
+                                    <p class="product-meta"><span class="meta-label">Part #:</span> @result.StockCode</p>
+                                    @if (!string.IsNullOrWhiteSpace(result.CategoryList))
+                                    {
+                                        <p class="product-meta"><span class="meta-label">Category:</span> @HtmlHelper.StripHtml(result.CategoryList)</p>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(result.AdditionalDescription))
+                                    {
+                                        <p class="product-description">@result.AdditionalDescription</p>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(result.AssemblyList))
+                                    {
+                                        <p class="product-meta"><span class="meta-label">Assemblies:</span> @HtmlHelper.StripHtml(result.AssemblyList)</p>
+                                    }
+                                </div>
+                                <div class="product-actions">
+                                    <p class="product-price">@result.Price.ToString("C")</p>
+                                    <div class="product-action-buttons">
+                                        <a href="@result.ProductURL" class="view-product-btn">View Product</a>
+                                        <button type="button" class="add-to-cart-btn" aria-label="Add to cart" @onclick="() => HandleAddToCart(result)">
+                                            <img src="/imgs/cart-add-primary.png" alt="" />
+                                        </button>
+                                    </div>
+                                    <p class="product-meta"><span class="meta-label">Additional Images</span></p>
+                                    @if (_additionalImages.TryGetValue(result.Ukey, out var images) && images.Count > 0)
+                                    {
+                                        <div class="product-additional-images">
+                                            @foreach (var img in images)
+                                            {
+                                                <a href="@result.ProductURL" class="additional-image-thumb">
+                                                    <img src="@img.RawThumbnailURL" alt="@img.ImageName" loading="lazy" />
+                                                </a>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </section>
+        }
+    </div>
+</div>
+
+</div>
+
