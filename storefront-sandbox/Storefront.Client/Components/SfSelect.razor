@@ -1,0 +1,52 @@
+<div class="sf-field @Class" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="sf-field-label" for="@_id">@Label</label>
+    }
+    <select id="@_id"
+            class="sf-select"
+            disabled="@Disabled"
+            @bind="Value">
+        @if (!string.IsNullOrEmpty(Placeholder))
+        {
+            <option value="">@Placeholder</option>
+        }
+        @foreach (var opt in Options)
+        {
+            <option value="@opt.Value">@opt.Text</option>
+        }
+    </select>
+</div>
+
+@code {
+    private readonly string _id = $"sf-select-{Guid.NewGuid():N}";
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    /// <summary>Label text. Renders a linked &lt;label&gt; when set.</summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>Selected value. Supports two-way binding.</summary>
+    [Parameter] public string Value { get; set; } = string.Empty;
+
+    /// <summary>Invoked when the selection changes.</summary>
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    /// <summary>Placeholder option shown when nothing is selected.</summary>
+    [Parameter] public string? Placeholder { get; set; }
+
+    /// <summary>Selectable options.</summary>
+    [Parameter] public IReadOnlyList<SfSelectOption> Options { get; set; } = [];
+
+    /// <summary>Disables the select.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>A select option.</summary>
+    /// <param name="Value">Option value.</param>
+    /// <param name="Text">Display text.</param>
+    public sealed record SfSelectOption(string Value, string Text);
+}

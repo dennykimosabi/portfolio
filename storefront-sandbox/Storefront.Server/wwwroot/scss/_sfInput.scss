@@ -1,0 +1,62 @@
+// ─── SfInput / SfSelect: form fields ──────────────────────────────────────
+
+.sf-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sf-space-1);
+    min-width: 0;
+}
+
+.sf-field-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--sf-color-text-2);
+}
+
+.sf-input,
+.sf-select {
+    font-family: inherit;
+    font-size: 0.875rem;
+    color: var(--sf-color-text);
+    background: var(--sf-color-bg);
+    border: 1px solid var(--sf-color-border);
+    border-radius: var(--sf-radius-sm);
+    padding: var(--sf-space-2) var(--sf-space-3);
+    min-width: 0;
+
+    &::placeholder {
+        color: var(--sf-color-text-muted);
+    }
+
+    &:focus {
+        outline: 2px solid var(--sf-color-primary);
+        outline-offset: 1px;
+        border-color: var(--sf-color-primary);
+    }
+
+    &:disabled {
+        background: var(--sf-color-bg-2);
+        color: var(--sf-color-text-muted);
+        cursor: not-allowed;
+    }
+}
+
+.sf-input.is-invalid {
+    border-color: var(--sf-color-danger);
+
+    &:focus {
+        outline-color: var(--sf-color-danger);
+    }
+}
+
+.sf-field-error {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--sf-color-danger);
+}
+
+.sf-field-hint {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--sf-color-text-muted);
+}

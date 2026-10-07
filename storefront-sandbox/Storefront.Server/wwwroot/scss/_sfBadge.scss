@@ -1,0 +1,81 @@
+// ─── SfBadge: status pill ─────────────────────────────────────────────────
+// Variants: default | primary | success | warning | danger
+
+.sf-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sf-space-1);
+    padding: 2px var(--sf-space-2);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    border-radius: var(--sf-radius-pill);
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.sf-badge-default {
+    background: var(--sf-color-bg-2);
+    border-color: var(--sf-color-border);
+    color: var(--sf-color-text-2);
+}
+
+.sf-badge-primary {
+    background: #eaf2fb;
+    border-color: #cfe0f5;
+    color: var(--sf-color-primary);
+}
+
+.sf-badge-success {
+    background: #eaf6ed;
+    border-color: #c7e5d1;
+    color: var(--sf-color-success);
+}
+
+.sf-badge-warning {
+    background: #fef6e0;
+    border-color: #f5dfa8;
+    color: #92680f;
+}
+
+.sf-badge-danger {
+    background: #fdeeee;
+    border-color: #f5c6c6;
+    color: var(--sf-color-danger);
+}
+
+// ─── SfChip: removable filter chip ────────────────────────────────────────
+
+.sf-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sf-space-2);
+    padding: var(--sf-space-1) var(--sf-space-2);
+    background: var(--sf-color-bg-2);
+    border: 1px solid var(--sf-color-border);
+    border-radius: var(--sf-radius-pill);
+    font-size: 0.75rem;
+    color: var(--sf-color-text-2);
+}
+
+.sf-chip-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: none;
+    border-radius: var(--sf-radius-full);
+    background: var(--sf-color-border);
+    color: var(--sf-color-text-2);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+
+    &:hover {
+        background: var(--sf-color-border-strong);
+        color: var(--sf-color-text-inverse);
+    }
+}
