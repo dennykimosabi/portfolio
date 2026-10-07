@@ -1,0 +1,8 @@
+// ─── SfIcon: Remix Icon defaults ──────────────────────────────────────────
+// The Remix Icon font is loaded site-wide (see App.razor). Icons size with
+// font-size; this just fixes baseline alignment for inline use.
+
+[class^="ri-"],
+[class*=" ri-"] {
+    vertical-align: -0.125em;
+}
