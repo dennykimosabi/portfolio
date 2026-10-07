@@ -4,7 +4,7 @@
 
 @if (Products.Count > 0)
 {
-    <section class="related-products">
+    <section class="related-products @Class" @attributes="AdditionalAttributes">
         <h2 class="related-products-heading">@Heading</h2>
 
         <div class="related-products-viewport">

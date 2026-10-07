@@ -7,7 +7,7 @@
    TODO (data): price/MSRP/availability come from the product detail record. Estimate
    Shipping needs the shipping-rate call; Add to Cart and Buy Now need ICartService. *@
 
-<div class="price-box">
+<div class="price-box @Class" @attributes="AdditionalAttributes">
     <div class="price-box-row">
         <span class="price-box-label">Your Price</span>
         <span class="price-box-price">@Price.ToString("C")</span>

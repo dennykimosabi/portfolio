@@ -1,6 +1,6 @@
 @if (_loaded && _testimonials is { Count: > 0 })
 {
-    <section class="reviews-panel" aria-label="Customer reviews">
+    <section class="reviews-panel @Class" @attributes="AdditionalAttributes" aria-label="Customer reviews">
         <header class="reviews-panel-header">
             <h2 class="reviews-panel-title">Reviews</h2>
             @if (_average is not null && _average.ReviewCount > 0)

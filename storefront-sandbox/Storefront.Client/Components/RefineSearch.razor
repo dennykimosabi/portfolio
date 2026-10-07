@@ -3,7 +3,7 @@
     @* Compact list of fitment-refinement links (e.g. "Shop by Year" → year tiles). *@
     @if (Results is { Count: > 0 })
     {
-        <section class="refine-search refine-search-links" aria-label="@Heading">
+        <section class="refine-search refine-search-links @Class" @attributes="AdditionalAttributes" aria-label="@Heading">
             @if (!string.IsNullOrWhiteSpace(Heading))
             {
                 <h2 class="refine-search-heading">@((MarkupString)Heading)</h2>

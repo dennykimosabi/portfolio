@@ -11,7 +11,7 @@
 <AccordionSection Title="Product Information" Expanded="true">
     @if (Tags.Count > 0)
     {
-        <ul class="product-information-tags">
+        <ul class="product-information-tags @Class" @attributes="AdditionalAttributes">
             @foreach (var tag in Tags)
             {
                 <li class="product-information-tag @TagModifier(tag)">
