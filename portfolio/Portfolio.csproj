@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    Denny Kim's portfolio site — a Design-OS-style showcase built around his real
+    Storefront.Client Blazor components.
+
+    The .razor / .razor.cs files are compiled straight from
+    ../storefront-sandbox/Storefront.Client (linked, not copied), so edits there
+    show up here on the next build. The shared-model / service / state layers those
+    components depend on are stubbed under Stubs/ and backed by in-memory dummy
+    data under Demo/ (both adapted from the proven Storefront.Preview harness).
+
+    Local-friendly on purpose: net9.0 + InteractiveServer, no NuGet packages.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>Storefront.Client</RootNamespace>
+    <AssemblyName>Portfolio</AssemblyName>
+    <!-- Nullable-flow noise from the stubbed models; the client code itself is unchanged. -->
+    <NoWarn>$(NoWarn);CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8619;CS8625;CS1998;BL0005</NoWarn>
+    <ClientDir>../storefront-sandbox/Storefront.Client/</ClientDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="$(ClientDir)Components/**/*.razor" Link="Components/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+    <Content Include="$(ClientDir)Layout/**/*.razor" Link="Layout/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
+    <Compile Include="$(ClientDir)Components/**/*.cs" Link="Components/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,39 @@
+@inherits LayoutComponentBase
+
+<div class="pf-shell">
+    <aside class="pf-sidebar" aria-label="Portfolio navigation">
+        <a class="pf-brand" href="">
+            <span class="pf-brand-mark">DK</span>
+            <span class="pf-brand-text">
+                <strong>Denny Kim</strong>
+                <small>Design OS</small>
+            </span>
+        </a>
+        <nav class="pf-nav">
+            <NavLink class="pf-nav-item" href="" Match="NavLinkMatch.All">
+                <span class="pf-nav-icon">&#8962;</span> Home
+            </NavLink>
+            <NavLink class="pf-nav-item" href="workshop">
+                <span class="pf-nav-icon">&#9638;</span> Workshop
+            </NavLink>
+            <NavLink class="pf-nav-item" href="build-log">
+                <span class="pf-nav-icon">&#9776;</span> Build log
+            </NavLink>
+            <NavLink class="pf-nav-item" href="experiments">
+                <span class="pf-nav-icon">&#9734;</span> Experiments
+            </NavLink>
+            <NavLink class="pf-nav-item" href="archive">
+                <span class="pf-nav-icon">&#9783;</span> Archive
+            </NavLink>
+            <NavLink class="pf-nav-item" href="about">
+                <span class="pf-nav-icon">&#9786;</span> About
+            </NavLink>
+        </nav>
+        <div class="pf-sidebar-foot">
+            <small>Built with Blazor +<br />AI-assisted development</small>
+        </div>
+    </aside>
+    <main class="pf-main">
+        @Body
+    </main>
+</div>

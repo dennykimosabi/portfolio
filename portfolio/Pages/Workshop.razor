@@ -1,0 +1,670 @@
+@page "/workshop"
+
+@implements IDisposable
+@using Portfolio.Demo
+@inject VehicleFitmentState FitmentState
+@inject CartState CartState
+
+@* Preview-only gallery: every Storefront.Client component rendered on its own, against the demo
+   services. Service-driven components fetch their own (dummy) data; parameter-driven ones get
+   sample values defined in @code below. *@
+
+<PageTitle>Workshop · Denny Kim</PageTitle>
+
+<div class="pv-gallery">
+    <aside class="pv-nav" aria-label="Components">
+        <p class="pv-nav-title">Storefront components</p>
+        @foreach (var group in NavGroups)
+        {
+            <p class="pv-nav-group">@group.Title</p>
+            <ul>
+                @foreach (var (id, label) in group.Items)
+                {
+                    <li><a href="@($"/workshop#{id}")">@label</a></li>
+                }
+            </ul>
+        }
+    </aside>
+
+    <div class="pv-main">
+        <header class="pv-intro">
+            <h1>Component workshop</h1>
+            <p>
+                Live <code>Storefront.Client</code> components compiled from <code>..\Storefront.Client</code>, backed by
+                in-memory dummy data. Service-driven components (RefineSearch, VehiclePicker, AssemblyResults, …) react to the
+                active fitment — switch it with the presets below. Use the <strong>Preview</strong> pill (bottom-left) to open the full pages.
+            </p>
+        </header>
+
+        <div class="pv-fitment-bar" role="group" aria-label="Fitment presets">
+            <span class="pv-fitment-label">Active fitment: <strong>@CurrentFitmentLabel</strong></span>
+            <div class="pv-fitment-presets">
+                @foreach (var preset in Presets)
+                {
+                    <button type="button" class="pv-chip @(IsActive(preset) ? "is-active" : null)" @onclick="() => Apply(preset)">@preset.Label</button>
+                }
+            </div>
+        </div>
+
+        @* ───────────────────────── Browse ───────────────────────── *@
+
+        <GallerySection Id="refine-search-categories" Title="Refine Search — Categories" Component="@("<RefineSearch Mode=\"RefineSearchMode.Categories\" />")" Wide="true">
+            <Description>Tile grid used for "Shop Parts by Category" on Home. Tile links include the active vehicle — pick a preset and hover a tile to see the URL change.</Description>
+            <ChildContent>
+                <RefineSearch @key="@("g-rs-categories")" Mode="RefineSearchMode.Categories" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="refine-search-accessories" Title="Refine Search — Accessory Categories" Component="@("<RefineSearch Mode=\"RefineSearchMode.AccessoryCategories\" UseAccessoryLinks=\"true\" />")" Wide="true">
+            <Description>Gradient-overlay tile style with the "View All Accessories" featured tile (FeaturedDefault placement) prepended.</Description>
+            <ChildContent>
+                <RefineSearch @key="@("g-rs-accessories")" Mode="RefineSearchMode.AccessoryCategories" UseAccessoryLinks="true" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="refine-search-accessories-page" Title="Refine Search — Accessories page variant" Component="@("<RefineSearch Mode=\"AccessoryCategories\" ShowFeaturedTile=\"false\" StyleVariant=\"accessorycategories\" … />")" Wide="true">
+            <Description>How <code>/accessories</code> uses it: no featured tile, custom heading placement.</Description>
+            <ChildContent>
+                <RefineSearch @key="@("g-rs-accessories-page")" Mode="RefineSearchMode.AccessoryCategories" PageUrl="/accessories" PlacementKey="AccessoriesCategoryHeader" StyleVariant="accessorycategories" ShowFeaturedTile="false" UseAccessoryLinks="true" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="refine-search-links" Title="Refine Search — Links" Component="@("<RefineSearch Mode=\"RefineSearchMode.Links\" />")" Wide="true">
+            <Description>Compact fitment-refinement links. The heading follows the first row's ClassName: no vehicle → "Shop by Model", vehicle without trim → "Shop by Trim Level", full vehicle → "Shop by Year".</Description>
+            <ChildContent>
+                <RefineSearch @key="@("g-rs-links")" Mode="RefineSearchMode.Links" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="vehicle-picker-inline" Title="Vehicle Picker — Inline" Component="@("<VehiclePicker Layout=\"VehiclePickerLayout.Inline\" PlacementKey=\"VehiclePickerHeading\" />")" Wide="true">
+            <Description>Year → Model → Driveline → Trim cascade. Completing it sets the fitment and navigates to the vehicle's storefront URL (leaves this page).</Description>
+            <ChildContent>
+                <VehiclePicker @key="@("g-vp-inline")" Layout="VehiclePickerLayout.Inline" PlacementKey="VehiclePickerHeading" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="vehicle-picker-panel" Title="Vehicle Picker — Panel (header)" Component="@("<VehiclePicker Layout=\"VehiclePickerLayout.Panel\" />")">
+            <Description>Button + dropdown. Opens to the saved garage when there is one, otherwise straight to the dropdowns.</Description>
+            <ChildContent>
+                <div class="pv-panel-host">
+                    <VehiclePicker @key="@("g-vp-panel")" Layout="VehiclePickerLayout.Panel" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="vehicle-picked" Title="Vehicle Picked" Component="@("<VehiclePicked />")" Wide="true">
+            <Description>Replaces the inline picker once a vehicle is chosen. Title/image/text come from the fitment-keyed VehiclePickerHeading placement — pick a vehicle preset to see it populate.</Description>
+            <ChildContent>
+                <VehiclePicked @key="@("g-vp-picked")" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="home-garage" Title="Home Garage + Garage Vehicle Card" Component="@("<HomeGarage /> · <GarageVehicleCard />")" Wide="true">
+            <Description>Saved vehicles (seeded with three) with Show More/Less. Rename (pencil) and remove (trash) work against the in-memory garage; the row matching the active fitment is highlighted.</Description>
+            <ChildContent>
+                <HomeGarage />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="hero-placement" Title="Hero Placement" Component="@("<HeroPlacement />")" Wide="true">
+            <Description>HeroArea placement. Re-fetches on fitment change — the title switches to the chosen vehicle.</Description>
+            <ChildContent>
+                <HeroPlacement />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="assembly-results" Title="Assembly Results" Component="@("<AssemblyResults />")" Wide="true">
+            <Description>Only renders once a category is active. Use the <em>+ Brakes category</em> preset. Try the keyword filter box.</Description>
+            <ChildContent>
+                <AssemblyResults />
+                @if (FitmentState.UkeyCategory is not > 0)
+                {
+                    <p class="pv-empty">Nothing to show — select a parts category preset (e.g. <em>+ Brakes category</em>).</p>
+                }
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="assembly-card" Title="Assembly Card · Part Type Card" Component="@("<AssemblyCard /> · <PartTypeCard />")">
+            <Description>The two tiles AssemblyResults renders, shown standalone with sample data.</Description>
+            <ChildContent>
+                <div class="assembly-results">
+                    <div class="assembly-results-body">
+                        <div class="assembly-list">
+                            <ul class="assembly-list-items">
+                                @foreach (var assembly in _sampleAssemblies.Assemblies.Take(2))
+                                {
+                                    <li class="assembly-list-item"><AssemblyCard Assembly="assembly" /></li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="part-type-list">
+                            <ul class="part-type-list-items">
+                                @foreach (var partType in _sampleAssemblies.PartTypes.Take(2))
+                                {
+                                    <li class="part-type-list-item"><PartTypeCard PartType="partType" /></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="accessory-results" Title="Accessory Results" Component="@("<AccessoryResults />")" Wide="true">
+            <Description>Needs a vehicle <em>and</em> a category. Use the <em>+ Cargo &amp; Storage</em> preset.</Description>
+            <ChildContent>
+                <AccessoryResults />
+                @if (!FitmentState.HasVehicle || FitmentState.UkeyCategory is not > 0)
+                {
+                    <p class="pv-empty">Nothing to show — select the <em>+ Cargo &amp; Storage</em> preset.</p>
+                }
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="placement-content" Title="Placement Content" Component="@("<PlacementContent PlacementKey=\"HomeAccessories\" ClassName=\"LifestylePromoContainer\" />")" Wide="true">
+            <ChildContent>
+                <PlacementContent PlacementKey="HomeAccessories" ClassName="LifestylePromoContainer" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="extra-home-content" Title="Extra Home Content" Component="@("<ExtraHomeContent />")" Wide="true">
+            <ChildContent>
+                <ExtraHomeContent />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="featured-products" Title="Featured Products" Component="@("<FeaturedProducts />")" Wide="true">
+            <ChildContent>
+                <FeaturedProducts />
+            </ChildContent>
+        </GallerySection>
+
+        @* ───────────────────────── Search ───────────────────────── *@
+
+        <GallerySection Id="search-toolbar" Title="Search Toolbar" Component="@("<SearchToolbar />")">
+            <Description>Parameter-driven; callbacks are wired to local state here. Last callback: <code>@_toolbarEvent</code></Description>
+            <ChildContent>
+                <div class="search-page">
+                    <SearchToolbar FitmentString="2024 Volvo XC40 AWD Plus"
+                                   CatalogCount="1456"
+                                   CatalogTermLabel="Brake System"
+                                   IsGridView="_toolbarGrid"
+                                   ShowSidebar="_toolbarSidebar"
+                                   FilterCount="3"
+                                   SortOrder="@_toolbarSort"
+                                   OnSetListView="@(() => Toolbar("OnSetListView", () => _toolbarGrid = false))"
+                                   OnSetGridView="@(() => Toolbar("OnSetGridView", () => _toolbarGrid = true))"
+                                   OnShowSidebarChanged="@((bool show) => Toolbar($"OnShowSidebarChanged({show})", () => _toolbarSidebar = show))"
+                                   OnSortOrderChanged="@((string sort) => Toolbar($"OnSortOrderChanged({sort})", () => _toolbarSort = sort))" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="active-filters" Title="Active Filters Chips" Component="@("<ActiveFiltersChips />")">
+            <Description>Click × to remove a chip. <button type="button" class="pv-link-button" @onclick="ResetChips">Reset chips</button></Description>
+            <ChildContent>
+                <div class="search-page">
+                    <aside class="search-sidebar pv-sidebar-sample">
+                        <ActiveFiltersChips Year="_chipYear" UkeyMake="_chipMake" UkeyModel="_chipModel"
+                                            UkeyDriveline="_chipDriveline" UkeyTrimLevel="_chipTrim" UkeyCategory="_chipCategory"
+                                            MakeName="Volvo" ModelName="XC40" DrivelineName="AWD" TrimLevelName="Plus" CategoryName="Brakes"
+                                            OnRemoveYear="@(() => _chipYear = 0)"
+                                            OnRemoveMake="@(() => _chipMake = 0)"
+                                            OnRemoveModel="@(() => _chipModel = 0)"
+                                            OnRemoveDriveline="@(() => _chipDriveline = 0)"
+                                            OnRemoveTrim="@(() => _chipTrim = 0)"
+                                            OnRemoveCategory="@(() => _chipCategory = 0)" />
+                    </aside>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="product-grid" Title="Product Grid" Component="@("<ProductGrid />")">
+            <Description>Maps ProductSearchResult rows onto ProductCard. Add to Cart updates the cart (count shows in the header's cart widget). @_cartMessage</Description>
+            <ChildContent>
+                <div class="search-page">
+                    <ProductGrid Results="_gridProducts" OnAddToCart="AddSearchResultToCart" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="product-card" Title="Product Card" Component="@("<ProductCard />")">
+            <Description>With and without the Add to Cart button, and with no image.</Description>
+            <ChildContent>
+                <div class="product-grid">
+                    <ProductCard Title="Cargo Area Organizer" StockCode="VA-90011" Price="86.40m" Url="/product/VA-90011/cargo-area-organizer" ImageUrl="@_cardImage" />
+                    <ProductCard Title="Front Brake Pad Set" StockCode="VP-10421" Price="89.95m" Url="/product/VP-10421/front-brake-pad-set" ImageUrl="@_cardImage2" ShowAddToCart="false" />
+                    <ProductCard Title="Product with no image" StockCode="VP-00000" Price="12.00m" Url="#" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        @* ───────────────────────── Product page ───────────────────────── *@
+
+        <GallerySection Id="guided-navigation" Title="Guided Navigation" Component="@("<GuidedNavigation />")" Wide="true">
+            <Description>Fitment-aware PDP header. Wired to the active fitment here — switch presets to flip between "fits" and "does this fit?".</Description>
+            <ChildContent>
+                <div class="product-page">
+                    <GuidedNavigation UkeyProduct="2001"
+                                      PageUrl="/product/VA-90011/cargo-area-organizer"
+                                      UkeyMake="FitmentState.UkeyMake"
+                                      UkeyModel="FitmentState.UkeyModel"
+                                      ModelYear="FitmentState.Year"
+                                      UkeyDriveline="FitmentState.UkeyDriveline"
+                                      UkeyTrimLevel="FitmentState.UkeyTrimLevel" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="fitment-banner" Title="Product Fitment Banner" Component="@("<ProductFitmentBanner />")">
+            <Description>Not currently used by Product.razor, shown in both states. Last callback: <code>@_bannerEvent</code></Description>
+            <ChildContent>
+                <div class="pv-stack">
+                    <ProductFitmentBanner Fits="true" VehicleDescription="2024 Volvo XC40 AWD Plus"
+                                          OnMoreProducts="@(() => _bannerEvent = "OnMoreProducts")"
+                                          OnChangeVehicle="@(() => _bannerEvent = "OnChangeVehicle")" />
+                    <ProductFitmentBanner Fits="false"
+                                          OnMoreProducts="@(() => _bannerEvent = "OnMoreProducts")"
+                                          OnChangeVehicle="@(() => _bannerEvent = "OnChangeVehicle")" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="product-gallery" Title="Product Gallery" Component="@("<ProductGallery />")">
+            <Description>Five images + seven empty slots (placeholders), so the strip shows nine thumbnails and a "3 More" tile.</Description>
+            <ChildContent>
+                <div class="pv-narrow">
+                    <section class="product-panel product-summary">
+                        <ProductGallery Images="_galleryImages" AltText="Cargo Area Organizer" />
+                    </section>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="price-box" Title="Product Price Box" Component="@("<ProductPriceBox />")">
+            <Description>Try the ZIP edit, Deliver/Pick Up toggle, quantity stepper and Estimate Shipping. Quantity = @_quantity · last action: <code>@_priceBoxEvent</code></Description>
+            <ChildContent>
+                <div class="pv-narrow">
+                    <section class="product-panel product-buy">
+                        <ProductPriceBox Price="86.40m"
+                                         Msrp="99.99m"
+                                         DealerRating="4.5m"
+                                         SavingsText="All Discounts $13.59 (14%)"
+                                         PriceBoxMessage="Prices shown are <strong>dealer prices</strong> and may differ from MSRP."
+                                         Availability="AvailabilityLevel.InStock"
+                                         AvailabilityText="In Stock"
+                                         Delivery="_delivery"
+                                         Pickup="_pickup"
+                                         IsEstimatingShipping="_estimating"
+                                         ShippingEstimateText="@_estimateText"
+                                         OnEstimateShipping="EstimateShippingAsync"
+                                         OnZipCodeChanged="ZipChanged"
+                                         OnAddToCart="@(() => _priceBoxEvent = $"OnAddToCart (qty {_quantity})")"
+                                         OnBuyNow="@(() => _priceBoxEvent = "OnBuyNow")"
+                                         @bind-Quantity="_quantity" />
+                    </section>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="dealer-info" Title="Dealer Info Card" Component="@("<DealerInfoCard />")">
+            <ChildContent>
+                <div class="pv-narrow">
+                    <section class="product-panel">
+                        <DealerInfoCard Dealer="_dealer" WarrantyUrl="#" ReturnPolicyUrl="/policy" />
+                    </section>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="product-information" Title="Product Information" Component="@("<ProductInformation />")">
+            <Description>Tags are data rows (the Prop 65 warning is just one tag), then features, note and supersessions.</Description>
+            <ChildContent>
+                <div class="product-panel product-sections">
+                    <ProductInformation Tags="_tags" Features="_features" Note="All w/ Carpeted Cargo Area Mat/Protector" Supersessions="_supersessions" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="accordion" Title="Accordion Section" Component="@("<AccordionSection />")">
+            <Description>Plain meta text, markup meta (star rating), and a two-way bound instance (expanded = @_accordionOpen).</Description>
+            <ChildContent>
+                <div class="product-panel product-sections">
+                    <AccordionSection Title="What This Fits" Meta="4 Vehicles">
+                        <p>2020–2025 Volvo XC40, XC60, XC90 and S60.</p>
+                    </AccordionSection>
+                    <AccordionSection Title="Product Reviews" MetaContent="_ratingMeta">
+                        <p>Reviews render here.</p>
+                    </AccordionSection>
+                    <AccordionSection Title="Bound section" Meta="@(_accordionOpen ? "open" : "closed")" @bind-Expanded="_accordionOpen">
+                        <p>The parent observes this section's state through <code>@@bind-Expanded</code>.</p>
+                    </AccordionSection>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="related-products" Title="Related Products" Component="@("<RelatedProducts />")">
+            <Description>Three per page with prev/next arrows. @_cartMessage</Description>
+            <ChildContent>
+                <div class="product-page">
+                    <div class="product-panel">
+                        <RelatedProducts Products="_related" OnAddToCart="AddRelatedToCart" />
+                    </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="also-bought" Title="People Also Bought" Component="@("<PeopleAlsoBought />")">
+            <ChildContent>
+                <div class="product-page">
+                    <div class="product-panel">
+                        <PeopleAlsoBought Products="_alsoBought" OnAddToCart="AddRelatedToCart" />
+                    </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="star-rating" Title="Star Rating" Component="@("<StarRating />")">
+            <ChildContent>
+                <div class="pv-stack">
+                    <StarRating Rating="5m" Label="5 (full)" />
+                    <StarRating Rating="4.5m" Label="4.5 (half star)" />
+                    <StarRating Rating="3.2m" Label="3.2" />
+                    <StarRating Rating="0m" Label="No reviews" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        @* ───────────────────────── Cart & trust ───────────────────────── *@
+
+        <GallerySection Id="cart-widget" Title="Cart Widget" Component="@("<CartWidget />")">
+            <Description>Click to open the slide-out cart (seeded with two items).</Description>
+            <ChildContent>
+                <div class="pv-panel-host">
+                    <CartWidget />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="reviews-panel" Title="Reviews Panel · Confidence Panel" Component="@("<ReviewsPanel /> · <ConfidencePanel />")">
+            <Description>Side by side, as on the cart page.</Description>
+            <ChildContent>
+                <div class="cart-page">
+                    <div class="cart-secondary-row">
+                        <ReviewsPanel NumReviews="3" />
+                        <ConfidencePanel />
+                    </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="recommended-products" Title="Recommended Products Panel" Component="@("<RecommendedProductsPanel />")">
+            <Description>The demo service returns one blank "ghost" row, which the panel filters out.</Description>
+            <ChildContent>
+                <div class="cart-page">
+                    <RecommendedProductsPanel />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        @* ───────────────────────── Site chrome ───────────────────────── *@
+
+        <GallerySection Id="header" Title="Storefront Header" Component="@("<StorefrontHeader />")" Wide="true">
+            <Description>Includes its own VehiclePicker (Panel) and CartWidget. Searching navigates to /search.</Description>
+            <ChildContent>
+                <StorefrontHeader H1TagText="Genuine Volvo Parts Online" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="main-banner" Title="Main Banner" Component="@("<MainBanner />")" Wide="true">
+            <Description>Dismissal is remembered in localStorage (key <code>bannerDismissed:1:demo-banner-1</code>) — clear it to bring the banner back.</Description>
+            <ChildContent>
+                <MainBanner />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="footer" Title="Storefront Footer" Component="@("<StorefrontFooter />")" Wide="true">
+            <ChildContent>
+                <StorefrontFooter />
+            </ChildContent>
+        </GallerySection>
+
+        @* ───────────────────────── Primitives ───────────────────────── *@
+
+        <GallerySection Id="primitives" Title="Loading Indicator · Image Placeholder · Cart Icon" Component="@("<LoadingIndicator /> · <ImagePlaceholder /> · <CartIcon />")">
+            <Description><code>HeadConfigInjector</code> isn't shown: it renders nothing visible (it only pushes favicon/stylesheet/script tags into &lt;head&gt;).</Description>
+            <ChildContent>
+                <div class="pv-row">
+                    <LoadingIndicator Text="Loading results…" />
+                    <div class="pv-icon-box pv-icon-box-lg"><ImagePlaceholder /></div>
+                    <div class="pv-icon-box"><CartIcon /></div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+    </div>
+</div>
+
+@code {
+    // ─── Navigation ──────────────────────────────────────────────────────
+    private sealed record NavGroup(string Title, (string Id, string Label)[] Items);
+
+    private static readonly NavGroup[] NavGroups =
+    [
+        new("Browse",
+        [
+            ("refine-search-categories", "RefineSearch · Categories"),
+            ("refine-search-accessories", "RefineSearch · Accessories"),
+            ("refine-search-accessories-page", "RefineSearch · /accessories"),
+            ("refine-search-links", "RefineSearch · Links"),
+            ("vehicle-picker-inline", "VehiclePicker · Inline"),
+            ("vehicle-picker-panel", "VehiclePicker · Panel"),
+            ("vehicle-picked", "VehiclePicked"),
+            ("home-garage", "HomeGarage"),
+            ("hero-placement", "HeroPlacement"),
+            ("assembly-results", "AssemblyResults"),
+            ("assembly-card", "AssemblyCard · PartTypeCard"),
+            ("accessory-results", "AccessoryResults"),
+            ("placement-content", "PlacementContent"),
+            ("extra-home-content", "ExtraHomeContent"),
+            ("featured-products", "FeaturedProducts"),
+        ]),
+        new("Search",
+        [
+            ("search-toolbar", "SearchToolbar"),
+            ("active-filters", "ActiveFiltersChips"),
+            ("product-grid", "ProductGrid"),
+            ("product-card", "ProductCard"),
+        ]),
+        new("Product page",
+        [
+            ("guided-navigation", "GuidedNavigation"),
+            ("fitment-banner", "ProductFitmentBanner"),
+            ("product-gallery", "ProductGallery"),
+            ("price-box", "ProductPriceBox"),
+            ("dealer-info", "DealerInfoCard"),
+            ("product-information", "ProductInformation"),
+            ("accordion", "AccordionSection"),
+            ("related-products", "RelatedProducts"),
+            ("also-bought", "PeopleAlsoBought"),
+            ("star-rating", "StarRating"),
+        ]),
+        new("Cart & trust",
+        [
+            ("cart-widget", "CartWidget"),
+            ("reviews-panel", "ReviewsPanel · ConfidencePanel"),
+            ("recommended-products", "RecommendedProductsPanel"),
+        ]),
+        new("Site chrome",
+        [
+            ("header", "StorefrontHeader"),
+            ("main-banner", "MainBanner"),
+            ("footer", "StorefrontFooter"),
+        ]),
+        new("Primitives",
+        [
+            ("primitives", "Loading · Placeholder · CartIcon"),
+        ]),
+    ];
+
+    // ─── Fitment presets ─────────────────────────────────────────────────
+    private sealed record Preset(string Label, int? Year, int? Model, int? Driveline, int? Trim, int? Category);
+
+    private static readonly Preset[] Presets =
+    [
+        new("No vehicle", null, null, null, null, null),
+        new("2024 XC40 AWD", 2024, 101, 201, null, null),
+        new("2024 XC40 AWD Plus", 2024, 101, 201, 302, null),
+        new("+ Brakes category", 2024, 101, 201, 302, 11),
+        new("+ Cargo & Storage", 2024, 101, 201, 302, 51),
+    ];
+
+    private bool IsActive(Preset p) =>
+        FitmentState.Year == p.Year && FitmentState.UkeyModel == p.Model && FitmentState.UkeyDriveline == p.Driveline
+        && FitmentState.UkeyTrimLevel == p.Trim && FitmentState.UkeyCategory == p.Category;
+
+    private void Apply(Preset p) =>
+        FitmentState.SetVehicleAndCategory(DemoCatalog.MakeUkey, p.Year, p.Model, p.Driveline, p.Trim, p.Category);
+
+    private string CurrentFitmentLabel
+    {
+        get
+        {
+            var vehicle = FitmentState.HasVehicle
+                ? DemoCatalog.FitmentString(FitmentState.Year, FitmentState.UkeyModel, FitmentState.UkeyDriveline, FitmentState.UkeyTrimLevel)
+                : "No vehicle";
+            return CategoryByUkey(FitmentState.UkeyCategory) is { } c ? $"{vehicle} · {c.Name}" : vehicle;
+        }
+    }
+
+    private static DemoCategory? CategoryByUkey(int? ukey) => DemoCatalog.CategoryByUkey(ukey);
+
+    protected override void OnInitialized() => FitmentState.OnChange += HandleFitmentChanged;
+
+    private void HandleFitmentChanged() => _ = InvokeAsync(StateHasChanged);
+
+    public void Dispose() => FitmentState.OnChange -= HandleFitmentChanged;
+
+    // ─── Sample data for parameter-driven components ─────────────────────
+    private static readonly DemoProduct SampleProduct = DemoCatalog.ProductByStockCode("VA-90011")!;
+
+    private readonly GetAssemblyResultsResponse _sampleAssemblies = DemoHomeService.Build(DemoCatalog.CategoryByUkey(11)!);
+
+    private readonly List<ProductSearchResult> _gridProducts =
+        DemoCatalog.Products.Take(4).Select(DemoProductSearchService.ToSearchResult).ToList();
+
+    private readonly string _cardImage = SampleProduct.Image();
+    private readonly string _cardImage2 = DemoCatalog.ProductByStockCode("VP-10421")!.Image();
+
+    private readonly IReadOnlyList<string> _galleryImages =
+        Enumerable.Range(0, 5).Select(i => SampleProduct.Image(i, 800))
+            .Concat(Enumerable.Repeat(string.Empty, 7))
+            .ToList();
+
+    private readonly DealerInfo _dealer = new(
+        Name: "Demo Motors of Springfield",
+        AddressLine1: "100 Example Way",
+        AddressLine2: "Springfield, IL 62701",
+        Phone: "555-010-0199",
+        Email: "parts@example.com",
+        Rating: 4.5m);
+
+    private readonly IReadOnlyList<ProductTag> _tags =
+    [
+        new() { TagTitle = "California Specific Warning", Description = "WARNING: Cancer and Reproductive Harm - www.P65Warnings.ca.gov", TagType = "warning" },
+        new() { TagTitle = "Genuine Accessory", Description = "Covered by the manufacturer's accessory warranty.", TagType = "Genuine Part", TargetURL = "#" },
+    ];
+
+    private readonly IReadOnlyList<string> _features =
+    [
+        "Designed to help organize cargo",
+        "Helps prevent cargo from sliding around with super-grippy underside",
+        "Requires Carpeted Cargo Area Protector"
+    ];
+
+    private readonly IReadOnlyList<string> _supersessions = ["T99C54RA0A", "VA-90011-OLD"];
+
+    private readonly IReadOnlyList<RelatedProduct> _related =
+        DemoCatalog.Products.Where(p => p.Category.IsAccessory).Take(7).Select(ToRelated).ToList();
+
+    private readonly IReadOnlyList<RelatedProduct> _alsoBought =
+        DemoCatalog.Products.Where(p => !p.Category.IsAccessory).Skip(4).Take(6).Select(ToRelated).ToList();
+
+    private static RelatedProduct ToRelated(DemoProduct p) => new(
+        Title: p.Description,
+        StockCode: p.StockCode,
+        Price: p.Price,
+        UkeyProduct: p.Ukey,
+        ListPrice: p.ListPrice,
+        SavingsText: $"${p.ListPrice - p.Price:F2}",
+        Category: p.Category.Name,
+        ImageUrl: p.Image(),
+        Url: p.Url);
+
+    private readonly RenderFragment _ratingMeta = @<StarRating Rating="4.3m" Label="3 Reviews" />;
+
+    // ─── Interactive state ───────────────────────────────────────────────
+    private bool _toolbarGrid;
+    private bool _toolbarSidebar = true;
+    private string _toolbarSort = "relevance";
+    private string _toolbarEvent = "—";
+
+    private void Toolbar(string eventName, Action apply)
+    {
+        apply();
+        _toolbarEvent = eventName;
+    }
+
+    private int _chipYear = 2024, _chipMake = 1, _chipModel = 101, _chipDriveline = 201, _chipTrim = 302, _chipCategory = 11;
+
+    private void ResetChips()
+    {
+        _chipYear = 2024;
+        _chipMake = 1;
+        _chipModel = 101;
+        _chipDriveline = 201;
+        _chipTrim = 302;
+        _chipCategory = 11;
+    }
+
+    private string? _cartMessage;
+
+    private async Task AddSearchResultToCart(ProductSearchResult p)
+    {
+        await CartState.AddToCartAsync(p.Ukey);
+        _cartMessage = $"Added “{p.ProductDescription}” — cart now has {CartState.ItemCount} items.";
+    }
+
+    private async Task AddRelatedToCart(RelatedProduct p)
+    {
+        await CartState.AddToCartAsync(p.UkeyProduct);
+        _cartMessage = $"Added “{p.Title}” — cart now has {CartState.ItemCount} items.";
+    }
+
+    private string _bannerEvent = "—";
+
+    private int _quantity = 1;
+    private string _priceBoxEvent = "—";
+    private bool _estimating;
+    private string? _estimateText;
+    private DeliveryOption _delivery = new(ZipCode: "62701", Promise: "Ships in 1-2 business days");
+    private readonly PickupOption _pickup = new(Promise: "Ready for pickup today", CostText: "FREE");
+
+    private async Task EstimateShippingAsync()
+    {
+        _estimating = true;
+        _priceBoxEvent = "OnEstimateShipping";
+        StateHasChanged();
+        await Task.Delay(600);
+        _estimateText = $"Estimated shipping: {7.95m + 1.50m * Math.Max(0, _quantity - 1):C}";
+        _estimating = false;
+    }
+
+    private void ZipChanged(string zip)
+    {
+        _delivery = _delivery with { ZipCode = zip };
+        _estimateText = null;
+        _priceBoxEvent = $"OnZipCodeChanged(\"{zip}\")";
+    }
+
+    private bool _accordionOpen;
+}
