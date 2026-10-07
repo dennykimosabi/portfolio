@@ -116,6 +116,22 @@
             </ChildContent>
         </GallerySection>
 
+        <GallerySection Id="sf-icon" Title="SfIcon" Component="@("<SfIcon Name=\"shopping-cart-line\" />")" ComponentType="typeof(SfIcon)">
+            <Description>The default icon set is <a href="https://remixicon.com/" target="_blank" rel="noopener">Remix Icon</a>, loaded site-wide. Pass any icon name without the <code>ri-</code> prefix. Icons size with <code>font-size</code>.</Description>
+            <ChildContent>
+                <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;font-size:24px;">
+                    <SfIcon Name="shopping-cart-line" />
+                    <SfIcon Name="search-line" />
+                    <SfIcon Name="user-line" />
+                    <SfIcon Name="heart-line" />
+                    <SfIcon Name="star-fill" />
+                    <SfIcon Name="truck-line" />
+                    <SfIcon Name="shield-check-line" />
+                    <SfIcon Name="close-line" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
         @* ───────────────────────── Browse ───────────────────────── *@
 
         <GallerySection Id="refine-search-categories" Title="Refine Search — Categories" Component="@("<RefineSearch Mode=\"RefineSearchMode.Categories\" />")" ComponentType="typeof(RefineSearch)" Wide="true">
@@ -534,6 +550,7 @@
             ("sf-chip", "SfChip"),
             ("sf-input", "SfInput"),
             ("sf-select", "SfSelect"),
+            ("sf-icon", "SfIcon"),
         ]),
         new("Browse",
         [
