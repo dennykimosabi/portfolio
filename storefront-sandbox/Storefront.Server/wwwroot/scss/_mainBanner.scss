@@ -1,7 +1,7 @@
 .main-banner {
     position: relative;
-    background: #2563a5;
-    color: #fff;
+    background: var(--sf-color-primary);
+    color: var(--sf-color-text-inverse);
     text-align: center;
     padding: 0.625rem 3rem;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -45,7 +45,7 @@
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: #fff;
+    color: var(--sf-color-text-inverse);
     font-size: 1.25rem;
     line-height: 1;
     cursor: pointer;

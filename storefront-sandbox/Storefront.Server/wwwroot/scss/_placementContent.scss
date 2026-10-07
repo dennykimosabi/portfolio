@@ -29,13 +29,13 @@
     margin: 0 0 0.5rem;
     font-size: 1.25rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--sf-color-text);
 }
 
 .placement-content-text {
     font-size: 0.9375rem;
     line-height: 1.5;
-    color: #333;
+    color: var(--sf-color-text-2);
 }
 
 // Stopgap layout for the Volvo "LifestylePromoContainer" class until the dealer's
@@ -46,7 +46,7 @@
     grid-template-columns: 1fr 1fr;
     align-items: stretch;
     height: 300px;
-    background: #fff;
+    background: var(--sf-color-bg);
     overflow: hidden;
 
     .placement-content-img {

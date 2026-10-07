@@ -18,7 +18,7 @@
 
     // Each card sits in a bordered cell in the grid layout.
     .garage-card {
-        border: 1px solid #eee;
+        border: 1px solid var(--sf-color-bg-3);
         border-radius: 3px;
         padding: 0.25rem;
     }
@@ -33,7 +33,7 @@
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: #2563a5;
+    color: var(--sf-color-primary);
     cursor: pointer;
 
     &:hover {
