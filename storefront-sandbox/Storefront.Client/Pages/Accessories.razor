@@ -1,0 +1,43 @@
+@page "/accessories"
+@page "/accessories/{Slug1}"
+@page "/accessories/{Slug1}/{Slug2}"
+@page "/accessories/{Slug1}/{Slug2}/{Slug3}"
+
+<PageTitle>Accessories</PageTitle>
+
+<HeroPlacement PlacementKey="AccessoriesHeroArea" />
+
+@if (HasVehicle)
+{
+    <VehiclePicked @key="@("vp-picked-accessories")" />
+}
+else
+{
+    <VehiclePicker @key="@("vp-inline-accessories")" Layout="VehiclePickerLayout.Inline" PlacementKey="AccessoriesVehiclePickerHeading" ShowDrivelineAndTrim="false" UseAccessoryLinks="true" />
+}
+
+<AccessoryResults />
+
+@* Confirmed against a SQL Profiler capture of legacy's actual working accessories-page call with no
+   vehicle selected: cShowFitmentLevel='VehicleAccessoryCategories' (not plain "category"). pr_refineSearch's
+   /accessories literal already stands in for legacy's /browseaccessories.aspx in its PageURL checks, so
+   PageUrl stays our real route. Plain "category" mode falls into the sproc's general fitment-filtered
+   branch, which needs a populated vehicle to return anything — that's what was producing singlepixel
+   placeholders here with no fitment selected. AccessoryCategories mode hits the sproc's dedicated
+   VehicleAccessoryCategories branch, which returns the unfiltered accessory category tree even with no
+   vehicle picked. ShowFeaturedTile=false because that's Home's "View All Accessories" preview-widget
+   tile — legacy's real accessories page (prod.png) renders only the returned categories.
+   UseAccessoryLinks=true on both instances below: pr_refineSearch computes linkURL (home shape) and
+   accessoryLinkURL (/accessories shape) on every row, and this page needs the latter everywhere —
+   category tiles and the Links-mode fitment-refinement list alike — so they stay under /accessories
+   instead of bouncing to the home-shaped URL. Mirrors VehiclePicker's UseAccessoryLinks usage above.
+   Guarded on Fitment.UkeyCategory below: once a category is chosen, AccessoryResults takes over with
+   the flat product grid for it (one level of category browsing, no subcategory recursion — see that
+   component's doc comment), so this browse grid steps aside rather than keep showing a now-wrong-scoped
+   tile set. Mirrors legacy ViewAllProducts.ascx.cs hiding its category list once a category resolves. *@
+@if (Fitment.UkeyCategory is null or <= 0)
+{
+    <RefineSearch @key="@("rs-categories")" Mode="RefineSearchMode.AccessoryCategories" PageUrl="/accessories" PlacementKey="AccessoriesCategoryHeader" StyleVariant="accessorycategories" ShowFeaturedTile="false" UseAccessoryLinks="true" />
+}
+
+<RefineSearch @key="@("rs-links")" Mode="RefineSearchMode.Links" UseAccessoryLinks="true" />

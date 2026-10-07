@@ -1,0 +1,60 @@
+@inherits LayoutComponentBase
+@inject IPageTrackingService PageTrackingService
+@inject ISessionStateProvider SessionState
+@inject IWebsiteContextProvider WebsiteContext
+@inject NavigationManager NavigationManager
+@implements IDisposable
+
+<HeadConfigInjector />
+<StorefrontHeader H1TagText="@(PageHeading?.H1TagText ?? string.Empty)" />
+<MainBanner />
+
+<main id="main-content">
+    @Body
+</main>
+
+<StorefrontFooter />
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+</div>
+
+@code {
+    [PersistentState] public PageHeadingResponse? PageHeading { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (PageHeading is null)
+            PageHeading = await GetPageHeadingAsync();
+
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private async void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        PageHeading = await GetPageHeadingAsync();
+        StateHasChanged();
+    }
+
+    private Task<PageHeadingResponse> GetPageHeadingAsync()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+
+        return PageTrackingService.GetPageHeadingAsync(new PageHeadingRequest
+        {
+            SessionId = SessionState.SessionId,
+            MachineId = SessionState.MachineId,
+            UkeyWebsite = WebsiteContext.UkeyWebsite,
+            PageUrl = uri.AbsolutePath,
+            QueryString = uri.Query,
+            ServerName = uri.Host
+            // UserAgent, ClientIp, Referer: filled by PageTrackingService (SSR) or PageTrackingController (WASM)
+        });
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}
