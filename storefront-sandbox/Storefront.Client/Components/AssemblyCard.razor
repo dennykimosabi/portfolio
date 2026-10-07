@@ -1,7 +1,7 @@
 @* Simplified from legacy: description expand/collapse is a manual toggle rather than a
    ResizeObserver-driven overflow check — same visual outcome (clamped vs. full text)
    without the JS interop. *@
-<div class="assembly-results-card">
+<div class="assembly-results-card @Class" @attributes="AdditionalAttributes">
     <a class="assembly-results-card-image" href="@Assembly.ShowAssemblyURL" title="@Assembly.HoverText">
         @if (!string.IsNullOrWhiteSpace(Assembly.ImageURL))
         {

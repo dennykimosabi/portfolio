@@ -1,6 +1,6 @@
 @if (!HideCart)
 {
-    <div class="cart-widget">
+    <div class="cart-widget @Class" @attributes="AdditionalAttributes">
         <button type="button"
                 class="cart-widget-btn @(_isOpen ? "is-open" : "")"
                 aria-label="@($"Cart - {CartState.ItemCount} item{(CartState.ItemCount == 1 ? "" : "s")}")"

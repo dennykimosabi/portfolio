@@ -4,7 +4,7 @@
         ? $"background-image: url('{Placement.ImageUrl}');"
         : null;
 
-    <section class="extra-home-content">
+    <section class="extra-home-content @Class" @attributes="AdditionalAttributes">
         <div class="extra-home-content-image" style="@imageStyle"></div>
         <div class="extra-home-content-panel">
             @if (!string.IsNullOrWhiteSpace(Placement.IntroTextTitle))

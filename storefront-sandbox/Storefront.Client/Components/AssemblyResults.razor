@@ -1,6 +1,6 @@
 @if (_result is not null && (HasAssemblies || HasPartTypes))
 {
-    <section class="assembly-results" aria-label="@_result.CategoryName">
+    <section class="assembly-results @Class" @attributes="AdditionalAttributes" aria-label="@_result.CategoryName">
         <div class="assembly-results-header">
             <h2 class="assembly-results-heading">@_result.CategoryName</h2>
 
