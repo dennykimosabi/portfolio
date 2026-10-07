@@ -15,7 +15,7 @@
 .price-box-label {
     font-size: 0.9375rem;
     font-weight: 700;
-    color: #1a1a1a;
+    color: var(--sf-color-text);
 }
 
 .price-box-price {
@@ -33,7 +33,7 @@
 }
 
 .price-box-rating-value {
-    color: #333;
+    color: var(--sf-color-text-2);
 }
 
 .price-box-rating-star {
@@ -69,10 +69,10 @@
     gap: 0.25rem;
     margin: 0.875rem 0 0;
     padding: 0.4375rem 0.625rem;
-    border-radius: 2px;
+    border-radius: var(--sf-radius-sm);
     font-size: 0.6875rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--sf-color-text);
 
     // Background tint follows the state; the label always names it in words.
     &.is-orderable {
@@ -105,7 +105,7 @@
 .price-box-availability-dot {
     width: 0.5rem;
     height: 0.5rem;
-    border-radius: 50%;
+    border-radius: var(--sf-radius-full);
     box-sizing: border-box;
     flex-shrink: 0;
 
@@ -133,11 +133,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin-top: 0.75rem;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--sf-color-border-light);
 
     // Single shared divider rather than a border on each cell.
     .price-box-fulfillment-option + .price-box-fulfillment-option {
-        border-left: 1px solid #e0e0e0;
+        border-left: 1px solid var(--sf-color-border-light);
     }
 
     @media (max-width: 400px) {
@@ -145,7 +145,7 @@
 
         .price-box-fulfillment-option + .price-box-fulfillment-option {
             border-left: none;
-            border-top: 1px solid #e0e0e0;
+            border-top: 1px solid var(--sf-color-border-light);
         }
     }
 }
@@ -176,15 +176,15 @@
     background: none;
     font-size: 0.625rem;
     line-height: 1;
-    color: #999;
+    color: var(--sf-color-text-muted);
     cursor: pointer;
 
     &:hover {
-        color: #333;
+        color: var(--sf-color-text-2);
     }
 
     &:focus-visible {
-        outline: 2px solid #2563a5;
+        outline: 2px solid var(--sf-color-primary);
         outline-offset: 2px;
     }
 }
@@ -199,12 +199,12 @@
     width: 4.5rem;
     padding: 0.3125rem 0.5rem;
     border: 1px solid #ccc;
-    border-radius: 2px;
+    border-radius: var(--sf-radius-sm);
     font: inherit;
     font-size: 0.6875rem;
 
     &:focus-visible {
-        outline: 2px solid #2563a5;
+        outline: 2px solid var(--sf-color-primary);
         outline-offset: -2px;
     }
 }
@@ -212,12 +212,12 @@
 .price-box-fulfillment-zip-save {
     padding: 0.3125rem 0.75rem;
     border: 1px solid #000;
-    border-radius: 2px;
+    border-radius: var(--sf-radius-sm);
     background: #000;
     font: inherit;
     font-size: 0.6875rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--sf-color-text-inverse);
     cursor: pointer;
 
     &:hover {
@@ -225,7 +225,7 @@
     }
 
     &:focus-visible {
-        outline: 2px solid #2563a5;
+        outline: 2px solid var(--sf-color-primary);
         outline-offset: 2px;
     }
 }
@@ -237,7 +237,7 @@
     margin: 0;
     font-size: 0.6875rem;
     font-weight: 600;
-    color: #1a1a1a;
+    color: var(--sf-color-text);
 }
 
 .price-box-fulfillment-icon {
@@ -266,11 +266,11 @@
     cursor: pointer;
 
     &:hover {
-        color: #2563a5;
+        color: var(--sf-color-primary);
     }
 
     &:focus-visible {
-        outline: 2px solid #2563a5;
+        outline: 2px solid var(--sf-color-primary);
         outline-offset: 2px;
     }
 }
@@ -289,7 +289,7 @@
 .price-box-fulfillment-cost {
     margin: 0;
     padding: 0.375rem 0;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--sf-color-bg-3);
     font-size: 0.625rem;
     text-align: left;
 }
@@ -301,16 +301,16 @@
     border-right: none;
     border-bottom: none;
     font-family: inherit;
-    color: #333;
+    color: var(--sf-color-text-2);
     cursor: pointer;
 
     &:hover {
-        color: #2563a5;
+        color: var(--sf-color-primary);
         text-decoration: underline;
     }
 
     &:focus-visible {
-        outline: 2px solid #2563a5;
+        outline: 2px solid var(--sf-color-primary);
         outline-offset: -2px;
     }
 }
@@ -331,14 +331,14 @@
 
 .price-box-quantity-label {
     font-size: 0.75rem;
-    color: #333;
+    color: var(--sf-color-text-2);
 }
 
 .price-box-stepper {
     display: inline-flex;
     align-items: center;
     border: 1px solid #ddd;
-    border-radius: 999px;
+    border-radius: var(--sf-radius-pill);
     overflow: hidden;
 }
 
@@ -352,11 +352,11 @@
     border: none;
     font: inherit;
     font-size: 0.875rem;
-    color: #333;
+    color: var(--sf-color-text-2);
     cursor: pointer;
 
     &:hover:not(:disabled) {
-        background: #f5f5f5;
+        background: var(--sf-color-bg-2);
     }
 
     &:disabled {
@@ -365,7 +365,7 @@
     }
 
     &:focus-visible {
-        outline: 2px solid #2563a5;
+        outline: 2px solid var(--sf-color-primary);
         outline-offset: -2px;
     }
 }
@@ -378,10 +378,10 @@
     font: inherit;
     font-size: 0.75rem;
     text-align: center;
-    color: #1a1a1a;
+    color: var(--sf-color-text);
 
     &:focus-visible {
-        outline: 2px solid #2563a5;
+        outline: 2px solid var(--sf-color-primary);
         outline-offset: -2px;
     }
 }
@@ -396,38 +396,38 @@
     width: 100%;
     margin-top: 0.625rem;
     padding: 0.625rem 0.75rem;
-    border-radius: 2px;
+    border-radius: var(--sf-radius-sm);
     font: inherit;
     font-size: 0.8125rem;
     font-weight: 600;
     cursor: pointer;
 
     &:focus-visible {
-        outline: 2px solid #2563a5;
+        outline: 2px solid var(--sf-color-primary);
         outline-offset: 2px;
     }
 }
 
 // Primary action — filled, matching the shared product-card add button.
 .price-box-add {
-    background: #113458;
-    border: 1px solid #0d2840;
-    color: #fff;
+    background: var(--sf-color-brand);
+    border: 1px solid var(--sf-color-brand-deep);
+    color: var(--sf-color-text-inverse);
 
     &:hover {
-        background: #0d2840;
+        background: var(--sf-color-brand-deep);
     }
 
     .cart-icon {
-        fill: #fff;
+        fill: var(--sf-color-bg);
     }
 }
 
 // Secondary action — same footprint, outlined so the hierarchy is unambiguous.
 .price-box-buy-now {
-    background: #fff;
-    border: 1px solid #113458;
-    color: #113458;
+    background: var(--sf-color-bg);
+    border: 1px solid var(--sf-color-brand);
+    color: var(--sf-color-brand);
 
     &:hover {
         background: #f4f7fa;
@@ -442,5 +442,5 @@
 }
 
 .price-box-buy-icon {
-    fill: #113458;
+    fill: var(--sf-color-brand);
 }

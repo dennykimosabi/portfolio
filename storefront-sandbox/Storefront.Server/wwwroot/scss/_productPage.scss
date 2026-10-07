@@ -7,7 +7,7 @@
     max-width: 1280px;
     margin: 0 auto;
     padding: 1rem 1.5rem 2.5rem;
-    color: #333;
+    color: var(--sf-color-text-2);
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -15,9 +15,9 @@
 
 // Shared white card chrome. Every top-level block on the page sits in one of these.
 .product-panel {
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 2px;
+    background: var(--sf-color-bg);
+    border: 1px solid var(--sf-color-border-light);
+    border-radius: var(--sf-radius-sm);
     padding: 1.25rem;
 }
 
@@ -29,20 +29,20 @@
     gap: 1rem;
     flex-wrap: wrap;
     padding: 0.5rem 0.875rem;
-    border-radius: 2px;
+    border-radius: var(--sf-radius-sm);
     font-size: 0.8125rem;
 
     &--fits {
         background: #e9f7ec;
         border: 1px solid #bfe3c8;
-        color: #1a1a1a;
+        color: var(--sf-color-text);
     }
 
     // Neutral treatment until a vehicle is selected — no green, since nothing is confirmed.
     &--unknown {
-        background: #f5f5f5;
-        border: 1px solid #e0e0e0;
-        color: #555;
+        background: var(--sf-color-bg-2);
+        border: 1px solid var(--sf-color-border-light);
+        color: var(--sf-color-text-3);
     }
 }
 
@@ -62,9 +62,9 @@
     justify-content: center;
     width: 1rem;
     height: 1rem;
-    border-radius: 50%;
+    border-radius: var(--sf-radius-full);
     background: #17803d;
-    color: #fff;
+    color: var(--sf-color-text-inverse);
     font-size: 0.625rem;
     line-height: 1;
 
@@ -87,16 +87,16 @@
     border: none;
     padding: 0;
     font: inherit;
-    color: #333;
+    color: var(--sf-color-text-2);
     cursor: pointer;
 
     &:hover {
-        color: #2563a5;
+        color: var(--sf-color-primary);
         text-decoration: underline;
     }
 
     &:focus-visible {
-        outline: 2px solid #2563a5;
+        outline: 2px solid var(--sf-color-primary);
         outline-offset: 2px;
     }
 }
@@ -126,7 +126,7 @@
 
 // ───── Left panel: identity ────────────────────────────────────────────────
 .product-summary-header {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--sf-color-bg-3);
     padding-bottom: 0.75rem;
     margin-bottom: 1rem;
 }
@@ -135,7 +135,7 @@
     margin: 0 0 0.25rem;
     font-size: 1.0625rem;
     font-weight: 700;
-    color: #1a1a1a;
+    color: var(--sf-color-text);
 }
 
 .product-summary-subhead {
@@ -149,7 +149,7 @@
 .product-summary-partnumber {
     margin: 0;
     font-size: 0.75rem;
-    color: #333;
+    color: var(--sf-color-text-2);
 }
 
 .product-summary-partnumber-label {
@@ -164,7 +164,7 @@
     margin: 0;
     padding: 0;
     font-size: 0.75rem;
-    color: #555;
+    color: var(--sf-color-text-3);
 
     li {
         display: inline-flex;
