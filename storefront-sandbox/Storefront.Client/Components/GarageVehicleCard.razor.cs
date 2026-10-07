@@ -8,6 +8,12 @@ namespace Storefront.Client.Components;
 
 public partial class GarageVehicleCard : ComponentBase
 {
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
     [Inject] public GarageState Garage { get; set; } = default!;
     [Inject] public VehicleFitmentState FitmentState { get; set; } = default!;
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
@@ -17,6 +23,7 @@ public partial class GarageVehicleCard : ComponentBase
     private string EditIcon => AssetResolver.Resolve("/images/default-assets/icons/mygarage-edit.png");
     private string DeleteIcon => AssetResolver.Resolve("/images/default-assets/icons/mygarage-delete.png");
 
+    /// <summary>The customer vehicle shown on the card.</summary>
     [Parameter, EditorRequired] public CustomerVehicle Vehicle { get; set; } = default!;
 
     /// <summary>Raised after a successful select (before navigation completes) so a host can react
