@@ -1,0 +1,23 @@
+<div class="sf-button-group sf-button-group-@OrientationClass @Class"
+     role="group"
+     aria-label="@AriaLabel"
+     @attributes="AdditionalAttributes">@ChildContent</div>
+
+@code {
+    /// <summary>Buttons and separators in the group. Use SfButton, SfButtonGroupSeparator, SfButtonGroupText.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>Horizontal (default) or vertical stacking.</summary>
+    [Parameter] public SfButtonGroupOrientation Orientation { get; set; } = SfButtonGroupOrientation.Horizontal;
+
+    /// <summary>Accessible label describing the group's purpose.</summary>
+    [Parameter] public string? AriaLabel { get; set; }
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string OrientationClass => Orientation == SfButtonGroupOrientation.Vertical ? "vertical" : "horizontal";
+}
