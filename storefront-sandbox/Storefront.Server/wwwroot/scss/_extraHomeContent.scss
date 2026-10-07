@@ -4,7 +4,7 @@
     align-items: stretch;
     width: 100%;
     min-height: 380px;
-    background: #1a1a1a;
+    background: var(--sf-color-bg-inverse);
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
     @media (max-width: 720px) {
@@ -24,24 +24,24 @@
     flex-direction: column;
     justify-content: center;
     padding: 2.5rem 3rem;
-    color: #fff;
+    color: var(--sf-color-text-inverse);
 }
 
 .extra-home-content-title {
     margin: 0 0 1rem;
     font-size: 1.5rem;
     font-weight: 600;
-    color: #fff;
+    color: var(--sf-color-text-inverse);
     line-height: 1.25;
 }
 
 .extra-home-content-text {
     font-size: 0.9375rem;
     line-height: 1.6;
-    color: #d0d0d0;
+    color: var(--sf-color-border);
 
     a {
-        color: #fff;
+        color: var(--sf-color-text-inverse);
         text-decoration: underline;
     }
 }

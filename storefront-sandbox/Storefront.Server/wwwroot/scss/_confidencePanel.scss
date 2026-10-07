@@ -1,15 +1,15 @@
 .confidence-panel {
-    background: #fff;
-    border: 1px solid #d0d0d0;
+    background: var(--sf-color-bg);
+    border: 1px solid var(--sf-color-border);
     border-radius: 3px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #333;
+    color: var(--sf-color-text-2);
 }
 
 .confidence-panel-header {
     padding: 1rem 1.25rem;
-    border-bottom: 1px solid #d0d0d0;
-    background: #f5f5f5;
+    border-bottom: 1px solid var(--sf-color-border);
+    background: var(--sf-color-bg-2);
 
     .confidence-panel-title {
         margin: 0;
@@ -39,7 +39,7 @@
 }
 
 .confidence-contact {
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--sf-color-bg-3);
     padding-top: 0.875rem;
 
     .confidence-contact-heading {
@@ -67,7 +67,7 @@
     background-size: 16px 16px;
 
     a {
-        color: #2563a5;
+        color: var(--sf-color-primary);
         text-decoration: none;
 
         &:hover { text-decoration: underline; }

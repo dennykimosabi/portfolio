@@ -4,7 +4,7 @@
     margin: 0 0 0.5rem;
     font-size: 0.75rem;
     font-weight: 700;
-    color: #1a1a1a;
+    color: var(--sf-color-text);
 }
 
 .dealer-info-columns {
@@ -13,10 +13,10 @@
     justify-content: space-between;
     gap: 1rem;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--sf-color-bg-3);
     font-size: 0.6875rem;
     line-height: 1.5;
-    color: #555;
+    color: var(--sf-color-text-3);
 }
 
 .dealer-info-address {
@@ -31,11 +31,11 @@
     text-align: right;
 
     a {
-        color: #555;
+        color: var(--sf-color-text-3);
         text-decoration: none;
 
         &:hover {
-            color: #2563a5;
+            color: var(--sf-color-primary);
             text-decoration: underline;
         }
     }
@@ -49,11 +49,11 @@
     font-size: 0.6875rem;
 
     a {
-        color: #333;
+        color: var(--sf-color-text-2);
         text-decoration: none;
 
         &:hover {
-            color: #2563a5;
+            color: var(--sf-color-primary);
             text-decoration: underline;
         }
     }
