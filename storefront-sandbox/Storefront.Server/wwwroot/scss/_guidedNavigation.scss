@@ -39,10 +39,10 @@
     &.fitment-caution {
         background-color: #e3f2fd;
         border-left-color: #2196f3;
-        color: #1565c0;
+        color: var(--sf-color-primary);
 
         .guided-navigation-header-link {
-            color: #1565c0;
+            color: var(--sf-color-primary);
             text-decoration: underline;
 
             &:hover {
@@ -78,7 +78,7 @@
             text-decoration: underline;
 
             &:hover {
-                color: #000;
+                color: var(--sf-color-text);
             }
         }
     }
@@ -185,7 +185,7 @@
 
     &:hover {
         border-bottom-color: var(--sf-color-primary);
-        color: #1565c0;
+        color: var(--sf-color-primary);
     }
 
     &:visited {
@@ -200,7 +200,7 @@
     border-radius: var(--sf-radius-md);
     text-align: center;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--sf-color-text-muted);
 
     p {
         margin: 0;

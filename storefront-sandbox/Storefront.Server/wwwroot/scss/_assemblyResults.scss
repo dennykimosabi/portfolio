@@ -79,7 +79,7 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #666;
+    color: var(--sf-color-text-muted);
     margin: 0 0 1rem;
 }
 
@@ -193,7 +193,7 @@
 
 .assembly-results-card-description {
     font-size: 0.8125rem;
-    color: #666;
+    color: var(--sf-color-text-muted);
     line-height: 1.45;
 
     &.assembly-results-card-description-clamped {

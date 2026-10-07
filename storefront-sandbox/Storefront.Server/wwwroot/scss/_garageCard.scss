@@ -85,7 +85,7 @@
 .garage-card-edit-input {
     flex: 1;
     min-width: 0;
-    border: 1px solid #ccc;
+    border: 1px solid var(--sf-color-border);
     border-radius: var(--sf-radius-sm);
     padding: 0.375rem 0.5rem;
     font-size: 0.8125rem;

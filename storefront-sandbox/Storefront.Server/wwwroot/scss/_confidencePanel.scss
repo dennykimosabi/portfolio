@@ -15,7 +15,7 @@
         margin: 0;
         font-size: 1.125rem;
         font-weight: 600;
-        color: #222;
+        color: var(--sf-color-text);
     }
 }
 
@@ -33,7 +33,7 @@
 .confidence-message {
     margin: 0 0 1rem;
     font-size: 0.875rem;
-    color: #444;
+    color: var(--sf-color-text-3);
     line-height: 1.5;
     text-align: center;
 }
@@ -46,7 +46,7 @@
         margin: 0 0 0.5rem;
         font-size: 0.8125rem;
         font-weight: 600;
-        color: #222;
+        color: var(--sf-color-text);
     }
 }
 
