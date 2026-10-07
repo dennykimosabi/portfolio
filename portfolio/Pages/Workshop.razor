@@ -70,6 +70,52 @@
             </ChildContent>
         </GallerySection>
 
+        <GallerySection Id="sf-badge" Title="SfBadge" Component="@("<SfBadge Variant=\"SfBadgeVariant.Success\">In stock</SfBadge>")" ComponentType="typeof(SfBadge)">
+            <Description>Status pills. Five variants distilled from the availability badges, fitment badges, and stock indicators scattered across the library.</Description>
+            <ChildContent>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+                    <SfBadge Variant="SfBadgeVariant.Default">Default</SfBadge>
+                    <SfBadge Variant="SfBadgeVariant.Primary">Fits your vehicle</SfBadge>
+                    <SfBadge Variant="SfBadgeVariant.Success">In stock</SfBadge>
+                    <SfBadge Variant="SfBadgeVariant.Warning">Low stock</SfBadge>
+                    <SfBadge Variant="SfBadgeVariant.Danger">Out of stock</SfBadge>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-chip" Title="SfChip" Component="@("<SfChip OnRemove=\"Remove\">2024 Honda Civic</SfChip>")" ComponentType="typeof(SfChip)">
+            <Description>Removable filter chips. Renders a close button only when <code>OnRemove</code> is set.</Description>
+            <ChildContent>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+                    <SfChip OnRemove="@(() => {})">2024</SfChip>
+                    <SfChip OnRemove="@(() => {})">Honda</SfChip>
+                    <SfChip OnRemove="@(() => {})">Civic</SfChip>
+                    <SfChip>Static label</SfChip>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-input" Title="SfInput" Component="@("<SfInput Label=\"Email\" Placeholder=\"you@example.com\" />")" ComponentType="typeof(SfInput)">
+            <Description>Labeled text input with hint, error, and disabled states. Two-way binds <code>Value</code>.</Description>
+            <ChildContent>
+                <div style="display:grid;gap:16px;max-width:320px;">
+                    <SfInput Label="Email" Placeholder="you@example.com" Hint="Order updates go here." />
+                    <SfInput Label="ZIP code" Value="30301" Invalid Error="Enter a valid ZIP code." />
+                    <SfInput Label="Disabled" Placeholder="Can't type here" Disabled />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-select" Title="SfSelect" Component="@("<SfSelect Label=\"Year\" Placeholder=\"Select year\" />")" ComponentType="typeof(SfSelect)">
+            <Description>Native select with consistent styling. For searchable dropdowns, see <code>SearchableSelect</code>.</Description>
+            <ChildContent>
+                <div style="display:grid;gap:16px;max-width:320px;">
+                    <SfSelect Label="Year" Placeholder="Select year" Options="@_years" />
+                    <SfSelect Label="Disabled" Placeholder="Select year" Options="@_years" Disabled />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
         @* ───────────────────────── Browse ───────────────────────── *@
 
         <GallerySection Id="refine-search-categories" Title="Refine Search — Categories" Component="@("<RefineSearch Mode=\"RefineSearchMode.Categories\" />")" ComponentType="typeof(RefineSearch)" Wide="true">
@@ -472,11 +518,22 @@
     // ─── Navigation ──────────────────────────────────────────────────────
     private sealed record NavGroup(string Title, (string Id, string Label)[] Items);
 
+    private static readonly SfSelect.SfSelectOption[] _years =
+    [
+        new("2024", "2024"),
+        new("2023", "2023"),
+        new("2022", "2022"),
+    ];
+
     private static readonly NavGroup[] NavGroups =
     [
         new("Atomic",
         [
             ("sf-button", "SfButton"),
+            ("sf-badge", "SfBadge"),
+            ("sf-chip", "SfChip"),
+            ("sf-input", "SfInput"),
+            ("sf-select", "SfSelect"),
         ]),
         new("Browse",
         [
