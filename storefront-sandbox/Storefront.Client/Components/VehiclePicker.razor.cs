@@ -18,6 +18,12 @@ public enum VehiclePickerLayout
 
 public partial class VehiclePicker : ComponentBase, IDisposable
 {
+
+    /// <summary>Additional CSS classes applied to the component root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Additional attributes splatted onto the component root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
     [Inject] public IWebsiteContextProvider WebsiteContext { get; set; } = default!;
     [Inject] public ISessionStateProvider SessionState { get; set; } = default!;
     [Inject] public IProductSearchService ProductSearchService { get; set; } = default!;
@@ -26,8 +32,11 @@ public partial class VehiclePicker : ComponentBase, IDisposable
     [Inject] public NavigationManager NavigationManager { get; set; } = default!;
     [Inject] public VehicleFitmentState FitmentState { get; set; } = default!;
 
+    /// <summary>Inline dropdown row or panel card layout.</summary>
     [Parameter] public VehiclePickerLayout Layout { get; set; } = VehiclePickerLayout.Inline;
+    /// <summary>Override for the submit button text.</summary>
     [Parameter] public string? SubmitLabel { get; set; }
+    /// <summary>Override for the picker heading.</summary>
     [Parameter] public string? Title { get; set; }
 
     /// <summary>
