@@ -313,6 +313,11 @@
   color: var(--sf-color-text-muted);
 }
 
+[class^=ri-],
+[class*=" ri-"] {
+  vertical-align: -0.125em;
+}
+
 .sf-loading {
   display: flex;
   align-items: center;
@@ -2188,29 +2193,6 @@
   border-color: var(--sf-color-bg-inverse);
 }
 
-.vehicle-vin-submit {
-  flex-shrink: 0;
-  background: var(--sf-color-bg-inverse);
-  color: var(--sf-color-text-inverse);
-  border: none;
-  border-radius: var(--sf-radius-sm);
-  padding: 0.5rem 1.25rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s ease;
-}
-.vehicle-vin-submit:hover:not(:disabled) {
-  background: var(--sf-color-text-2);
-}
-.vehicle-vin-submit:disabled {
-  background: var(--sf-color-border);
-  color: var(--sf-color-text-muted);
-  cursor: not-allowed;
-}
-
 .vehicle-picker-panel {
   position: relative;
   width: 100%;
@@ -2271,45 +2253,16 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-.vehicle-picker-panel .vehicle-panel .vehicle-panel-header .vehicle-panel-clear {
-  background: none;
-  border: none;
-  font-size: 0.75rem;
-  color: var(--sf-color-text-muted);
-  cursor: pointer;
-  padding: 0;
-  text-decoration: underline;
-}
-.vehicle-picker-panel .vehicle-panel .vehicle-panel-header .vehicle-panel-clear:hover {
-  color: var(--sf-color-text-2);
-}
-.vehicle-picker-panel .vehicle-panel .vehicle-panel-body {
+.vehicle-picker-panel .vehicle-panel .vehicle-panel-header .vehicle-panel-body {
   display: flex;
   align-items: flex-end;
   gap: 0.75rem;
   padding: 1rem 1.25rem 1.25rem;
 }
-.vehicle-picker-panel .vehicle-panel .vehicle-panel-body .vehicle-select-group {
+.vehicle-picker-panel .vehicle-panel .vehicle-panel-header .vehicle-panel-body .vehicle-select-group {
   flex: 1;
 }
-.vehicle-picker-panel .vehicle-panel .vehicle-panel-body .vehicle-panel-submit {
-  flex-shrink: 0;
-  background: var(--sf-color-bg-inverse);
-  color: var(--sf-color-text-inverse);
-  border: none;
-  border-radius: var(--sf-radius-sm);
-  padding: 0.5rem 1.25rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s ease;
-}
-.vehicle-picker-panel .vehicle-panel .vehicle-panel-body .vehicle-panel-submit:hover:not(:disabled) {
-  background: var(--sf-color-text-2);
-}
-.vehicle-picker-panel .vehicle-panel .vehicle-panel-body .vehicle-panel-submit:disabled {
+.vehicle-picker-panel .vehicle-panel .vehicle-panel-header .vehicle-panel-body:disabled {
   background: var(--sf-color-border);
   color: var(--sf-color-text-muted);
   cursor: not-allowed;
@@ -2363,25 +2316,6 @@
   border-top: 1px solid #f0f0f0;
 }
 
-.vehicle-panel-addnew {
-  display: block;
-  width: calc(100% - 1.5rem);
-  margin: 0.25rem 0.75rem 1rem;
-  background: none;
-  border: 1px dashed #ccc;
-  border-radius: var(--sf-radius-sm);
-  padding: 0.5rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--sf-color-primary);
-  cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease;
-}
-.vehicle-panel-addnew:hover {
-  border-color: var(--sf-color-primary);
-  color: #1e4e80;
-}
-
 .vehicle-picker-inline {
   background: var(--sf-color-bg);
   padding: 1.25rem 1.5rem;
@@ -2433,28 +2367,10 @@
     grid-template-columns: 1fr;
   }
 }
-.vehicle-picker-inline .vehicle-picker-inline-submit {
-  background: var(--sf-color-primary);
-  color: var(--sf-color-text-inverse);
-  border: 1px solid #1e4e80;
-  border-radius: var(--sf-radius-sm);
-  padding: 0.5rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s ease;
-  align-self: end;
-}
-.vehicle-picker-inline .vehicle-picker-inline-submit:hover:not(:disabled) {
-  background: #1e4e80;
-}
-.vehicle-picker-inline .vehicle-picker-inline-submit:disabled {
-  background: var(--sf-color-border);
-  color: var(--sf-color-text-muted);
-  border-color: var(--sf-color-border);
-  cursor: not-allowed;
+
+.vehicle-panel-addnew-btn {
+  width: 100%;
+  margin-top: var(--sf-space-3);
 }
 
 .searchable-select {
@@ -3919,28 +3835,6 @@
   box-shadow: inset 0 0 0 1px #000;
 }
 
-.price-box-zip-edit-close {
-  position: absolute;
-  top: 0.375rem;
-  right: 0.375rem;
-  width: 1rem;
-  height: 1rem;
-  padding: 0;
-  border: none;
-  background: none;
-  font-size: 0.625rem;
-  line-height: 1;
-  color: var(--sf-color-text-muted);
-  cursor: pointer;
-}
-.price-box-zip-edit-close:hover {
-  color: var(--sf-color-text-2);
-}
-.price-box-zip-edit-close:focus-visible {
-  outline: 2px solid var(--sf-color-primary);
-  outline-offset: 2px;
-}
-
 .price-box-zip-edit-row {
   display: flex;
   gap: 0.375rem;
@@ -3958,25 +3852,6 @@
 .price-box-fulfillment-zip-input:focus-visible {
   outline: 2px solid var(--sf-color-primary);
   outline-offset: -2px;
-}
-
-.price-box-fulfillment-zip-save {
-  padding: 0.3125rem 0.75rem;
-  border: 1px solid #000;
-  border-radius: var(--sf-radius-sm);
-  background: #000;
-  font: inherit;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  color: var(--sf-color-text-inverse);
-  cursor: pointer;
-}
-.price-box-fulfillment-zip-save:hover {
-  background: #222;
-}
-.price-box-fulfillment-zip-save:focus-visible {
-  outline: 2px solid var(--sf-color-primary);
-  outline-offset: 2px;
 }
 
 .price-box-fulfillment-head {
@@ -4002,24 +3877,6 @@
   color: #666;
 }
 
-.price-box-fulfillment-zip {
-  padding: 0;
-  border: none;
-  background: none;
-  font: inherit;
-  font-weight: 700;
-  text-decoration: underline;
-  color: inherit;
-  cursor: pointer;
-}
-.price-box-fulfillment-zip:hover {
-  color: var(--sf-color-primary);
-}
-.price-box-fulfillment-zip:focus-visible {
-  outline: 2px solid var(--sf-color-primary);
-  outline-offset: 2px;
-}
-
 .price-box-fulfillment-promise {
   margin: 0.25rem 0 0.5rem;
   font-size: 0.625rem;
@@ -4035,25 +3892,6 @@
   border-top: 1px solid var(--sf-color-bg-3);
   font-size: 0.625rem;
   text-align: left;
-}
-
-.price-box-fulfillment-action {
-  width: 100%;
-  background: none;
-  border-left: none;
-  border-right: none;
-  border-bottom: none;
-  font-family: inherit;
-  color: var(--sf-color-text-2);
-  cursor: pointer;
-}
-.price-box-fulfillment-action:hover {
-  color: var(--sf-color-primary);
-  text-decoration: underline;
-}
-.price-box-fulfillment-action:focus-visible {
-  outline: 2px solid var(--sf-color-primary);
-  outline-offset: -2px;
 }
 
 .price-box-fulfillment-cost {
@@ -4082,31 +3920,6 @@
   overflow: hidden;
 }
 
-.price-box-stepper-button {
-  width: 1.75rem;
-  height: 1.75rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  font: inherit;
-  font-size: 0.875rem;
-  color: var(--sf-color-text-2);
-  cursor: pointer;
-}
-.price-box-stepper-button:hover:not(:disabled) {
-  background: var(--sf-color-bg-2);
-}
-.price-box-stepper-button:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-.price-box-stepper-button:focus-visible {
-  outline: 2px solid var(--sf-color-primary);
-  outline-offset: -2px;
-}
-
 .price-box-stepper-value {
   width: 2rem;
   padding: 0;
@@ -4122,48 +3935,6 @@
   outline-offset: -2px;
 }
 
-.price-box-add,
-.price-box-buy-now {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  margin-top: 0.625rem;
-  padding: 0.625rem 0.75rem;
-  border-radius: var(--sf-radius-sm);
-  font: inherit;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-.price-box-add:focus-visible,
-.price-box-buy-now:focus-visible {
-  outline: 2px solid var(--sf-color-primary);
-  outline-offset: 2px;
-}
-
-.price-box-add {
-  background: var(--sf-color-brand);
-  border: 1px solid var(--sf-color-brand-deep);
-  color: var(--sf-color-text-inverse);
-}
-.price-box-add:hover {
-  background: var(--sf-color-brand-deep);
-}
-.price-box-add .cart-icon {
-  fill: var(--sf-color-bg);
-}
-
-.price-box-buy-now {
-  background: var(--sf-color-bg);
-  border: 1px solid var(--sf-color-brand);
-  color: var(--sf-color-brand);
-}
-.price-box-buy-now:hover {
-  background: #f4f7fa;
-}
-
 .cart-icon,
 .price-box-buy-icon {
   width: 0.9375rem;
@@ -4173,6 +3944,11 @@
 
 .price-box-buy-icon {
   fill: var(--sf-color-brand);
+}
+
+.price-box-cta {
+  width: 100%;
+  margin-top: 0.625rem;
 }
 
 .dealer-info-name {
