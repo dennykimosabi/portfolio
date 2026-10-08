@@ -329,3 +329,47 @@
 .flow-hub-spokes { display: flex; flex-direction: column; gap: 10px; }
 .flow-spoke { display: flex; align-items: center; }
 .flow-spoke .flow-arrow-line { width: 56px; flex: 0 0 auto; }
+
+/* ─── Blueprints gallery ─────────────────────────────────────────────── */
+.bp-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+.bp-card {
+    display: block;
+    border: 1px solid #e4e4e7;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.bp-card:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); transform: translateY(-2px); }
+.bp-card-preview {
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+    background: #fafafa;
+    border-bottom: 1px solid #f4f4f5;
+}
+.bp-preview-scale {
+    transform: scale(0.32);
+    transform-origin: top left;
+    width: 312.5%;
+    pointer-events: none;
+    user-select: none;
+}
+.bp-card-body { padding: 14px 16px 16px; }
+.bp-card-title { font-size: 15px; font-weight: 650; color: #18181b; display: flex; align-items: baseline; gap: 8px; }
+.bp-card-count {
+    font-size: 11px;
+    font-weight: 500;
+    color: #2563a5;
+    background: #eaf2fb;
+    border-radius: 999px;
+    padding: 2px 8px;
+    white-space: nowrap;
+}
+.bp-card-desc { margin: 6px 0 0; font-size: 13px; color: #71717a; line-height: 1.5; }
