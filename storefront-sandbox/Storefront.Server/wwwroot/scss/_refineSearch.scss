@@ -2,7 +2,7 @@
     max-width: 1280px;
     margin: 1.5rem auto;
     padding: 0 1.5rem;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--sf-font-sans);
 }
 
 .refine-search-heading {
@@ -176,7 +176,7 @@
         padding: 0.875rem 0.75rem;
         background: var(--sf-color-bg);
         border: 1px solid var(--sf-color-border-light);
-        border-radius: 3px;
+        border-radius: var(--sf-radius-sm);
         color: var(--sf-color-text);
         text-decoration: none;
         transition: border-color 0.15s ease, color 0.15s ease;

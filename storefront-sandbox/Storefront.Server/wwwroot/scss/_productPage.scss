@@ -3,7 +3,7 @@
 // own partials.
 
 .product-page {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--sf-font-sans);
     max-width: 1280px;
     margin: 0 auto;
     padding: 1rem 1.5rem 2.5rem;
@@ -33,8 +33,8 @@
     font-size: 0.8125rem;
 
     &--fits {
-        background: #e9f7ec;
-        border: 1px solid #bfe3c8;
+        background: var(--sf-color-success-tint);
+        border: 1px solid var(--sf-color-success-tint-border);
         color: var(--sf-color-text);
     }
 
@@ -83,7 +83,7 @@
 .fitment-banner-divider {
     width: 1px;
     height: 0.875rem;
-    background: #bfe3c8;
+    background: var(--sf-color-success-tint-border);
 }
 
 .fitment-banner-caret,

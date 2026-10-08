@@ -77,13 +77,13 @@
     // Background tint follows the state; the label always names it in words.
     &.is-orderable {
         background: var(--sf-color-primary-tint);
-        border: 1px solid #cfe0f5;
+        border: 1px solid var(--sf-color-primary-tint-border);
     }
 
     &.is-in-stock,
     &.is-limited {
         background: var(--sf-color-success-tint);
-        border: 1px solid #c7e5d1;
+        border: 1px solid var(--sf-color-success-tint-border);
     }
 }
 
@@ -112,7 +112,7 @@
     // outOfStock — full blue dot. "Available for Order" text renders when nothing's on
     // hand anywhere, which is legacy's outOfStock state (confirmed against pr_returnInventoryMessage's className).
     .is-orderable & {
-        background: #1a73e8;
+        background: var(--sf-color-primary);
     }
 
     // inStock — full green dot.
