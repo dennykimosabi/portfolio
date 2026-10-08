@@ -1,13 +1,10 @@
 @using Microsoft.JSInterop
 @using Microsoft.AspNetCore.Components.Routing
 @inject IJSRuntime JS
-@inject NavigationManager Nav
 @implements IAsyncDisposable
 
-@* Point-and-comment site feedback. Only renders with ?feedback=1. *@
-@if (_enabled)
-{
-    <div data-site-feedback>
+@* Point-and-comment site feedback. Always visible. *@
+<div data-site-feedback>
         @if (!_picking && _pick is null)
         {
             <button class="sfb-fab" @onclick="StartPick" title="Point at something to comment on">
@@ -37,26 +34,18 @@
                 <div class="sfb-hint">Paste it into chat — I'll know exactly which element you mean.</div>
             </div>
         }
-    </div>
-}
+</div>
 
 @code {
-    private bool _enabled;
     private bool _picking;
     private PickInfo? _pick;
     private string _comment = string.Empty;
     private bool _copied;
     private DotNetObjectReference<SiteFeedback>? _ref;
 
-    protected override void OnInitialized()
-    {
-        var uri = Nav.ToAbsoluteUri(Nav.Uri);
-        _enabled = uri.Query.Contains("feedback=1");
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && _enabled)
+        if (firstRender)
         {
             _ref = DotNetObjectReference.Create(this);
         }
