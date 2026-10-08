@@ -10,8 +10,8 @@
     {
         <div class="pf-nav-overlay" @onclick="CloseNav" aria-hidden="true"></div>
     }
-    <aside id="pfSidebar" class="pf-sidebar @(_navOpen ? "is-open" : "")" aria-label="Portfolio navigation" tabindex="-1">
-        <a class="pf-brand" href="" @onclick="CloseNav">
+    <aside id="pfSidebar" class="pf-sidebar @(_navOpen ? "is-open" : "") @(_rail ? "is-rail" : "")" aria-label="Portfolio navigation" tabindex="-1">
+        <a class="pf-brand" href="" @onclick="CloseNav" title="Denny Kim">
             <span class="pf-brand-mark">DK</span>
             <span class="pf-brand-text">
                 <strong>Denny Kim</strong>
@@ -19,31 +19,73 @@
             </span>
         </a>
         <nav class="pf-nav" @onclick="CloseNav">
-            <NavLink class="pf-nav-item" href="" Match="NavLinkMatch.All">
-                <span class="pf-nav-icon">&#8962;</span> Home
+            <NavLink class="pf-nav-item" href="" Match="NavLinkMatch.All" title="Home">
+                <span class="pf-nav-icon">&#8962;</span> <span class="pf-nav-label">Home</span>
             </NavLink>
-            <NavLink class="pf-nav-item" href="workshop">
-                <span class="pf-nav-icon">&#9638;</span> Workshop
+            <NavLink class="pf-nav-item" href="workshop" title="Workshop">
+                <span class="pf-nav-icon">&#9638;</span> <span class="pf-nav-label">Workshop</span>
             </NavLink>
-            <NavLink class="pf-nav-item" href="blueprints">
-                <span class="pf-nav-icon">&#9635;</span> Blueprints
+            <div class="pf-nav-parent">
+                @if (_rail)
+                {
+                    <button type="button" class="pf-nav-item pf-nav-toggle @(IsBlueprintsActive ? "active" : "")"
+                            @onclick="ToggleBlueprints" @onclick:stopPropagation="true"
+                            aria-expanded="@_blueprintsOpen" title="Blueprints">
+                        <span class="pf-nav-icon">&#9635;</span> <span class="pf-nav-label">Blueprints</span>
+                        <i class="ri-arrow-right-s-line pf-nav-flychevron" aria-hidden="true"></i>
+                    </button>
+                    @if (_blueprintsOpen)
+                    {
+                        <div class="pf-rail-flyout" @onclick:stopPropagation="true">
+                            <NavLink class="pf-flyout-item" href="blueprints" @onclick="CloseBlueprints">All blueprints</NavLink>
+                            @foreach (var (href, label) in BlueprintPages)
+                            {
+                                <NavLink class="pf-flyout-item" href="@href" @onclick="CloseBlueprints">@label</NavLink>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="pf-nav-row">
+                        <NavLink class="pf-nav-item pf-nav-link" href="blueprints" title="Blueprints">
+                            <span class="pf-nav-icon">&#9635;</span> <span class="pf-nav-label">Blueprints</span>
+                        </NavLink>
+                        <button type="button" class="pf-nav-chevron" @onclick="ToggleBlueprints" @onclick:stopPropagation="true"
+                                aria-expanded="@_blueprintsOpen" aria-label="Toggle blueprint pages">
+                            <i class="@(_blueprintsOpen ? "ri-arrow-down-s-line" : "ri-arrow-right-s-line")" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    @if (_blueprintsOpen)
+                    {
+                        <div class="pf-nav-children">
+                            @foreach (var (href, label) in BlueprintPages)
+                            {
+                                <NavLink class="pf-nav-child" href="@href">@label</NavLink>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+            <NavLink class="pf-nav-item" href="flows" title="Flows">
+                <span class="pf-nav-icon">&#8646;</span> <span class="pf-nav-label">Flows</span>
             </NavLink>
-            <NavLink class="pf-nav-item" href="flows">
-                <span class="pf-nav-icon">&#8646;</span> Flows
+            <NavLink class="pf-nav-item" href="build-log" title="Build log">
+                <span class="pf-nav-icon">&#9776;</span> <span class="pf-nav-label">Build log</span>
             </NavLink>
-            <NavLink class="pf-nav-item" href="build-log">
-                <span class="pf-nav-icon">&#9776;</span> Build log
+            <NavLink class="pf-nav-item" href="experiments" title="Experiments">
+                <span class="pf-nav-icon">&#9734;</span> <span class="pf-nav-label">Experiments</span>
             </NavLink>
-            <NavLink class="pf-nav-item" href="experiments">
-                <span class="pf-nav-icon">&#9734;</span> Experiments
+            <NavLink class="pf-nav-item" href="archive" title="Archive">
+                <span class="pf-nav-icon">&#9783;</span> <span class="pf-nav-label">Archive</span>
             </NavLink>
-            <NavLink class="pf-nav-item" href="archive">
-                <span class="pf-nav-icon">&#9783;</span> Archive
-            </NavLink>
-            <NavLink class="pf-nav-item" href="about">
-                <span class="pf-nav-icon">&#9786;</span> About
+            <NavLink class="pf-nav-item" href="about" title="About">
+                <span class="pf-nav-icon">&#9786;</span> <span class="pf-nav-label">About</span>
             </NavLink>
         </nav>
+        <button type="button" class="pf-rail-toggle" @onclick="ToggleRail" aria-label="@(_rail ? "Expand sidebar" : "Collapse sidebar to icons")" title="@(_rail ? "Expand sidebar" : "Collapse sidebar")">
+            <i class="@(_rail ? "ri-sidebar-unfold-line" : "ri-sidebar-fold-line")" aria-hidden="true"></i>
+        </button>
         <div class="pf-sidebar-foot">
             <small>Built with Blazor +<br />AI-assisted development</small>
         </div>
@@ -54,8 +96,33 @@
 </div>
 
 @code {
-    private bool _navOpen;
+    private bool _navOpen;          // mobile drawer
+    private bool _rail;             // desktop icon rail
+    private bool _blueprintsOpen;   // subcategories expanded
     private DotNetObjectReference<PortfolioLayout>? _ref;
+
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+
+    private static readonly (string Href, string Label)[] BlueprintPages = new[]
+    {
+        ("blueprints/home", "Home"),
+        ("blueprints/search", "Search"),
+        ("blueprints/product", "Product"),
+        ("blueprints/cart", "Cart"),
+        ("blueprints/accessories", "Accessories"),
+    };
+
+    private bool IsBlueprintsActive =>
+        Nav.ToBaseRelativePath(Nav.Uri).StartsWith("blueprints", StringComparison.OrdinalIgnoreCase);
+
+    private void ToggleBlueprints() => _blueprintsOpen = !_blueprintsOpen;
+    private void CloseBlueprints() => _blueprintsOpen = false;
+
+    private async Task ToggleRail()
+    {
+        _rail = !_rail;
+        try { await JS.InvokeVoidAsync("pfDrawer.setRail", _rail); } catch { /* prerender */ }
+    }
 
     private async Task ToggleNav()
     {
@@ -82,6 +149,14 @@
         {
             _ref = DotNetObjectReference.Create(this);
             await JS.InvokeVoidAsync("pfDrawer.init", _ref);
+            try
+            {
+                _rail = await JS.InvokeAsync<bool>("pfDrawer.getRail");
+                // Auto-expand subcategories when on a blueprint detail page.
+                if (IsBlueprintsActive) _blueprintsOpen = true;
+                StateHasChanged();
+            }
+            catch { /* storage unavailable */ }
         }
     }
 

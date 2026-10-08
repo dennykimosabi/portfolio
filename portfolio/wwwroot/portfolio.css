@@ -212,10 +212,120 @@
     .pf-main { padding: 76px 20px 60px; }
     .pf-workshop-grid { grid-template-columns: 1fr; }
     .pf-workshop-nav { position: static; }
+    .pf-rail-toggle { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .pf-sidebar { transition: none; }
+}
+
+/* ─── Sidebar subcategories + icon rail (desktop) ─────────────────────── */
+.pf-nav-parent { position: relative; }
+.pf-nav-row { display: flex; align-items: center; gap: 2px; }
+.pf-nav-row .pf-nav-link { flex: 1; min-width: 0; }
+.pf-nav-chevron {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--pf-muted);
+    font-size: 16px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+.pf-nav-chevron:hover { background: var(--pf-muted-bg); color: var(--pf-text); }
+.pf-nav-children {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 2px 0 6px 30px;
+}
+.pf-nav-child {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: var(--pf-muted);
+    text-decoration: none;
+    font-size: 13px;
+}
+@media (hover: hover) and (pointer: fine) {
+    .pf-nav-child:hover { background: var(--pf-muted-bg); color: var(--pf-text); }
+}
+.pf-nav-child:active { background: var(--pf-muted-bg); color: var(--pf-text); }
+.pf-nav-child.active { background: var(--pf-muted-bg); color: var(--pf-text); font-weight: 600; }
+
+/* Flyout shown from the icon rail. */
+.pf-rail-flyout {
+    position: absolute;
+    left: calc(100% + 14px);
+    top: -6px;
+    z-index: 10004;
+    min-width: 208px;
+    background: var(--pf-panel);
+    border: 1px solid var(--pf-border);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.pf-flyout-item {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: var(--pf-muted);
+    text-decoration: none;
+    font-size: 13.5px;
+    white-space: nowrap;
+}
+@media (hover: hover) and (pointer: fine) {
+    .pf-flyout-item:hover { background: var(--pf-muted-bg); color: var(--pf-text); }
+}
+.pf-flyout-item:active { background: var(--pf-muted-bg); color: var(--pf-text); }
+.pf-flyout-item.active { background: var(--pf-muted-bg); color: var(--pf-text); font-weight: 600; }
+
+/* Collapse-to-rail toggle. */
+.pf-rail-toggle {
+    margin-top: 12px;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: none;
+    color: var(--pf-muted);
+    font-size: 20px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+.pf-rail-toggle:hover { background: var(--pf-muted-bg); color: var(--pf-text); }
+
+@media (min-width: 1025px) {
+    .pf-sidebar.is-rail { width: 68px; padding: 20px 8px; }
+    .pf-sidebar.is-rail .pf-brand { justify-content: center; padding: 8px 0 18px; }
+    .pf-sidebar.is-rail .pf-brand-text,
+    .pf-sidebar.is-rail .pf-nav-label,
+    .pf-sidebar.is-rail .pf-sidebar-foot,
+    .pf-sidebar.is-rail .pf-nav-flychevron,
+    .pf-sidebar.is-rail .pf-nav-chevron { display: none; }
+    .pf-sidebar.is-rail .pf-nav-item { justify-content: center; padding: 9px 0; }
+    .pf-sidebar.is-rail .pf-nav-row .pf-nav-link { justify-content: center; }
+    .pf-sidebar.is-rail .pf-nav-children { display: none; }
 }
 
 /* Coarse pointers (touch): 16px minimum on text inputs stops iOS auto-zoom. */

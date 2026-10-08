@@ -19,6 +19,14 @@ window.pfDrawer = (function () {
         focus: function () {
             var el = document.getElementById("pfSidebar");
             if (el) el.focus({ preventScroll: true });
+        },
+        getRail: function () {
+            try { return localStorage.getItem("pf-rail") === "1"; }
+            catch (e) { return false; }
+        },
+        setRail: function (v) {
+            try { localStorage.setItem("pf-rail", v ? "1" : "0"); }
+            catch (e) { /* private mode */ }
         }
     };
 })();
