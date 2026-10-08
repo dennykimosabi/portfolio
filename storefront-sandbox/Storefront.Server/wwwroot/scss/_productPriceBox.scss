@@ -260,6 +260,15 @@ button.price-box-fulfillment-foot {
     color: var(--sf-color-success);
 }
 
+// Shipping estimate result — same microcopy size as the footer rows, styled as
+// a cost figure like the "Free" pickup line.
+.price-box-fulfillment-estimate {
+    margin: 0 0 var(--sf-space-2);
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: var(--sf-color-success);
+}
+
 // Zip-edit header: the cancel control sits at the end of the head row, in flow.
 .price-box-zip-edit-head {
     justify-content: space-between;
