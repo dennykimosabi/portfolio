@@ -1,0 +1,87 @@
+@* Product gallery — grid variant.
+
+   Swipeable carousel on small screens; becomes a three-column grid with a
+   full-width lead image on larger screens. Pure CSS breakpoint switch, no JS:
+   the carousel is index-driven Blazor state, the grid renders all images. *@
+
+<div class="product-gallery-grid @Class" @attributes="AdditionalAttributes">
+    @* Mobile: swipe-style carousel *@
+    <div class="pgg-carousel" role="region" aria-roledescription="carousel" aria-label="@AltText">
+        <div class="pgg-track" style="transform: translateX(-@(_index * 100)%)">
+            @for (var i = 0; i < Images.Count; i++)
+            {
+                var image = Images[i];
+                <div class="pgg-slide" role="group" aria-roledescription="slide" aria-label="@(i + 1) of @Images.Count">
+                    @if (!string.IsNullOrWhiteSpace(image))
+                    {
+                        <img src="@image" alt="@(i == 0 ? AltText : string.Empty)" loading="@(i == 0 ? "eager" : "lazy")" />
+                    }
+                    else
+                    {
+                        <ImagePlaceholder />
+                    }
+                </div>
+            }
+        </div>
+        @if (Images.Count > 1)
+        {
+            <button type="button" class="pgg-arrow pgg-arrow--prev" aria-label="Previous image" @onclick="Previous">
+                <SfIcon Name="arrow-left-s-line" />
+            </button>
+            <button type="button" class="pgg-arrow pgg-arrow--next" aria-label="Next image" @onclick="Next">
+                <SfIcon Name="arrow-right-s-line" />
+            </button>
+            <div class="pgg-dots">
+                @for (var i = 0; i < Images.Count; i++)
+                {
+                    var dotIndex = i;
+                    <button type="button"
+                            class="pgg-dot @(dotIndex == _index ? "is-active" : null)"
+                            aria-label="@($"Go to image {dotIndex + 1}")"
+                            aria-current="@(dotIndex == _index)"
+                            @onclick="() => GoTo(dotIndex)"></button>
+                }
+            </div>
+        }
+    </div>
+
+    @* Desktop: three-column grid, first image spans full width *@
+    <div class="pgg-grid">
+        @for (var i = 0; i < Images.Count; i++)
+        {
+            var image = Images[i];
+            <figure class="pgg-cell @(i == 0 ? "pgg-cell--lead" : null)">
+                @if (!string.IsNullOrWhiteSpace(image))
+                {
+                    <img src="@image" alt="@(i == 0 ? AltText : string.Empty)" loading="lazy" />
+                }
+                else
+                {
+                    <ImagePlaceholder />
+                }
+            </figure>
+        }
+    </div>
+</div>
+
+@code {
+    private int _index;
+
+    /// <summary>Image URLs to display. Empty strings render as placeholders.</summary>
+    [Parameter] public IReadOnlyList<string> Images { get; set; } = Array.Empty<string>();
+
+    /// <summary>Alt text for the lead image.</summary>
+    [Parameter] public string AltText { get; set; } = string.Empty;
+
+    /// <summary>Optional CSS class appended to the root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Unmatched attributes are rendered onto the root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private void Previous() => _index = (_index - 1 + Images.Count) % Images.Count;
+
+    private void Next() => _index = (_index + 1) % Images.Count;
+
+    private void GoTo(int index) => _index = index;
+}

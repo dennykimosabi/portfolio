@@ -1,0 +1,112 @@
+@* Product gallery — lightbox variant.
+
+   Carousel with arrow navigation and dot indicators. Activating the stage
+   (click or Enter) opens a fullscreen lightbox with large-image viewing,
+   prev/next navigation, a close button and an image counter. All Blazor
+   state — no JS. *@
+
+<div class="product-gallery-lightbox @Class" @attributes="AdditionalAttributes">
+    <div class="pgl-stage">
+        <div class="pgl-track" style="transform: translateX(-@(_index * 100)%)">
+            @for (var i = 0; i < Images.Count; i++)
+            {
+                var image = Images[i];
+                <button type="button"
+                        class="pgl-slide"
+                        aria-label="@($"Open image {i + 1} of {Images.Count} in fullscreen viewer")"
+                        @onclick="OpenLightbox">
+                    @if (!string.IsNullOrWhiteSpace(image))
+                    {
+                        <img src="@image" alt="@(i == 0 ? AltText : string.Empty)" loading="@(i == 0 ? "eager" : "lazy")" />
+                    }
+                    else
+                    {
+                        <ImagePlaceholder />
+                    }
+                    <span class="pgl-zoom-hint" aria-hidden="true"><SfIcon Name="zoom-in-line" /></span>
+                </button>
+            }
+        </div>
+        @if (Images.Count > 1)
+        {
+            <button type="button" class="pgl-arrow pgl-arrow--prev" aria-label="Previous image" @onclick="Previous" @onclick:stopPropagation="true">
+                <SfIcon Name="arrow-left-s-line" />
+            </button>
+            <button type="button" class="pgl-arrow pgl-arrow--next" aria-label="Next image" @onclick="Next" @onclick:stopPropagation="true">
+                <SfIcon Name="arrow-right-s-line" />
+            </button>
+        }
+    </div>
+    @if (Images.Count > 1)
+    {
+        <div class="pgl-dots">
+            @for (var i = 0; i < Images.Count; i++)
+            {
+                var dotIndex = i;
+                <button type="button"
+                        class="pgl-dot @(dotIndex == _index ? "is-active" : null)"
+                        aria-label="@($"Go to image {dotIndex + 1}")"
+                        aria-current="@(dotIndex == _index)"
+                        @onclick="() => GoTo(dotIndex)"></button>
+            }
+        </div>
+    }
+
+    @if (_lightboxOpen)
+    {
+        <div class="pgl-overlay" @onclick="CloseLightbox" role="dialog" aria-modal="true" aria-label="@AltText">
+            <div class="pgl-overlay-content" @onclick:stopPropagation="true">
+                <div class="pgl-overlay-image">
+                    @if (!string.IsNullOrWhiteSpace(Images[_index]))
+                    {
+                        <img src="@Images[_index]" alt="@AltText" />
+                    }
+                    else
+                    {
+                        <ImagePlaceholder />
+                    }
+                </div>
+                <button type="button" class="pgl-overlay-close" aria-label="Close viewer" @onclick="CloseLightbox">
+                    <SfIcon Name="close-line" />
+                </button>
+                @if (Images.Count > 1)
+                {
+                    <button type="button" class="pgl-overlay-arrow pgl-overlay-arrow--prev" aria-label="Previous image" @onclick="Previous">
+                        <SfIcon Name="arrow-left-s-line" />
+                    </button>
+                    <button type="button" class="pgl-overlay-arrow pgl-overlay-arrow--next" aria-label="Next image" @onclick="Next">
+                        <SfIcon Name="arrow-right-s-line" />
+                    </button>
+                    <span class="pgl-overlay-count" aria-live="polite">@(_index + 1) / @Images.Count</span>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private int _index;
+    private bool _lightboxOpen;
+
+    /// <summary>Image URLs to display. Empty strings render as placeholders.</summary>
+    [Parameter] public IReadOnlyList<string> Images { get; set; } = Array.Empty<string>();
+
+    /// <summary>Alt text for the images.</summary>
+    [Parameter] public string AltText { get; set; } = string.Empty;
+
+    /// <summary>Optional CSS class appended to the root element.</summary>
+    [Parameter] public string? Class { get; set; }
+
+    /// <summary>Unmatched attributes are rendered onto the root element.</summary>
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private void Previous() => _index = (_index - 1 + Images.Count) % Images.Count;
+
+    private void Next() => _index = (_index + 1) % Images.Count;
+
+    private void GoTo(int index) => _index = index;
+
+    private void OpenLightbox() => _lightboxOpen = true;
+
+    private void CloseLightbox() => _lightboxOpen = false;
+}
