@@ -1,0 +1,143 @@
+@* Blueprint snapshot of Storefront.Client/Pages/Cart.razor — re-copy if the source page changes. *@
+@page "/blueprints/cart"
+@if (!Preview)
+{
+    <PageTitle>Cart blueprint · Denny Kim</PageTitle>
+}
+
+
+@implements IDisposable
+@inject CartState CartState
+
+<div class="cart-page">
+    <div class="cart-panel">
+        <header class="cart-panel-header">
+            <h1 class="cart-panel-title">Your Cart</h1>
+            @if (!CartState.IsLoadingContents && CartState.Items.Count > 0)
+            {
+                <button type="button" class="cart-remove-all-btn" @onclick="HandleRemoveAll">Remove All</button>
+            }
+        </header>
+
+        @if (CartState.IsLoadingContents)
+        {
+            <LoadingIndicator Text="Loading cart…" />
+        }
+        else if (CartState.Items.Count == 0)
+        {
+            <div class="cart-empty">
+                <p>Your cart is empty.</p>
+                <a href="/" class="cart-empty-link">Continue Shopping</a>
+            </div>
+        }
+        else
+        {
+            <div class="cart-items">
+                <div class="cart-items-header">
+                    <div class="ci-h-product">Product Details</div>
+                    <div class="ci-h-price">Unit Price</div>
+                    <div class="ci-h-qty">Quantity</div>
+                    <div class="ci-h-total">Total Price</div>
+                </div>
+
+                @foreach (var item in CartState.Items)
+                {
+                    var desc = HtmlHelper.StripHtml(item.ProductDescription);
+                    var fitment = HtmlHelper.StripHtml(item.FitmentString);
+                    var showFitment = !string.IsNullOrWhiteSpace(fitment)
+                                      && !fitment.Contains("No vehicle", StringComparison.OrdinalIgnoreCase);
+
+                    <div class="cart-item-row">
+                        <div class="ci-thumb">
+                            <a href="@item.ProductURL" aria-label="@desc">
+                                @if (!string.IsNullOrWhiteSpace(item.ThumbnailURL))
+                                {
+                                    <img src="@item.ThumbnailURL" alt="@desc" />
+                                }
+                            </a>
+                        </div>
+                        <div class="ci-details">
+                            <a href="@item.ProductURL" class="ci-title"><strong>@desc</strong></a>
+                            <div class="ci-stock">Part Number: <a href="@item.ProductURL">@item.StockCode</a></div>
+                            @if (showFitment)
+                            {
+                                <div class="ci-fitment">For your @fitment</div>
+                            }
+                            <button type="button" class="ci-remove" @onclick="() => HandleRemove(item)">Remove Item</button>
+                        </div>
+                        <div class="ci-unit-price">
+                            <div class="ci-price">@item.Price.ToString("C")</div>
+                            @if (item.ListPrice > item.Price)
+                            {
+                                <div class="ci-msrp"><s>MSRP @item.ListPrice.ToString("C")</s></div>
+                            }
+                        </div>
+                        <div class="ci-qty">
+                            <select aria-label="Quantity" value="@item.Quantity" @onchange="e => HandleQtyChange(item, e)">
+                                @for (var q = 1; q <= 200; q++)
+                                {
+                                    <option value="@q">@q</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="ci-total">@item.LineItemTotal.ToString("C")</div>
+                    </div>
+                }
+            </div>
+
+            <div class="cart-summary-section">
+                <div class="cart-summary-lines">
+                    @foreach (var line in CartState.Summary)
+                    {
+                        var label = !string.IsNullOrWhiteSpace(line.PlainName)
+                            ? HtmlHelper.StripHtml(line.PlainName)
+                            : HtmlHelper.StripHtml(line.CartSummary);
+
+                        if (string.IsNullOrWhiteSpace(label)) continue;
+
+                        <div class="cart-summary-line @(line.IsTotal ? "is-total" : "")">
+                            <span>@label</span>
+                            <span>@HtmlHelper.StripHtml(line.DisplayAmount)</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="cart-checkout-row">
+                @* TODO: wire up — kicks off the checkout flow once that exists. *@
+                <button type="button" class="cart-checkout-btn" disabled>Proceed to Checkout</button>
+            </div>
+        }
+    </div>
+
+    <div class="cart-secondary-row">
+        <ReviewsPanel NumReviews="3" />
+        <ConfidencePanel />
+    </div>
+
+    <RecommendedProductsPanel />
+</div>
+
+@code {
+    /// <summary>When true, renders as a scaled gallery preview (no page title).</summary>
+    [Parameter] public bool Preview { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        CartState.OnChange += HandleStateChange;
+        await CartState.RefreshContentsAsync();
+    }
+
+    private Task HandleRemove(CartItem item) => CartState.RemoveItemAsync(item);
+
+    private Task HandleRemoveAll() => CartState.RemoveAllAsync();
+
+    private Task HandleQtyChange(CartItem item, ChangeEventArgs e)
+    {
+        if (!int.TryParse(e.Value?.ToString(), out var qty)) return Task.CompletedTask;
+        return CartState.UpdateQuantityAsync(item, qty);
+    }
+
+    private void HandleStateChange() => InvokeAsync(StateHasChanged);
+
+    public void Dispose() => CartState.OnChange -= HandleStateChange;
+}

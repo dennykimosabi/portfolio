@@ -1,0 +1,44 @@
+@* Blueprint snapshot of Storefront.Client/Pages/Home.razor — re-copy if the source page changes. *@
+@page "/blueprints/home"
+@if (!Preview)
+{
+    <PageTitle>Home blueprint · Denny Kim</PageTitle>
+}
+
+
+<HeroPlacement />
+
+@* @key disambiguates [PersistentState] for components rendered alongside another
+   instance of the same type — without it, the framework's auto-derived position-based
+   key can collide or differ between SSR and WASM, breaking state restoration. *@
+@if (HasVehicle)
+{
+    <VehiclePicked @key="@("vp-picked-home")" />
+}
+else
+{
+    <VehiclePicker @key="@("vp-inline-home")" Layout="VehiclePickerLayout.Inline" PlacementKey="VehiclePickerHeading" />
+}
+
+<HomeGarage />
+
+<AssemblyResults />
+
+<RefineSearch @key="@("rs-categories")" Mode="RefineSearchMode.Categories" />
+
+@* UseAccessoryLinks=true: this widget's tiles are accessory categories, so they should route to
+   the /accessories-shaped URL (pr_refineSearch's accessoryLinkURL), not the home-shaped linkURL. *@
+<RefineSearch @key="@("rs-accessorycategories")" Mode="RefineSearchMode.AccessoryCategories" UseAccessoryLinks="true" />
+
+<PlacementContent PlacementKey="HomeAccessories" ClassName="LifestylePromoContainer" />
+
+<ExtraHomeContent />
+
+<FeaturedProducts />
+
+<RefineSearch @key="@("rs-links")" Mode="RefineSearchMode.Links" />
+
+@code {
+    /// <summary>When true, renders as a scaled gallery preview (no page title).</summary>
+    [Parameter] public bool Preview { get; set; }
+}

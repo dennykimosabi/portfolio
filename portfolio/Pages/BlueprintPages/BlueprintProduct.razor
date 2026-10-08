@@ -1,0 +1,389 @@
+@* Blueprint snapshot of Storefront.Client/Pages/Product.razor — re-copy if the source page changes. *@
+@page "/blueprints/product"
+@if (!Preview)
+{
+    <PageTitle>Product blueprint · Denny Kim</PageTitle>
+}
+
+
+@* Product detail page.
+
+   URL structure: /product/{stockNumber}/{productSlug}
+   - stockNumber: unique product identifier, required for sproc call
+   - productSlug: product description (SEO), matched against URL for consistency
+   - Fitment context: pulled from VehicleFitmentState (session), not URL
+
+   Route parameters are extracted in OnParametersSetAsync and used to:
+   1. Call Pr_ReturnProductDetail with stockNumber + optional fitment from session
+   2. Wire all response data to the placeholder fields below
+   3. Replace placeholders as each sproc (images, tags, reviews, etc.) is ported *@
+
+@if (_isLoading)
+{
+    <div class="product-page-loading">
+        <p>Loading product details...</p>
+    </div>
+}
+else if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <div class="product-page-error" role="alert">
+        <p>@_errorMessage</p>
+        <a href="/">Return to Home</a>
+    </div>
+}
+else
+{
+<div class="product-page">
+
+    @* Guided Navigation — fitment-aware header and detail items *@
+    @if (_productDetail != null)
+    {
+        <GuidedNavigation
+            UkeyProduct="@_productDetail.UkeyProduct"
+            PageUrl="@($"/product/{StockNumber}/{ProductSlug}")"
+            QueryString="@_queryString"
+            UkeyMake="@(_ukeyMake ?? FitmentState.UkeyMake)"
+            UkeyModel="@(_ukeyModel ?? FitmentState.UkeyModel)"
+            ModelYear="@(_modelYear ?? FitmentState.Year)"
+            UkeyDriveline="@(_ukeyDriveline ?? FitmentState.UkeyDriveline)"
+            UkeyTrimLevel="@(_ukeyTrimLevel ?? FitmentState.UkeyTrimLevel)" />
+    }
+
+    <div class="product-page-main">
+
+        @* ── Left: identity + imagery ───────────────────────────────── *@
+        <section class="product-panel product-summary">
+            <header class="product-summary-header">
+                <h1 class="product-summary-title">@PartTitle</h1>
+
+                <div class="product-summary-subhead">
+                    <p class="product-summary-partnumber">
+                        <span class="product-summary-partnumber-label">Part Number:</span>
+                        @PartNumber
+                    </p>
+
+                    <ul class="product-summary-meta">
+                        <li>
+                            <span class="product-summary-meta-icon" aria-hidden="true">👁</span>
+                            @ViewCount people viewed
+                        </li>
+                        <li>
+                            <span class="product-summary-meta-icon" aria-hidden="true">▣</span>
+                            @VideoCount Videos
+                        </li>
+                        <li>
+                            <StarRating Rating="Rating" Label="@($"{ReviewCount} Reviews")" />
+                        </li>
+                    </ul>
+                </div>
+            </header>
+
+            <ProductGallery Images="GalleryImages" AltText="@PartTitle" />
+        </section>
+
+        @* ── Right: price, fulfilment, and who you're buying from ───── *@
+        <div class="product-buy-column">
+            <section class="product-panel product-buy">
+                <ProductPriceBox Price="Price"
+                                 Msrp="Msrp"
+                                 DealerRating="Dealer.Rating"
+                                 SavingsText="@SavingsText"
+                                 PriceBoxMessage="@(_websiteSettings?.PriceBoxMessage)"
+                                 Availability="Availability"
+                                 AvailabilityText="@AvailabilityText"
+                                 Delivery="Delivery"
+                                 Pickup="Pickup"
+                                 IsEstimatingShipping="_isEstimatingShipping"
+                                 ShippingEstimateText="@ShippingEstimateText"
+                                 OnEstimateShipping="EstimateShippingAsync"
+                                 OnZipCodeChanged="UpdateZipCodeAsync"
+                                 OnAddToCart="AddProductToCartAsync"
+                                 @bind-Quantity="Quantity" />
+            </section>
+
+            <section class="product-panel">
+                <DealerInfoCard Dealer="Dealer" ReturnPolicyUrl="@(_websiteSettings?.PoliciesLink ?? "#")" />
+            </section>
+        </div>
+    </div>
+
+    @if (RelatedItems.Count > 0)
+    {
+        <div class="product-panel">
+            <RelatedProducts Products="RelatedItems" OnAddToCart="HandleAddToCart" />
+        </div>
+    }
+
+    @* ── Description + the collapsible detail stack ─────────────────── *@
+    <div class="product-panel product-sections">
+        <ProductInformation Tags="Tags"
+                            Features="Features"
+                            Note="@ApplicabilityNote"
+                            Supersessions="Supersessions" />
+
+        @* The reviews row shows stars instead of plain meta text; declared once here and
+           handed to whichever section asks for it. *@
+        @{
+            RenderFragment ratingMeta = @<StarRating Rating="Rating" Label="@($"{ReviewCount} Reviews")" />;
+        }
+
+        @* Named "detail", not "section" — @section is a Razor directive and would be
+           parsed as one. *@
+        @foreach (var detail in DetailSections)
+        {
+            <AccordionSection Title="@detail.Title"
+                              Meta="@detail.Meta"
+                              MetaContent="@(detail.ShowRating ? ratingMeta : null)">
+                @switch (detail.Title)
+                {
+                    case "Diagrams & Kits":
+                        @if (_assemblies is { } assemblies && assemblies.Any())
+                        {
+                            <div class="accordion-assemblies">
+                                @foreach (var assembly in assemblies)
+                                {
+                                    <div class="assembly-item">
+                                        <div class="assembly-header">
+                                            <h4>@assembly.AssemblyName @if (assembly.AssemblyIndex > 0) { <span class="assembly-index">#@assembly.AssemblyIndex</span> }</h4>
+                                            @if (!string.IsNullOrEmpty(assembly.AssemblyURL))
+                                            {
+                                                <a href="@assembly.AssemblyURL" target="_blank" class="btn btn-sm btn-link">Full Diagram →</a>
+                                            }
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(assembly.AssemblyImageURL))
+                                        {
+                                            <img src="@assembly.AssemblyImageURL" alt="@assembly.AssemblyName" class="assembly-image" />
+                                        }
+                                        @if (!string.IsNullOrEmpty(assembly.AssemblyDescription))
+                                        {
+                                            <p class="assembly-description">@assembly.AssemblyDescription</p>
+                                        }
+                                        @if (assembly.QuantityRequired > 0)
+                                        {
+                                            <p class="assembly-quantity">Qty Required: @assembly.QuantityRequired</p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(assembly.ApplicationNotes))
+                                        {
+                                            <details class="assembly-notes">
+                                                <summary>Application Notes</summary>
+                                                <p>@assembly.ApplicationNotes</p>
+                                            </details>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No diagrams or kits available.</p>
+                        }
+                        break;
+
+                    case "Product Reviews":
+                        @if (_reviews is { } reviews && reviews.Any())
+                        {
+                            <div class="accordion-reviews">
+                                @foreach (var review in reviews)
+                                {
+                                    <div class="review-item">
+                                        <div class="review-header">
+                                            <strong>@review.FirstName @review.LastName</strong>
+                                            <span class="review-date">@review.YMD.ToShortDateString()</span>
+                                        </div>
+                                        <div class="review-rating">
+                                            @for (int i = 0; i < review.ReviewScore; i++)
+                                            {
+                                                <span class="star">★</span>
+                                            }
+                                            @for (int i = review.ReviewScore; i < 5; i++)
+                                            {
+                                                <span class="star empty">☆</span>
+                                            }
+                                        </div>
+                                        <p class="review-text">@review.ReviewText</p>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No reviews yet. Be the first to review this product!</p>
+                        }
+                        break;
+
+                    case "What This Fits":
+                        @if (_applications is { } applications && applications.Any())
+                        {
+                            <div class="accordion-fitments">
+                                <table class="fitments-table">
+                                    <tbody>
+                                        @foreach (var app in applications)
+                                        {
+                                            <tr>
+                                                <td class="fitment-name">@app.Fitment</td>
+                                                <td class="fitment-years">@app.ModelYears</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No fitment information available.</p>
+                        }
+                        break;
+
+                    case "Product Types":
+                        @if (_types is { } types && types.Any())
+                        {
+                            <div class="accordion-types">
+                                @foreach (var type in types)
+                                {
+                                    <div class="type-item">
+                                        <a href="@type.TargetURL" class="type-link">
+                                            @if (!string.IsNullOrEmpty(type.ThumbnailURL))
+                                            {
+                                                <img src="@type.ThumbnailURL" alt="@type.TypeName" class="type-thumbnail" />
+                                            }
+                                            <div class="type-info">
+                                                <h5>@type.TypeName</h5>
+                                                <p>@type.TypeDescription</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No product type variants available.</p>
+                        }
+                        break;
+
+                    case "Services":
+                        @if (_services is { } services && services.Any())
+                        {
+                            <div class="accordion-services">
+                                @foreach (var service in services)
+                                {
+                                    <div class="service-item">
+                                        <h5 class="service-name">@service.AssemblyName</h5>
+                                        <p class="service-description">@service.AssemblyDescription</p>
+                                        @if (service.ServiceProducts.Any())
+                                        {
+                                            <div class="service-products">
+                                                <p class="service-products-label">Available Products:</p>
+                                                @foreach (var product in service.ServiceProducts)
+                                                {
+                                                    <div class="service-product">
+                                                        <a href="@product.TargetURL">
+                                                            @if (!string.IsNullOrEmpty(product.ThumbnailURL))
+                                                            {
+                                                                <img src="@product.ThumbnailURL" alt="@product.ProductDescription" class="service-product-image" />
+                                                            }
+                                                            <div class="service-product-info">
+                                                                <strong>@product.ProductDescription</strong>
+                                                                <span class="stock-code">@product.StockCode</span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No services available for this product.</p>
+                        }
+                        break;
+
+                    case "Attachments":
+                        @if (_attachments is { } attachments && attachments.Any())
+                        {
+                            <div class="accordion-attachments">
+                                <ul class="attachment-list">
+                                    @foreach (var attachment in attachments)
+                                    {
+                                        <li class="attachment-item">
+                                            <a href="@attachment.AttachmentUrl" target="_blank" download>
+                                                📎 @attachment.AttachmentName
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No attachments available.</p>
+                        }
+                        break;
+
+                    case "Videos":
+                        @if (_videos is { } videos && videos.Any())
+                        {
+                            <div class="accordion-videos">
+                                @foreach (var video in videos)
+                                {
+                                    <div class="video-item">
+                                        <h6>@video.AttachmentName</h6>
+                                        <iframe src="@video.AttachmentUrl"
+                                                width="100%"
+                                                height="315"
+                                                frameborder="0"
+                                                allowfullscreen
+                                                title="@video.AttachmentName">
+                                        </iframe>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No videos available.</p>
+                        }
+                        break;
+
+                    case "Share Product":
+                        <div class="accordion-share">
+                            <p>Share this product on social media:</p>
+                            <div class="share-buttons">
+                                <a href="#" class="btn btn-social btn-facebook" title="Share on Facebook">f</a>
+                                <a href="#" class="btn btn-social btn-twitter" title="Share on Twitter">𝕏</a>
+                                <a href="#" class="btn btn-social btn-instagram" title="Share on Instagram">📷</a>
+                            </div>
+                        </div>
+                        break;
+
+                    case "Ask a Question":
+                        <div class="accordion-questions">
+                            <p class="text-muted">Question form and answered questions will be implemented here.</p>
+                        </div>
+                        break;
+
+                    default:
+                        <p class="product-sections-placeholder">@detail.Title content goes here.</p>
+                        break;
+                }
+            </AccordionSection>
+        }
+    </div>
+
+    @if (AlsoBoughtItems.Count > 0)
+    {
+        <div class="product-panel">
+            <PeopleAlsoBought Products="AlsoBoughtItems" OnAddToCart="HandleAddToCart" />
+        </div>
+    }
+
+</div>
+}
+
+@code {
+    /// <summary>When true, renders as a scaled gallery preview (no page title).</summary>
+    [Parameter] public bool Preview { get; set; }
+}
