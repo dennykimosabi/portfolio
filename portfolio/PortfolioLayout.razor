@@ -20,10 +20,11 @@
         </a>
         <nav class="pf-nav" @onclick="CloseNav">
             <NavLink class="pf-nav-item" href="" Match="NavLinkMatch.All" title="Home">
-                <span class="pf-nav-icon">&#8962;</span> <span class="pf-nav-label">Home</span>
+                <span class="pf-nav-icon"><i class="ri-home-5-line" aria-hidden="true"></i></span> <span class="pf-nav-label">Home</span>
             </NavLink>
+            <p class="pf-nav-group-label">Catalog</p>
             <NavLink class="pf-nav-item" href="workshop" title="Workshop">
-                <span class="pf-nav-icon">&#9638;</span> <span class="pf-nav-label">Workshop</span>
+                <span class="pf-nav-icon"><i class="ri-tools-line" aria-hidden="true"></i></span> <span class="pf-nav-label">Workshop</span>
             </NavLink>
             <div class="pf-nav-parent">
                 @if (_rail)
@@ -31,7 +32,7 @@
                     <button type="button" class="pf-nav-item pf-nav-toggle @(IsBlueprintsActive ? "active" : "")"
                             @onclick="ToggleBlueprints" @onclick:stopPropagation="true"
                             aria-expanded="@_blueprintsOpen" title="Blueprints">
-                        <span class="pf-nav-icon">&#9635;</span> <span class="pf-nav-label">Blueprints</span>
+                        <span class="pf-nav-icon"><i class="ri-draft-line" aria-hidden="true"></i></span> <span class="pf-nav-label">Blueprints</span>
                         <i class="ri-arrow-right-s-line pf-nav-flychevron" aria-hidden="true"></i>
                     </button>
                     @if (_blueprintsOpen)
@@ -49,7 +50,7 @@
                 {
                     <div class="pf-nav-row">
                         <NavLink class="pf-nav-item pf-nav-link" href="blueprints" title="Blueprints">
-                            <span class="pf-nav-icon">&#9635;</span> <span class="pf-nav-label">Blueprints</span>
+                            <span class="pf-nav-icon"><i class="ri-draft-line" aria-hidden="true"></i></span> <span class="pf-nav-label">Blueprints</span>
                         </NavLink>
                         <button type="button" class="pf-nav-chevron" @onclick="ToggleBlueprints" @onclick:stopPropagation="true"
                                 aria-expanded="@_blueprintsOpen" aria-label="Toggle blueprint pages">
@@ -67,20 +68,21 @@
                     }
                 }
             </div>
+            <p class="pf-nav-group-label">Process</p>
             <NavLink class="pf-nav-item" href="flows" title="Flows">
-                <span class="pf-nav-icon">&#8646;</span> <span class="pf-nav-label">Flows</span>
+                <span class="pf-nav-icon"><i class="ri-route-line" aria-hidden="true"></i></span> <span class="pf-nav-label">Flows</span>
             </NavLink>
             <NavLink class="pf-nav-item" href="build-log" title="Build log">
-                <span class="pf-nav-icon">&#9776;</span> <span class="pf-nav-label">Build log</span>
+                <span class="pf-nav-icon"><i class="ri-history-line" aria-hidden="true"></i></span> <span class="pf-nav-label">Build log</span>
             </NavLink>
             <NavLink class="pf-nav-item" href="experiments" title="Experiments">
-                <span class="pf-nav-icon">&#9734;</span> <span class="pf-nav-label">Experiments</span>
+                <span class="pf-nav-icon"><i class="ri-flask-line" aria-hidden="true"></i></span> <span class="pf-nav-label">Experiments</span>
             </NavLink>
             <NavLink class="pf-nav-item" href="archive" title="Archive">
-                <span class="pf-nav-icon">&#9783;</span> <span class="pf-nav-label">Archive</span>
+                <span class="pf-nav-icon"><i class="ri-archive-line" aria-hidden="true"></i></span> <span class="pf-nav-label">Archive</span>
             </NavLink>
             <NavLink class="pf-nav-item" href="about" title="About">
-                <span class="pf-nav-icon">&#9786;</span> <span class="pf-nav-label">About</span>
+                <span class="pf-nav-icon"><i class="ri-information-line" aria-hidden="true"></i></span> <span class="pf-nav-label">About</span>
             </NavLink>
         </nav>
         <button type="button" class="pf-rail-toggle" @onclick="ToggleRail" aria-label="@(_rail ? "Expand sidebar" : "Collapse sidebar to icons")" title="@(_rail ? "Expand sidebar" : "Collapse sidebar")">

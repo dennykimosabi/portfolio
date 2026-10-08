@@ -90,6 +90,16 @@
 
 .pf-nav { display: flex; flex-direction: column; gap: 2px; }
 
+.pf-nav-group-label {
+    margin: 16px 12px 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #a1a1aa;
+    user-select: none;
+}
+
 .pf-nav-item {
     display: flex;
     align-items: center;
@@ -108,7 +118,14 @@
 }
 .pf-nav-item:active { background: var(--pf-muted-bg); color: var(--pf-text); }
 .pf-nav-item.active { background: var(--pf-muted-bg); color: var(--pf-text); font-weight: 600; }
-.pf-nav-icon { width: 18px; text-align: center; }
+.pf-nav-icon {
+    width: 22px;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.pf-nav-icon i { font-size: 18px; line-height: 1; }
 
 .pf-sidebar-foot {
     margin-top: auto;
@@ -321,6 +338,7 @@
     .pf-sidebar.is-rail .pf-brand-text,
     .pf-sidebar.is-rail .pf-nav-label,
     .pf-sidebar.is-rail .pf-sidebar-foot,
+    .pf-sidebar.is-rail .pf-nav-group-label,
     .pf-sidebar.is-rail .pf-nav-flychevron,
     .pf-sidebar.is-rail .pf-nav-chevron { display: none; }
     .pf-sidebar.is-rail .pf-nav-item { justify-content: center; padding: 9px 0; }
