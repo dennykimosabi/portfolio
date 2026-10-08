@@ -5,7 +5,7 @@
     <PageTitle>Cart blueprint · Denny Kim</PageTitle>
 }
 
-<BlueprintFrame Title="Cart" Description="Line items, quantities, confidence panel, recommendations." Href="/blueprints/cart" Preview="Preview" Components="@(new[] { "ConfidencePanel", "LoadingIndicator", "RecommendedProductsPanel", "ReviewsPanel" })">
+<BlueprintFrame Title="Cart" Description="Line items, quantities, confidence panel, recommendations." Href="blueprints/cart" Preview="Preview" Components="@(new[] { "ConfidencePanel", "LoadingIndicator", "RecommendedProductsPanel", "ReviewsPanel" })">
 
 
 @implements IDisposable
@@ -29,7 +29,7 @@
         {
             <div class="cart-empty">
                 <p>Your cart is empty.</p>
-                <a href="/" class="cart-empty-link">Continue Shopping</a>
+                <a href="blueprints/home" class="cart-empty-link">Continue Shopping</a>
             </div>
         }
         else

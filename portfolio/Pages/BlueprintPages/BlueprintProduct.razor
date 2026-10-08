@@ -5,7 +5,7 @@
     <PageTitle>Product blueprint · Denny Kim</PageTitle>
 }
 
-<BlueprintFrame Title="Product" Description="Gallery, price box, fitment guidance, related products, reviews." Href="/blueprints/product" Preview="Preview" Components="@(new[] { "AccordionSection", "DealerInfoCard", "GuidedNavigation", "PeopleAlsoBought", "ProductGallery", "ProductInformation", "ProductPriceBox", "RelatedProducts", "StarRating" })">
+<BlueprintFrame Title="Product" Description="Gallery, price box, fitment guidance, related products, reviews." Href="blueprints/product" Preview="Preview" Components="@(new[] { "AccordionSection", "DealerInfoCard", "GuidedNavigation", "PeopleAlsoBought", "ProductGallery", "ProductInformation", "ProductPriceBox", "RelatedProducts", "StarRating" })">
 
 
 @* Product detail page.
@@ -30,7 +30,7 @@ else if (!string.IsNullOrEmpty(_errorMessage))
 {
     <div class="product-page-error" role="alert">
         <p>@_errorMessage</p>
-        <a href="/">Return to Home</a>
+        <a href="blueprints/home">Return to Home</a>
     </div>
 }
 else

@@ -9,7 +9,7 @@ else
 {
     <div class="bp-detail">
         <nav class="bp-detail-crumb" aria-label="Breadcrumb">
-            <a href="/blueprints">← Blueprints</a>
+            <a href="blueprints">← Blueprints</a>
             <span class="bp-detail-crumb-sep">/</span>
             <span>@Title</span>
         </nav>
@@ -67,11 +67,11 @@ else
 
     private static readonly (string Href, string Title)[] _order = new[]
     {
-        ("/blueprints/home", "Home"),
-        ("/blueprints/search", "Search"),
-        ("/blueprints/product", "Product"),
-        ("/blueprints/cart", "Cart"),
-        ("/blueprints/accessories", "Accessories"),
+        ("blueprints/home", "Home"),
+        ("blueprints/search", "Search"),
+        ("blueprints/product", "Product"),
+        ("blueprints/cart", "Cart"),
+        ("blueprints/accessories", "Accessories"),
     };
 
     protected override void OnParametersSet()

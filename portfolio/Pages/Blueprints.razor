@@ -33,23 +33,23 @@
     private static readonly BlueprintCard[] _blueprints = new[]
     {
         new BlueprintCard(
-            "Home", "/blueprints/home",
+            "Home", "blueprints/home",
             "Hero, vehicle picker, garage, assembly results, refine search, featured products.",
             9, b => { b.OpenComponent<BlueprintHome>(0); b.AddAttribute(1, "Preview", true); b.CloseComponent(); }),
         new BlueprintCard(
-            "Search", "/blueprints/search",
+            "Search", "blueprints/search",
             "Toolbar, filter sidebar with active-filter chips, sortable product grid.",
             4, b => { b.OpenComponent<BlueprintSearch>(0); b.AddAttribute(1, "Preview", true); b.CloseComponent(); }),
         new BlueprintCard(
-            "Product", "/blueprints/product",
+            "Product", "blueprints/product",
             "Gallery, price box, fitment guidance, related products, reviews.",
             9, b => { b.OpenComponent<BlueprintProduct>(0); b.AddAttribute(1, "Preview", true); b.CloseComponent(); }),
         new BlueprintCard(
-            "Cart", "/blueprints/cart",
+            "Cart", "blueprints/cart",
             "Line items, quantities, confidence panel, recommendations.",
             4, b => { b.OpenComponent<BlueprintCart>(0); b.AddAttribute(1, "Preview", true); b.CloseComponent(); }),
         new BlueprintCard(
-            "Accessories", "/blueprints/accessories",
+            "Accessories", "blueprints/accessories",
             "Category landing with vehicle context and accessory results.",
             5, b => { b.OpenComponent<BlueprintAccessories>(0); b.AddAttribute(1, "Preview", true); b.CloseComponent(); }),
     };
