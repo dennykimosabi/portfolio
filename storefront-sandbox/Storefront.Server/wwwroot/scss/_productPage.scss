@@ -10,7 +10,7 @@
     color: var(--sf-color-text-2);
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--sf-space-6);
 }
 
 // Shared white card chrome. Every top-level block on the page sits in one of these.
@@ -18,7 +18,7 @@
     background: var(--sf-color-bg);
     border: 1px solid var(--sf-color-border-light);
     border-radius: var(--sf-radius-sm);
-    padding: 1.25rem;
+    padding: var(--sf-space-6);
 }
 
 // ───── Fitment banner ──────────────────────────────────────────────────────
@@ -95,7 +95,7 @@
 .product-page-main {
     display: grid;
     grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
-    gap: 1rem;
+    gap: var(--sf-space-6);
     align-items: start;
 
     @media (max-width: 900px) {
@@ -161,10 +161,5 @@
 .product-buy-column {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-}
-
-// The buy panel manages its own internal spacing.
-.product-buy {
-    padding: 1.25rem 1rem;
+    gap: var(--sf-space-6);
 }

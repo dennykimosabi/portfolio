@@ -62,13 +62,14 @@
              @onclick="() => SelectFulfillment(FulfillmentSelection.Delivery)">
             @if (_isEditingZip)
             {
-                @* Replaces the whole box's content rather than just the ZIP text inline —
-                   same footprint (height/width unchanged) as the normal Deliver content,
-                   matching legacy/docs/legacy.png. Legacy has no way to back out of this;
-                   the X is our own addition since a save-with-no-changes workaround isn't
-                   great UX. *@
-                <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm" aria-label="Cancel" @onclick="CancelZipEdit">✕</SfButton>
-                <p class="price-box-fulfillment-head">Enter Your Zip Code</p>
+                @* Zip edit swaps the Deliver cell's content in place. The cancel control
+                   sits at the end of the head row, in flow — legacy has no way to back
+                   out of this; the X is our own addition since a save-with-no-changes
+                   workaround isn't great UX. *@
+                <div class="price-box-fulfillment-head price-box-zip-edit-head">
+                    <span>Enter Your Zip Code</span>
+                    <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm" aria-label="Cancel" @onclick="CancelZipEdit">✕</SfButton>
+                </div>
                 <div class="price-box-zip-edit-row">
                     <input type="text"
                            inputmode="text"
@@ -96,11 +97,11 @@
                 {
                     <p class="price-box-fulfillment-estimate">@ShippingEstimateText</p>
                 }
-                <SfButton Variant="SfButtonVariant.Ghost" Size="SfButtonSize.Sm"
-                        Disabled="@IsEstimatingShipping"
+                <button type="button" class="price-box-fulfillment-foot price-box-fulfillment-action"
+                        disabled="@IsEstimatingShipping"
                         @onclick="OnEstimateShipping">
                     @(IsEstimatingShipping ? "Estimating…" : Delivery.EstimateLinkText)
-                </SfButton>
+                </button>
             }
         </div>
 
@@ -111,11 +112,12 @@
                 Pick Up
             </p>
             <p class="price-box-fulfillment-promise">@Pickup.Promise</p>
-            <p class="price-box-fulfillment-cost">@Pickup.CostText</p>
+            <p class="price-box-fulfillment-foot price-box-fulfillment-cost">@Pickup.CostText</p>
         </div>
     </div>
 
     <div class="price-box-quantity">
+        <span class="price-box-quantity-label">Qty</span>
         <SfQuantityStepper Value="@Quantity" ValueChanged="@SetQuantity" Min="@MinQuantity" AriaLabel="Quantity" />
     </div>
 
