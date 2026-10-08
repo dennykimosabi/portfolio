@@ -1,16 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <!--
     Denny Kim's portfolio site — a Design-OS-style showcase built around his real
     Storefront.Client Blazor components.
 
+    Blazor WebAssembly (static). Publishes to plain files under wwwroot, deployed
+    to GitHub Pages via .github/workflows/deploy.yml. Local dev: dotnet run, then
+    open http://localhost:5290/portfolio/ (base href is /portfolio/ for Pages).
+
     The .razor / .razor.cs files are compiled straight from
     ../storefront-sandbox/Storefront.Client (linked, not copied), so edits there
     show up here on the next build. The shared-model / service / state layers those
     components depend on are stubbed under Stubs/ and backed by in-memory dummy
-    data under Demo/ (both adapted from the proven Storefront.Preview harness).
+    data under Demo/. Placeholder artwork is generated client-side as SVG data
+    URIs (DemoImages) — no server endpoints.
 
-    Local-friendly on purpose: net9.0 + InteractiveServer, no NuGet packages.
+    net9.0, no NuGet packages.
   -->
 
   <PropertyGroup>
@@ -30,6 +35,14 @@
     <Content Include="$(ClientDir)Components/**/*.razor" Link="Components/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
     <Content Include="$(ClientDir)Layout/**/*.razor" Link="Layout/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
     <Compile Include="$(ClientDir)Components/**/*.cs" Link="Components/%(RecursiveDir)%(Filename)%(Extension)" />
+    <!-- Sandbox stylesheet, published into wwwroot so the static site uses the real styles. -->
+    <Content Include="../storefront-sandbox/Storefront.Server/wwwroot/css/main.css" Link="wwwroot/css/main.css" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Blazor WebAssembly framework (ships as NuGet since .NET 8). -->
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.20" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

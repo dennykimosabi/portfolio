@@ -1,7 +1,7 @@
 # Portfolio — Denny Kim's Design OS
 
 > **Run it:** from the repo folder in Terminal —
-> `dotnet run --project portfolio/Portfolio.csproj` → http://localhost:5290
+> `dotnet run --project portfolio/Portfolio.csproj` → http://localhost:5290/portfolio/
 
 A Blazor portfolio site built around a real storefront component library.
 The portfolio itself is the showcase: AI-orchestrated development, mirroring
@@ -15,12 +15,19 @@ Requires the .NET 9 SDK.
 dotnet run --project portfolio/Portfolio.csproj
 ```
 
-Then open http://localhost:5290 (workshop: http://localhost:5290/workshop)
+Then open http://localhost:5290/portfolio/ (workshop: http://localhost:5290/portfolio/workshop)
+
+## Live site
+
+The site deploys to GitHub Pages on every push to `main`
+(`.github/workflows/deploy.yml`): https://dennykimosabi.github.io/portfolio/
+
+First-time setup: repo Settings → Pages → Source → **GitHub Actions**.
 
 ## Structure
 
 - `portfolio/` — the portfolio site (Home, Component workshop, Build log,
-  Experiments, Archive, About). net9.0 + InteractiveServer, no NuGet packages.
+  Experiments, Archive, About). net9.0 + Blazor WebAssembly (static, GitHub Pages).
 - `storefront-sandbox/Storefront.Client/` — the 38 Blazor storefront components
   (vehicle picker, refine search, assembly results, product cards, cart, …).
   Compiled into the portfolio via linked files, not copied — edits here show up
