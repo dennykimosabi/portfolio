@@ -11,7 +11,7 @@
     font-weight: 600;
     line-height: 1.25;
     border: 1px solid transparent;
-    border-radius: var(--sf-radius-sm);
+    border-radius: var(--sf-radius-md);
     cursor: pointer;
     text-decoration: none;
     white-space: nowrap;
@@ -129,6 +129,12 @@
 .sf-button-icon-lg {
     width: 2.75rem;
     font-size: 1.25rem;
+}
+
+// Inline SVG icons inherit the button's text color (e.g. cart glyph on the
+// dark Add to Cart button renders white, not the SVG default black).
+.sf-button svg {
+    fill: currentColor;
 }
 
 // Loading spinner
