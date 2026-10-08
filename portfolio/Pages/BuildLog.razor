@@ -10,6 +10,46 @@
 <div class="pf-section">
     <div class="pf-timeline">
         <div class="pf-tl-item">
+            <div class="pf-tl-date">October 8, 2026 · 12:50 AM</div>
+            <h3>Links fixed for the /portfolio/ base path</h3>
+            <p>GitHub Pages serves the site under <code>/portfolio/</code>, but the blueprint cards, breadcrumbs, and prev/next pager used root-relative links (<code>/blueprints/home</code>) — clicking one dropped the <code>/portfolio/</code> segment and landed on GitHub's 404. Every app link is now base-relative. Lesson learned: never <code>href="/…"</code> on this site.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026 · 11:40 PM</div>
+            <h3>The portfolio goes live on GitHub Pages</h3>
+            <p>Converted the site from Blazor Server to Blazor WebAssembly so it hosts as free static files. Demo images and the icon resolver became inline SVG data URIs (no server endpoints); a GitHub Actions workflow publishes and deploys on every push to <code>main</code>. Live at <code>dennykimosabi.github.io/portfolio</code> — annotate on the live site, paste the block, push, and it's live in minutes.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026 · 10:25 PM</div>
+            <h3>Comment composer becomes a floating card</h3>
+            <p>Restyled the <code>SiteFeedback</code> composer from a reference screenshot: a floating white card anchored at the click point, with the selected-element caption, a textarea, and a toolbar (add, camera, text-size, blue send). The send button copies the <code>[site-feedback]</code> block to the clipboard.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026 · 10:05 PM</div>
+            <h3>Annotate button always visible</h3>
+            <p>Removed the <code>?feedback=1</code> gate — the Annotate button now shows on every page, no query string needed.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026 · 10:00 PM</div>
+            <h3>Product Gallery: three explorable versions</h3>
+            <p>Reworked the workshop's Product Gallery section into three side-by-side explorations: Thumbnails (the existing gallery), Grid (swipe carousel on mobile, three-column grid with a full-width lead image on desktop), and Lightbox (carousel with dots plus a fullscreen viewer with arrows and image count). New components <code>ProductGalleryGrid</code> and <code>ProductGalleryLightbox</code>.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026 · 9:45 PM</div>
+            <h3>Claude Design research</h3>
+            <p>Researched Anthropic's Claude Design — chat panel plus live canvas, inline comments on selected elements, direct text editing, AI-generated sliders — to mirror its rebuildable editing features. Gaps noted: no version history, no Figma export. A canvas edit view is on the roadmap.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026 · 9:30 PM</div>
+            <h3>Blueprint detail pages get their chrome</h3>
+            <p>Added <code>BlueprintFrame</code> around the five blueprint pages, modeled on Blueprint's own blueprint detail pages: breadcrumb back to the gallery, title and description, component chips, and a prev/next pager across all five blueprints.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026 · 9:00 PM</div>
+            <h3>/blueprints gallery</h3>
+            <p>New gallery snapshotting five storefront pages — Home, Search, Product, Cart, Accessories — as live scaled-down previews with component counts, each linking to its full page. Added to the nav and home page.</p>
+        </div>
+        <div class="pf-tl-item">
             <div class="pf-tl-date">October 7, 2026</div>
             <h3>Design tokens go global</h3>
             <p>Finished the token cleanup Blueprint-style: zero hardcoded values left in the library. A <code>--sf-font-sans</code> token replaced 20 hardcoded font stacks; 35 remaining hardcoded colors were folded into tokens (near-grays consolidated, guided-navigation alert colors mapped onto the feedback families); new tokens for faint text, visited links, tint borders, and drawer/popover shadows; the dead dark-theme block deleted. Added a <strong>Design Tokens</strong> gallery to the workshop — live swatches for every token.</p>
@@ -32,7 +72,7 @@
         <div class="pf-tl-item">
             <div class="pf-tl-date">October 7, 2026</div>
             <h3>Point-and-comment feedback tool</h3>
-            <p>Built <code>SiteFeedback</code>: add <code>?feedback=1</code> to any page, click Annotate, click any element, type a note, and copy a <code>[site-feedback]</code> block with the page, element label, and CSS selector. It turned site review into a tight loop — precise edit notes with selectors instead of prose descriptions.</p>
+            <p>Built <code>SiteFeedback</code>: click Annotate on any page, click any element, type a note, and copy a <code>[site-feedback]</code> block with the page, element label, and CSS selector. It turned site review into a tight loop — precise edit notes with selectors instead of prose descriptions.</p>
         </div>
         <div class="pf-tl-item">
             <div class="pf-tl-date">October 7, 2026</div>
@@ -66,7 +106,7 @@
         </div>
         <div class="pf-tl-item">
             <div class="pf-tl-date">October 7, 2026</div>
-            <h3>This portfolio becomes a Design OS</h3>
+            <h3>This portfolio becomes a design component catalog</h3>
             <p>Rebuilt the portfolio itself as an app-like Blazor site around the 38 existing storefront components — workshop, build log, experiments, archive. The portfolio is the proof, not just the frame. Inspired by Patrick Morgan's Design OS at Sublime Security.</p>
         </div>
         <div class="pf-tl-item">

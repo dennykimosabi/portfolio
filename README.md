@@ -1,4 +1,4 @@
-# Portfolio — Denny Kim's Design OS
+# Portfolio — Denny Kim's design component catalog
 
 > **Run it:** from the repo folder in Terminal —
 > `dotnet run --project portfolio/Portfolio.csproj` → http://localhost:5290/portfolio/
