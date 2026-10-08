@@ -5,6 +5,8 @@
     <PageTitle>Search blueprint · Denny Kim</PageTitle>
 }
 
+<BlueprintFrame Title="Search" Description="Toolbar, filter sidebar with active-filter chips, sortable product grid." Href="/blueprints/search" Preview="Preview" Components="@(new[] { "ActiveFiltersChips", "LoadingIndicator", "ProductGrid", "SearchToolbar" })">
+
 
 <div class="search-page">
 <SearchToolbar FitmentString="@_fitmentString"
@@ -231,6 +233,8 @@
 
 </div>
 
+
+</BlueprintFrame>
 
 @code {
     /// <summary>When true, renders as a scaled gallery preview (no page title).</summary>

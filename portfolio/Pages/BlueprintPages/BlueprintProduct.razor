@@ -5,6 +5,8 @@
     <PageTitle>Product blueprint · Denny Kim</PageTitle>
 }
 
+<BlueprintFrame Title="Product" Description="Gallery, price box, fitment guidance, related products, reviews." Href="/blueprints/product" Preview="Preview" Components="@(new[] { "AccordionSection", "DealerInfoCard", "GuidedNavigation", "PeopleAlsoBought", "ProductGallery", "ProductInformation", "ProductPriceBox", "RelatedProducts", "StarRating" })">
+
 
 @* Product detail page.
 
@@ -382,6 +384,8 @@ else
 
 </div>
 }
+
+</BlueprintFrame>
 
 @code {
     /// <summary>When true, renders as a scaled gallery preview (no page title).</summary>

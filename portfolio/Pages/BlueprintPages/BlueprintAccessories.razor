@@ -5,6 +5,8 @@
     <PageTitle>Accessories blueprint · Denny Kim</PageTitle>
 }
 
+<BlueprintFrame Title="Accessories" Description="Category landing with vehicle context and accessory results." Href="/blueprints/accessories" Preview="Preview" Components="@(new[] { "AccessoryResults", "HeroPlacement", "RefineSearch", "VehiclePicked", "VehiclePicker" })">
+
 
 <HeroPlacement PlacementKey="AccessoriesHeroArea" />
 
@@ -42,6 +44,8 @@ else
 }
 
 <RefineSearch @key="@("rs-links")" Mode="RefineSearchMode.Links" UseAccessoryLinks="true" />
+
+</BlueprintFrame>
 
 @code {
     /// <summary>When true, renders as a scaled gallery preview (no page title).</summary>

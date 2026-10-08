@@ -1,0 +1,83 @@
+@* Blueprint detail chrome: breadcrumb, title, component list, prev/next pager.
+   In Preview mode renders only the page content (for gallery thumbnails). *@
+
+@if (Preview)
+{
+    @ChildContent
+}
+else
+{
+    <div class="bp-detail">
+        <nav class="bp-detail-crumb" aria-label="Breadcrumb">
+            <a href="/blueprints">← Blueprints</a>
+            <span class="bp-detail-crumb-sep">/</span>
+            <span>@Title</span>
+        </nav>
+        <header class="bp-detail-head">
+            <h1>@Title</h1>
+            <p>@Description</p>
+            <div class="bp-detail-components">
+                @foreach (var c in Components)
+                {
+                    <span class="bp-detail-chip">@c</span>
+                }
+            </div>
+        </header>
+        <div class="bp-detail-body">
+            @ChildContent
+        </div>
+        <nav class="bp-detail-pager" aria-label="More blueprints">
+            @if (_prev is not null)
+            {
+                <a class="bp-pager-link" href="@_prev.Value.Href"><span aria-hidden="true">←</span> @_prev.Value.Title</a>
+            }
+            else
+            {
+                <span></span>
+            }
+            @if (_next is not null)
+            {
+                <a class="bp-pager-link" href="@_next.Value.Href">@_next.Value.Title <span aria-hidden="true">→</span></a>
+            }
+        </nav>
+    </div>
+}
+
+@code {
+    /// <summary>Blueprint display title.</summary>
+    [Parameter] public string Title { get; set; } = string.Empty;
+
+    /// <summary>One-line description shown under the title.</summary>
+    [Parameter] public string Description { get; set; } = string.Empty;
+
+    /// <summary>Component names composed in this blueprint.</summary>
+    [Parameter] public string[] Components { get; set; } = Array.Empty<string>();
+
+    /// <summary>Current page href, used to compute prev/next.</summary>
+    [Parameter] public string Href { get; set; } = string.Empty;
+
+    /// <summary>When true, renders only the page content (gallery thumbnail).</summary>
+    [Parameter] public bool Preview { get; set; }
+
+    /// <summary>Page content.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private (string Href, string Title)? _prev;
+    private (string Href, string Title)? _next;
+
+    private static readonly (string Href, string Title)[] _order = new[]
+    {
+        ("/blueprints/home", "Home"),
+        ("/blueprints/search", "Search"),
+        ("/blueprints/product", "Product"),
+        ("/blueprints/cart", "Cart"),
+        ("/blueprints/accessories", "Accessories"),
+    };
+
+    protected override void OnParametersSet()
+    {
+        var i = Array.FindIndex(_order, e => e.Href == Href);
+        _prev = i > 0 ? _order[i - 1] : null;
+        _next = i >= 0 && i < _order.Length - 1 ? _order[i + 1] : null;
+    }
+}

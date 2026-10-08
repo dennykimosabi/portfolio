@@ -5,6 +5,8 @@
     <PageTitle>Cart blueprint · Denny Kim</PageTitle>
 }
 
+<BlueprintFrame Title="Cart" Description="Line items, quantities, confidence panel, recommendations." Href="/blueprints/cart" Preview="Preview" Components="@(new[] { "ConfidencePanel", "LoadingIndicator", "RecommendedProductsPanel", "ReviewsPanel" })">
+
 
 @implements IDisposable
 @inject CartState CartState
@@ -117,6 +119,8 @@
 
     <RecommendedProductsPanel />
 </div>
+
+</BlueprintFrame>
 
 @code {
     /// <summary>When true, renders as a scaled gallery preview (no page title).</summary>

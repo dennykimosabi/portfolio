@@ -5,6 +5,8 @@
     <PageTitle>Home blueprint · Denny Kim</PageTitle>
 }
 
+<BlueprintFrame Title="Home" Description="Hero, vehicle picker, garage, assembly results, refine search, featured products." Href="/blueprints/home" Preview="Preview" Components="@(new[] { "AssemblyResults", "ExtraHomeContent", "FeaturedProducts", "HeroPlacement", "HomeGarage", "PlacementContent", "RefineSearch", "VehiclePicked", "VehiclePicker" })">
+
 
 <HeroPlacement />
 
@@ -37,6 +39,8 @@ else
 <FeaturedProducts />
 
 <RefineSearch @key="@("rs-links")" Mode="RefineSearchMode.Links" />
+
+</BlueprintFrame>
 
 @code {
     /// <summary>When true, renders as a scaled gallery preview (no page title).</summary>
