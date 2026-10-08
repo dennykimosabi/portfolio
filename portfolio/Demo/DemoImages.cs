@@ -1,31 +1,23 @@
 using System.Globalization;
 using System.Security;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 
 namespace Portfolio.Demo;
 
 /// <summary>
-/// Generates placeholder SVG artwork locally so the preview needs no external image hosts.
-///   /demo-img/{kind}.svg?t=Label&amp;c=hex&amp;w=400&amp;h=300   kinds: part, tile, car, hero, promo, diagram, logo
-///   /demo-assets/**  and  /imgs/**                          small UI icons (edit, delete, delivery, pickup, cart)
+/// Generates placeholder SVG artwork client-side as data URIs so the site needs
+/// no server endpoints and no external image hosts. Works in Blazor WebAssembly.
+///   kinds: part, tile, car, hero, promo, diagram, logo
 /// </summary>
 public static class DemoImages
 {
     public static string Url(string kind, string text, string color, int w, int h) =>
-        $"/demo-img/{kind}.svg?t={Uri.EscapeDataString(text)}&c={color}&w={w}&h={h}";
+        DataUri(Render(kind, text, color, w, h));
 
-    public static void Map(WebApplication app)
-    {
-        app.MapGet("/demo-img/{kind}.svg", (string kind, string? t, string? c, int? w, int? h) =>
-            Results.Text(Render(kind, t ?? string.Empty, c, w ?? 400, h ?? 300), "image/svg+xml"));
+    /// <summary>Small UI icon (edit, delete, delivery, pickup, cart) as a data URI.</summary>
+    public static string IconUrl(string path) => DataUri(Icon(path));
 
-        // GarageVehicleCard / ProductPriceBox resolve their icons through IClientAssetResolver → here.
-        app.MapGet("/demo-assets/{**path}", (string path) => Results.Text(Icon(path), "image/svg+xml"));
-
-        // Search/Landing list view reference /imgs/cart-add-primary.png directly.
-        app.MapGet("/imgs/{**path}", (string path) => Results.Text(Icon(path), "image/svg+xml"));
-    }
+    private static string DataUri(string svg) =>
+        "data:image/svg+xml," + Uri.EscapeDataString(svg);
 
     private static string Render(string kind, string text, string? color, int w, int h)
     {

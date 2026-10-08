@@ -41,7 +41,8 @@ public sealed class DemoLogService(ILogger<DemoLogService> logger) : ILogService
 
 public sealed class DemoAssetResolver : IClientAssetResolver
 {
-    public string Resolve(string path) => "/demo-assets" + (path.StartsWith('/') ? path : "/" + path);
+    // No server in WebAssembly: icons are generated client-side as SVG data URIs.
+    public string Resolve(string path) => DemoImages.IconUrl(path);
 }
 
 // ─── Refine search / product search ───────────────────────────────────────
