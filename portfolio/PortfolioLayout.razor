@@ -37,6 +37,7 @@
                     </button>
                     @if (_blueprintsOpen)
                     {
+                        <button type="button" class="pf-rail-flyout-backdrop" @onclick="CloseBlueprints" aria-hidden="true" tabindex="-1"></button>
                         <div class="pf-rail-flyout" @onclick:stopPropagation="true">
                             <NavLink class="pf-flyout-item" href="blueprints" @onclick="CloseBlueprints">All blueprints</NavLink>
                             @foreach (var (href, label) in BlueprintPages)
