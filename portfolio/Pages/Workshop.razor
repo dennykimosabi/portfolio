@@ -47,6 +47,72 @@
             </div>
         </div>
 
+        @* ───────────────────────── Foundation ───────────────────────── *@
+
+        <GallerySection Id="design-tokens" Title="Design Tokens" Component="@("Design tokens live in _tokens.scss")">
+            <Description>The single source of truth. Every component references these tokens — there are no hardcoded colors, radii, shadows, or font stacks in the library. Override them to re-skin (see the <code>dealer-acme</code> example in <code>_tokens.scss</code>).</Description>
+            <ChildContent>
+                <div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+                    @foreach (var group in _tokenGroups)
+                    {
+                        <div class="bp-doc-section">
+                            <h4>@group.Title</h4>
+                            <div class="bp-tokens-grid">
+                                @foreach (var token in group.Tokens)
+                                {
+                                    <div class="bp-token-swatch">
+                                        <div class="bp-token-color" style="background: var(@token.Var)"></div>
+                                        <div class="bp-token-name">@token.Var</div>
+                                        <div class="bp-token-value">@token.Value</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    <div class="bp-doc-section">
+                        <h4>Radii</h4>
+                        <div class="bp-token-demo-row">
+                            @foreach (var r in new[] { "--sf-radius-sm", "--sf-radius-md", "--sf-radius-lg", "--sf-radius-pill" })
+                            {
+                                <div class="bp-token-demo">
+                                    <div class="bp-token-demo-box" style="border-radius: var(@r)"></div>
+                                    <div class="bp-token-demo-label">@r</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="bp-doc-section">
+                        <h4>Shadows</h4>
+                        <div class="bp-token-demo-row">
+                            @foreach (var sh in new[] { "--sf-shadow-sm", "--sf-shadow-md", "--sf-shadow-lg", "--sf-shadow-popover", "--sf-shadow-drawer" })
+                            {
+                                <div class="bp-token-demo">
+                                    <div class="bp-token-demo-box" style="border:none;box-shadow: var(@sh)"></div>
+                                    <div class="bp-token-demo-label">@sh</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="bp-doc-section">
+                        <h4>Spacing</h4>
+                        <div class="bp-token-demo-row">
+                            @foreach (var sp in new[] { "--sf-space-1", "--sf-space-2", "--sf-space-3", "--sf-space-4", "--sf-space-6", "--sf-space-8" })
+                            {
+                                <div class="bp-token-demo">
+                                    <div style="height:12px;background:var(--sf-color-primary);border-radius:2px;width:var(@sp)"></div>
+                                    <div class="bp-token-demo-label">@sp</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="bp-doc-section">
+                        <h4>Typography</h4>
+                        <p style="font-family:var(--sf-font-sans)">The quick brown fox jumps over the lazy dog — <code>--sf-font-sans</code></p>
+                    </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
         @* ───────────────────────── Atomic ───────────────────────── *@
 
         <GallerySection Id="sf-button" Title="SfButton" Component="@("<SfButton Variant=\"SfButtonVariant.Primary\">Add to cart</SfButton>")" ComponentType="typeof(SfButton)">
@@ -667,8 +733,63 @@
         b.CloseComponent();
     };
 
+    private sealed record TokenSwatch(string Var, string Value);
+    private sealed record TokenGroup(string Title, TokenSwatch[] Tokens);
+
+    private static readonly TokenGroup[] _tokenGroups = new[]
+    {
+        new TokenGroup("Brand", new[]
+        {
+            new TokenSwatch("--sf-color-primary", "#2563a5"),
+            new TokenSwatch("--sf-color-primary-dark", "#1d4f84"),
+            new TokenSwatch("--sf-color-brand", "#113458"),
+            new TokenSwatch("--sf-color-brand-deep", "#0d2840"),
+        }),
+        new TokenGroup("Text", new[]
+        {
+            new TokenSwatch("--sf-color-text", "#1a1a1a"),
+            new TokenSwatch("--sf-color-text-2", "#333333"),
+            new TokenSwatch("--sf-color-text-3", "#555555"),
+            new TokenSwatch("--sf-color-text-muted", "#888888"),
+            new TokenSwatch("--sf-color-text-faint", "#aaaaaa"),
+            new TokenSwatch("--sf-color-text-inverse", "#ffffff"),
+        }),
+        new TokenGroup("Surfaces", new[]
+        {
+            new TokenSwatch("--sf-color-bg", "#ffffff"),
+            new TokenSwatch("--sf-color-bg-2", "#f5f5f5"),
+            new TokenSwatch("--sf-color-bg-3", "#eeeeee"),
+            new TokenSwatch("--sf-color-bg-inverse", "#1a1a1a"),
+        }),
+        new TokenGroup("Borders", new[]
+        {
+            new TokenSwatch("--sf-color-border", "#d0d0d0"),
+            new TokenSwatch("--sf-color-border-light", "#e0e0e0"),
+            new TokenSwatch("--sf-color-border-strong", "#999999"),
+        }),
+        new TokenGroup("Feedback", new[]
+        {
+            new TokenSwatch("--sf-color-success", "#2e7d32"),
+            new TokenSwatch("--sf-color-warning", "#f5b400"),
+            new TokenSwatch("--sf-color-danger", "#c62828"),
+            new TokenSwatch("--sf-color-warning-deep", "#92680f"),
+            new TokenSwatch("--sf-color-visited", "#7e57c2"),
+        }),
+        new TokenGroup("Feedback tints", new[]
+        {
+            new TokenSwatch("--sf-color-primary-tint", "#eaf2fb"),
+            new TokenSwatch("--sf-color-success-tint", "#eaf6ed"),
+            new TokenSwatch("--sf-color-warning-tint", "#fef6e0"),
+            new TokenSwatch("--sf-color-danger-tint", "#fdeeee"),
+        }),
+    };
+
     private static readonly NavGroup[] NavGroups =
     [
+        new("Foundation",
+        [
+            ("design-tokens", "Design Tokens"),
+        ]),
         new("Atomic",
         [
             ("sf-button", "SfButton"),
