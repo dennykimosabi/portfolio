@@ -542,12 +542,36 @@
         </GallerySection>
 
         <GallerySection Id="product-gallery" Title="Product Gallery" Component="@("<ProductGallery />")" ComponentType="typeof(ProductGallery)">
-            <Description>Five images + seven empty slots (placeholders), so the strip shows nine thumbnails and a "3 More" tile.</Description>
+            <Description>Three explorable versions of the product image gallery: thumbnail strip, responsive grid, and lightbox.</Description>
             <ChildContent>
-                <div class="pv-narrow">
-                    <section class="product-panel product-summary">
-                        <ProductGallery Images="_galleryImages" AltText="Cargo Area Organizer" />
-                    </section>
+                <div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+                <div class="bp-doc-section">
+                    <h4>Thumbnails</h4>
+                    <p>One large primary image over a thumbnail strip. Five images + seven empty slots (placeholders), so the strip shows nine thumbnails and a "3 More" tile.</p>
+                    <div class="pv-narrow">
+                        <section class="product-panel product-summary">
+                            <ProductGallery Images="_galleryImages" AltText="Cargo Area Organizer" />
+                        </section>
+                    </div>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>Grid</h4>
+                    <p>Swipes as a carousel on small screens and becomes a three-column grid with a full-width lead image on larger screens. Resize the browser to see the switch.</p>
+                    <div class="pv-narrow">
+                        <section class="product-panel product-summary">
+                            <ProductGalleryGrid Images="_galleryImagesReal" AltText="Cargo Area Organizer" />
+                        </section>
+                    </div>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>Lightbox</h4>
+                    <p>Carousel with arrow navigation and dot indicators. Click the stage to open a fullscreen viewer with prev/next arrows, a close button, and an image counter.</p>
+                    <div class="pv-narrow">
+                        <section class="product-panel product-summary">
+                            <ProductGalleryLightbox Images="_galleryImagesReal" AltText="Cargo Area Organizer" />
+                        </section>
+                    </div>
+                </div>
                 </div>
             </ChildContent>
         </GallerySection>
@@ -914,6 +938,9 @@
         Enumerable.Range(0, 5).Select(i => SampleProduct.Image(i, 800))
             .Concat(Enumerable.Repeat(string.Empty, 7))
             .ToList();
+
+    private readonly IReadOnlyList<string> _galleryImagesReal =
+        Enumerable.Range(0, 5).Select(i => SampleProduct.Image(i, 800)).ToList();
 
     private readonly DealerInfo _dealer = new(
         Name: "Demo Motors of Springfield",
