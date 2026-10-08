@@ -7,8 +7,8 @@ window.siteFeedback = (() => {
     let active = false;
     let hoverEl = null;
 
-    const HIGHLIGHT = "2px solid #7c3aed";
-    const HOVER_BG = "rgba(124, 58, 237, 0.08)";
+    const HIGHLIGHT = "2px solid #2563a5";
+    const HOVER_BG = "rgba(37, 99, 165, 0.08)";
 
     function isFeedbackUI(el) {
         return el && el.closest && el.closest("[data-site-feedback]");

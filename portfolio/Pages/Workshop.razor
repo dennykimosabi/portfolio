@@ -50,30 +50,63 @@
         @* ───────────────────────── Atomic ───────────────────────── *@
 
         <GallerySection Id="sf-button" Title="SfButton" Component="@("<SfButton Variant=\"SfButtonVariant.Primary\">Add to cart</SfButton>")" ComponentType="typeof(SfButton)">
-            <Description>The atomic button. Six variants, three sizes, disabled and loading states. Replaces the 20+ hand-rolled <code>&lt;button&gt;</code> elements across the library.</Description>
+            <Description>The atomic button. Replaces the 20+ hand-rolled <code>&lt;button&gt;</code> elements across the library.</Description>
             <ChildContent>
-                <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
-                    <SfButton Variant="SfButtonVariant.Primary">Primary</SfButton>
-                    <SfButton Variant="SfButtonVariant.Dark">Dark</SfButton>
-                    <SfButton Variant="SfButtonVariant.Secondary">Secondary</SfButton>
-                    <SfButton Variant="SfButtonVariant.Outline">Outline</SfButton>
-                    <SfButton Variant="SfButtonVariant.Ghost">Ghost</SfButton>
-                    <SfButton Variant="SfButtonVariant.Danger">Danger</SfButton>
+                <div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+                <div class="bp-doc-section">
+                    <h4>Variants</h4>
+                    <p>Use <code>Variant</code> to change the visual style: <code>Primary</code>, <code>Dark</code>, <code>Secondary</code>, <code>Outline</code>, <code>Ghost</code>, and <code>Danger</code>.</p>
+                    <div class="bp-doc-row">
+                        <SfButton Variant="SfButtonVariant.Primary">Primary</SfButton>
+                        <SfButton Variant="SfButtonVariant.Dark">Dark</SfButton>
+                        <SfButton Variant="SfButtonVariant.Secondary">Secondary</SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline">Outline</SfButton>
+                        <SfButton Variant="SfButtonVariant.Ghost">Ghost</SfButton>
+                        <SfButton Variant="SfButtonVariant.Danger">Danger</SfButton>
+                    </div>
                 </div>
-                <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px;">
-                    <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Sm">Small</SfButton>
-                    <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Md">Medium</SfButton>
-                    <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Lg">Large</SfButton>
-                    <SfButton Variant="SfButtonVariant.Primary" Disabled>Disabled</SfButton>
-                    <SfButton Variant="SfButtonVariant.Primary" Loading>Loading</SfButton>
-                    <SfButton Variant="SfButtonVariant.Primary" Loading LoadingText="Saving…">Save</SfButton>
+                <div class="bp-doc-section">
+                    <h4>Sizes</h4>
+                    <p>Control dimensions with <code>Size</code>: <code>Sm</code>, <code>Md</code>, and <code>Lg</code>.</p>
+                    <div class="bp-doc-row">
+                        <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Sm">Small</SfButton>
+                        <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Md">Medium</SfButton>
+                        <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Lg">Large</SfButton>
+                    </div>
                 </div>
-                <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:16px;">
-                    <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Search"><SfIcon Name="search-line" /></SfButton>
-                    <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Icon" AriaLabel="Search"><SfIcon Name="search-line" /></SfButton>
-                    <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconLg" AriaLabel="Search"><SfIcon Name="search-line" /></SfButton>
-                    <SfButton Variant="SfButtonVariant.Primary" Icon="@_cartIcon">Add to cart</SfButton>
-                    <SfButton Variant="SfButtonVariant.Ghost" Href="#">Link button</SfButton>
+                <div class="bp-doc-section">
+                    <h4>With icons</h4>
+                    <p>Pass an <code>Icon</code> fragment and set <code>IconPosition</code> to <code>Start</code> or <code>End</code>.</p>
+                    <div class="bp-doc-row">
+                        <SfButton Variant="SfButtonVariant.Primary" Icon="@_cartIcon">Add to cart</SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Icon="@_cartIcon" IconPosition="SfIconPosition.End">Add to cart</SfButton>
+                    </div>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>Icon-only</h4>
+                    <p>Dedicated square sizes: <code>IconSm</code>, <code>Icon</code>, <code>IconLg</code>. Always provide an <code>AriaLabel</code>.</p>
+                    <div class="bp-doc-row">
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Search"><SfIcon Name="search-line" /></SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Icon" AriaLabel="Search"><SfIcon Name="search-line" /></SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconLg" AriaLabel="Search"><SfIcon Name="search-line" /></SfButton>
+                    </div>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>States</h4>
+                    <p><code>Disabled</code> blocks interaction. <code>Loading</code> shows a spinner; add <code>LoadingText</code> to replace the label while busy.</p>
+                    <div class="bp-doc-row">
+                        <SfButton Variant="SfButtonVariant.Primary" Disabled>Disabled</SfButton>
+                        <SfButton Variant="SfButtonVariant.Primary" Loading>Loading</SfButton>
+                        <SfButton Variant="SfButtonVariant.Primary" Loading LoadingText="Saving…">Save</SfButton>
+                    </div>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>As link</h4>
+                    <p>Set <code>Href</code> to render an <code>&lt;a&gt;</code> anchor. <code>Type</code> accepts <code>Button</code>, <code>Submit</code>, or <code>Reset</code>.</p>
+                    <div class="bp-doc-row">
+                        <SfButton Variant="SfButtonVariant.Ghost" Href="#">Link button</SfButton>
+                    </div>
+                </div>
                 </div>
             </ChildContent>
         </GallerySection>
