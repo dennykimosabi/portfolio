@@ -1,0 +1,138 @@
+// Product gallery — grid variant (<ProductGalleryGrid />).
+// Mobile: index-driven swipe-style carousel. Desktop (md+): three-column grid
+// with the first image spanning full width as the lead.
+
+.product-gallery-grid {
+    width: 100%;
+}
+
+// ─── Mobile carousel ────────────────────────────────────────────────────
+.pgg-carousel {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--sf-color-border-light);
+    background: var(--sf-color-bg);
+}
+
+.pgg-track {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+.pgg-slide {
+    flex: 0 0 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .image-placeholder {
+        max-width: 2.75rem;
+        max-height: 2.75rem;
+    }
+}
+
+.pgg-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    color: var(--sf-color-text-1);
+    background: var(--sf-color-surface);
+    border: 1px solid var(--sf-color-border-light);
+    cursor: pointer;
+
+    &:hover {
+        border-color: var(--sf-color-border-strong);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--sf-color-primary);
+        outline-offset: 1px;
+    }
+}
+
+.pgg-arrow--prev { left: 0.75rem; }
+.pgg-arrow--next { right: 0.75rem; }
+
+.pgg-dots {
+    position: absolute;
+    bottom: 0.625rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 0.375rem;
+}
+
+.pgg-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    padding: 0;
+    border: none;
+    background: var(--sf-color-border-strong);
+    opacity: 0.45;
+    cursor: pointer;
+
+    &.is-active {
+        opacity: 1;
+        background: var(--sf-color-bg-inverse);
+    }
+}
+
+// ─── Desktop grid ───────────────────────────────────────────────────────
+.pgg-grid {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .pgg-carousel {
+        display: none;
+    }
+
+    .pgg-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin: 0;
+    }
+
+    .pgg-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1;
+        margin: 0;
+        background: var(--sf-color-bg);
+        border: 1px solid var(--sf-color-border-light);
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-placeholder {
+            max-width: 2rem;
+            max-height: 2rem;
+        }
+    }
+
+    .pgg-cell--lead {
+        grid-column: 1 / -1;
+        aspect-ratio: 16 / 9;
+    }
+}
