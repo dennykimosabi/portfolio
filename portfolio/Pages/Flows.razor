@@ -1,0 +1,115 @@
+@page "/flows"
+
+<PageTitle>Flows · Denny Kim</PageTitle>
+
+<div class="pf-hero">
+    <h1>Flows</h1>
+    <p>How the pages connect — the storefront's shopping journeys and this portfolio's own navigation. Every route below is real.</p>
+</div>
+
+<div class="pf-section">
+    <h2>Storefront flows</h2>
+    @foreach (var flow in _storefrontFlows)
+    {
+        <div class="bp-doc-section" style="max-width:none;">
+            <h4>@flow.Title</h4>
+            <p>@flow.Description</p>
+            <div class="flow-lane">
+                @for (var i = 0; i < flow.Steps.Length; i++)
+                {
+                    <div class="flow-node">
+                        <div class="flow-node-title">@flow.Steps[i].Title</div>
+                        <div class="flow-node-route">@flow.Steps[i].Route</div>
+                        <div class="flow-node-note">@flow.Steps[i].Note</div>
+                    </div>
+                    @if (i < flow.Steps.Length - 1)
+                    {
+                        <div class="flow-arrow">
+                            <span class="flow-arrow-label">@flow.Actions[i]</span>
+                            <span class="flow-arrow-line"></span>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<div class="pf-section">
+    <h2>Portfolio flows</h2>
+    <div class="bp-doc-section" style="max-width:none;">
+        <h4>Hub and spokes</h4>
+        <p>Every section is one click from home. The workshop is the destination everything else points back to.</p>
+        <div class="flow-hub">
+            <div class="flow-node flow-hub-center">
+                <div class="flow-node-title">Home</div>
+                <div class="flow-node-route">/</div>
+                <div class="flow-node-note">Entry point</div>
+            </div>
+            <div class="flow-hub-spokes">
+                @foreach (var dest in _portfolioDests)
+                {
+                    <div class="flow-spoke">
+                        <span class="flow-arrow-line"></span>
+                        <div class="flow-node">
+                            <div class="flow-node-title">@dest.Title</div>
+                            <div class="flow-node-route">@dest.Route</div>
+                            <div class="flow-node-note">@dest.Note</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private sealed record FlowStep(string Title, string Route, string Note);
+    private sealed record Flow(string Title, string Description, FlowStep[] Steps, string[] Actions);
+
+    private static readonly Flow[] _storefrontFlows = new[]
+    {
+        new Flow(
+            "Shop by vehicle",
+            "The primary buying flow. Fitment is picked once, then follows the shopper everywhere.",
+            new[]
+            {
+                new FlowStep("Home", "/", "Pick year, make, model"),
+                new FlowStep("Search", "/search", "Filtered results, sort & refine"),
+                new FlowStep("Product", "/product/{stock}/{slug}", "Fitment check, price, add to cart"),
+                new FlowStep("Cart", "/cart", "Review items and quantities"),
+            },
+            new[] { "Selects vehicle", "Clicks a result", "Adds to cart" }),
+        new Flow(
+            "Browse by category",
+            "For shoppers who start from what they need rather than what they drive.",
+            new[]
+            {
+                new FlowStep("Home", "/", "Entry point"),
+                new FlowStep("Accessories", "/accessories", "Category tiles"),
+                new FlowStep("Category", "/accessories/{category}", "Accessory listing"),
+                new FlowStep("Search", "/search", "Refined results"),
+                new FlowStep("Product", "/product/{stock}/{slug}", "Details and add to cart"),
+            },
+            new[] { "Browses categories", "Opens a category", "Filters", "Clicks a result" }),
+        new Flow(
+            "Content & landing entry",
+            "SEO, ads, and editorial entry points that funnel into shopping.",
+            new[]
+            {
+                new FlowStep("Landing", "/landing/{slug}", "Campaign or SEO entry"),
+                new FlowStep("Search", "/search", "Shoppable collection"),
+            },
+            new[] { "Shops the collection" }),
+    };
+
+    private static readonly FlowStep[] _portfolioDests = new[]
+    {
+        new FlowStep("Workshop", "/workshop", "38 components, live"),
+        new FlowStep("Flows", "/flows", "Page journeys"),
+        new FlowStep("Build log", "/build-log", "The timeline"),
+        new FlowStep("Experiments", "/experiments", "Prototypes"),
+        new FlowStep("Archive", "/archive", "Old portfolio"),
+        new FlowStep("About", "/about", "Bio & contact"),
+    };
+}
