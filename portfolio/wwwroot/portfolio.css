@@ -279,49 +279,6 @@
 .pf-nav-child:active { background: var(--pf-muted-bg); color: var(--pf-text); }
 .pf-nav-child.active { background: var(--pf-muted-bg); color: var(--pf-text); font-weight: 600; }
 
-/* Transparent click-catcher behind the rail flyout: clicking anywhere else
-   dismisses it. Rendered only in rail mode while the flyout is open. */
-.pf-rail-flyout-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 10003;
-    background: transparent;
-    border: 0;
-    padding: 0;
-    cursor: default;
-}
-/* Flyout shown from the icon rail. */
-.pf-rail-flyout {
-    position: absolute;
-    left: calc(100% + 14px);
-    top: -6px;
-    z-index: 10004;
-    min-width: 208px;
-    background: var(--pf-panel);
-    border: 1px solid var(--pf-border);
-    border-radius: 12px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
-    padding: 6px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-.pf-flyout-item {
-    display: flex;
-    align-items: center;
-    min-height: 40px;
-    padding: 6px 12px;
-    border-radius: 8px;
-    color: var(--pf-muted);
-    text-decoration: none;
-    font-size: 13.5px;
-    white-space: nowrap;
-}
-@media (hover: hover) and (pointer: fine) {
-    .pf-flyout-item:hover { background: var(--pf-muted-bg); color: var(--pf-text); }
-}
-.pf-flyout-item:active { background: var(--pf-muted-bg); color: var(--pf-text); }
-.pf-flyout-item.active { background: var(--pf-muted-bg); color: var(--pf-text); font-weight: 600; }
 
 /* Collapse-to-rail toggle. */
 .pf-rail-toggle {
@@ -350,7 +307,6 @@
     .pf-sidebar.is-rail .pf-nav-label,
     .pf-sidebar.is-rail .pf-sidebar-foot,
     .pf-sidebar.is-rail .pf-nav-group-label,
-    .pf-sidebar.is-rail .pf-nav-flychevron,
     .pf-sidebar.is-rail .pf-nav-chevron { display: none; }
     .pf-sidebar.is-rail .pf-nav-item { justify-content: center; padding: 9px 0; }
     .pf-sidebar.is-rail .pf-nav-row .pf-nav-link { justify-content: center; }
