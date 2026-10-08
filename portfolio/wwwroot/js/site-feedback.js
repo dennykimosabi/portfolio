@@ -1,5 +1,5 @@
 // SiteFeedback: point-and-comment annotation tool.
-// Activated with ?feedback=1. Clicking any element reports a CSS selector,
+// Clicking any element reports a CSS selector,
 // a human-readable label, and the page path back to Blazor.
 
 window.siteFeedback = (() => {
@@ -80,7 +80,11 @@ window.siteFeedback = (() => {
         dotNet.invokeMethodAsync("OnElementPicked", {
             selector: selectorFor(el),
             label: labelFor(el),
-            page: window.location.pathname
+            page: window.location.pathname,
+            x: e.clientX,
+            y: e.clientY,
+            vw: window.innerWidth,
+            vh: window.innerHeight
         });
     }
 
