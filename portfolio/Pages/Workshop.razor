@@ -1,9 +1,10 @@
 @page "/workshop"
 
-@implements IDisposable
+@implements IAsyncDisposable
 @using Portfolio.Demo
 @inject VehicleFitmentState FitmentState
 @inject CartState CartState
+@inject IJSRuntime JS
 
 @* Preview-only gallery: every Storefront.Client component rendered on its own, against the demo
    services. Service-driven components fetch their own (dummy) data; parameter-driven ones get
@@ -921,7 +922,19 @@
 
     private void HandleFitmentChanged() => _ = InvokeAsync(StateHasChanged);
 
-    public void Dispose() => FitmentState.OnChange -= HandleFitmentChanged;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try { await JS.InvokeVoidAsync("pvSpy.init"); } catch { /* JS unavailable */ }
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        FitmentState.OnChange -= HandleFitmentChanged;
+        try { await JS.InvokeVoidAsync("pvSpy.dispose"); } catch { /* shutting down */ }
+    }
 
     // ─── Sample data for parameter-driven components ─────────────────────
     private static readonly DemoProduct SampleProduct = DemoCatalog.ProductByStockCode("VA-90011")!;

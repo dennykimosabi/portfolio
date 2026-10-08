@@ -115,6 +115,12 @@ body {
     background: #f4f4f5;
 }
 
+.pv-nav a.is-active {
+    background: #f4f4f5;
+    color: #09090b;
+    font-weight: 600;
+}
+
 .pv-main {
     padding: 24px 28px 120px;
     min-width: 0;
