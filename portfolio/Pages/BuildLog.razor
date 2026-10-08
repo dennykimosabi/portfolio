@@ -10,9 +10,64 @@
 <div class="pf-section">
     <div class="pf-timeline">
         <div class="pf-tl-item">
-            <div class="pf-tl-date">October 2026</div>
+            <div class="pf-tl-date">October 7, 2026</div>
+            <h3>Design tokens go global</h3>
+            <p>Finished the token cleanup Blueprint-style: zero hardcoded values left in the library. A <code>--sf-font-sans</code> token replaced 20 hardcoded font stacks; 35 remaining hardcoded colors were folded into tokens (near-grays consolidated, guided-navigation alert colors mapped onto the feedback families); new tokens for faint text, visited links, tint borders, and drawer/popover shadows; the dead dark-theme block deleted. Added a <strong>Design Tokens</strong> gallery to the workshop — live swatches for every token.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026</div>
+            <h3>Button docs match Blueprint; comment tool restyled</h3>
+            <p>Restructured the <code>SfButton</code> workshop story into Blueprint-style labeled subsections (Variants, Sizes, With icons, Icon-only, States, As link) with one-line parameter descriptions. Restyled the <code>SiteFeedback</code> tool itself to match — primary blue instead of purple, light banner, Remix chat icon.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026</div>
+            <h3>Feedback fixes round 1</h3>
+            <p>First edits through the new point-and-comment tool: <code>SfSelect</code> lost its native browser arrow for a Remix chevron with proper spacing; RefineSearch accessory tiles got their hover state back (image zoom on the overlay layout); filter chips went full-width with the close button right-aligned as a Remix icon.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026</div>
+            <h3>SfButton reaches Blueprint parity</h3>
+            <p>Extended <code>SfButton</code> to match the <a href="https://blazorblueprintui.com/docs/components/button">Blueprint button spec</a>: icon-only square sizes, <code>Icon</code> + <code>IconPosition</code> fragments, <code>LoadingText</code>, <code>Href</code> rendering an anchor, and a typed <code>SfButtonType</code> enum. Added <code>SfButtonGroup</code> with separators, text labels, and horizontal/vertical orientation. Restructured the button docs into labeled subsections like Blueprint's page.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026</div>
+            <h3>Point-and-comment feedback tool</h3>
+            <p>Built <code>SiteFeedback</code>: add <code>?feedback=1</code> to any page, click Annotate, click any element, type a note, and copy a <code>[site-feedback]</code> block with the page, element label, and CSS selector. It turned site review into a tight loop — precise edit notes with selectors instead of prose descriptions.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026</div>
+            <h3>SearchToolbar rebuilt on the atomic layer</h3>
+            <p>Rebuilt the search toolbar's bottom row with the new primitives: filter toggle as an outline button, page-size as a button group, sort as <code>SfSelect</code>, view toggle as an icon button group — all Remix icons. Deleted the hand-rolled toggle/select CSS it replaced.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026</div>
+            <h3>Component API cleanup</h3>
+            <p>All 38 components now accept <code>Class</code> and <code>AdditionalAttributes</code> — Blueprint-style escape hatches — and all ~200 parameters carry XML documentation comments, which feed the auto-generated props tables in the workshop.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026</div>
+            <h3>Workshop becomes Blueprint-style docs</h3>
+            <p>Restyled the component gallery after Blueprint's docs: Preview/Code tabs per component, a copy button, live previews, and reflection-generated props tables. Pop-out clipping fixed so drawers and dropdowns escape preview containers.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026</div>
+            <h3>BlazingStory trial</h3>
+            <p>Scaffolded a local stories project linking the real components — builds clean, serves on <code>localhost:5293</code>, and its MCP endpoint exposes the component API to Claude Code. Still local and unpushed; the workshop stays the human-facing docs.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026</div>
+            <h3>Atomic component layer</h3>
+            <p>Built the primitives everything else composes from: <code>SfButton</code>, <code>SfBadge</code>, <code>SfChip</code>, <code>SfInput</code>, <code>SfSelect</code>, <code>SfIcon</code> (Remix Icon, now the default set), <code>SfLink</code>, <code>SfQuantityStepper</code>, <code>SfDivider</code>, <code>SfSkeleton</code>, <code>SfTooltip</code>. Twenty button-containing components were refactored onto <code>SfButton</code>/<code>SfChip</code>.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026</div>
+            <h3>Light mode only, .NET 9, interactivity fix</h3>
+            <p>Three foundation calls in one day: the whole site converted to Blueprint light/zinc (no dark mode, by decision); the project retargeted from <code>net10.0</code> back to <code>net9.0</code>; and <code>Routes</code>/<code>HeadOutlet</code> got the <code>InteractiveServer</code> render mode, which restored the cart drawer, quantities, dropdowns, and fitment presets.</p>
+        </div>
+        <div class="pf-tl-item">
+            <div class="pf-tl-date">October 7, 2026</div>
             <h3>This portfolio becomes a Design OS</h3>
-            <p>Rebuilt the portfolio itself as an app-like Blazor site around the 38 existing storefront components — workshop, build log, experiments, archive. The portfolio is the proof, not just the frame.</p>
+            <p>Rebuilt the portfolio itself as an app-like Blazor site around the 38 existing storefront components — workshop, build log, experiments, archive. The portfolio is the proof, not just the frame. Inspired by Patrick Morgan's Design OS at Sublime Security.</p>
         </div>
         <div class="pf-tl-item">
             <div class="pf-tl-date">October 2026</div>
