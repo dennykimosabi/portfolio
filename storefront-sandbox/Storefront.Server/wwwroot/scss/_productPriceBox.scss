@@ -237,10 +237,16 @@ button.price-box-fulfillment-foot {
     background: none;
     border: none;
     border-top: 1px solid var(--sf-color-bg-3);
-    font: inherit;
+    padding: var(--sf-space-2) 0;
+    margin: auto 0 0;
+    font-family: inherit;
+    font-size: 0.625rem; // matches sf-link--xs and the "Free" pickup line
+    font-weight: inherit;
+    line-height: inherit;
     color: var(--sf-color-primary);
     cursor: pointer;
     text-decoration: underline;
+    text-align: left;
 
     &:disabled {
         color: var(--sf-color-text-muted);
