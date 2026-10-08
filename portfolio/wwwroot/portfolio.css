@@ -118,6 +118,22 @@
 }
 .pf-nav-item:active { background: var(--pf-muted-bg); color: var(--pf-text); }
 .pf-nav-item.active { background: var(--pf-muted-bg); color: var(--pf-text); font-weight: 600; }
+
+/* Rail-mode Blueprints control is a <button>: neutralize native button chrome
+   so it aligns exactly with the anchor-based nav items. */
+button.pf-nav-item {
+    appearance: none;
+    border: 0;
+    background: none;
+    margin: 0;
+    padding: 9px 12px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--pf-muted);
+    cursor: pointer;
+    text-align: left;
+    -webkit-tap-highlight-color: transparent;
+}
 .pf-nav-icon {
     width: 22px;
     flex: 0 0 auto;
