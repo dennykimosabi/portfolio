@@ -13,11 +13,15 @@
 
 .pf-shell {
     display: flex;
-    min-height: 100vh;
+    min-height: 100dvh;
     background: var(--pf-bg);
     color: var(--pf-text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
+
+/* Touch: kill tap highlight flash, remove 300ms tap delay behaviors. */
+.pf-shell a, .pf-shell button { -webkit-tap-highlight-color: transparent; }
+.pf-shell button { touch-action: manipulation; }
 
 .pf-sidebar {
     width: 240px;
@@ -29,7 +33,34 @@
     padding: 20px 12px;
     position: sticky;
     top: 0;
-    height: 100vh;
+    height: 100dvh;
+}
+
+/* Hamburger: hidden on desktop, fixed trigger for the off-canvas drawer. */
+.pf-menu-btn {
+    display: none;
+    position: fixed;
+    top: calc(12px + env(safe-area-inset-top));
+    left: calc(12px + env(safe-area-inset-left));
+    z-index: 10000;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--pf-border);
+    border-radius: 12px;
+    background: var(--pf-panel);
+    color: var(--pf-text);
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.pf-nav-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(9, 9, 11, 0.45);
 }
 
 .pf-brand {
@@ -64,13 +95,18 @@
     align-items: center;
     gap: 10px;
     padding: 9px 12px;
+    min-height: 44px;
+    box-sizing: border-box;
     border-radius: 8px;
     color: var(--pf-muted);
     text-decoration: none;
     font-size: 14px;
 }
 
-.pf-nav-item:hover { background: var(--pf-muted-bg); color: var(--pf-text); }
+@media (hover: hover) and (pointer: fine) {
+    .pf-nav-item:hover { background: var(--pf-muted-bg); color: var(--pf-text); }
+}
+.pf-nav-item:active { background: var(--pf-muted-bg); color: var(--pf-text); }
 .pf-nav-item.active { background: var(--pf-muted-bg); color: var(--pf-text); font-weight: 600; }
 .pf-nav-icon { width: 18px; text-align: center; }
 
@@ -91,7 +127,7 @@
 }
 
 /* Shared page pieces */
-.pf-hero h1 { font-size: 40px; margin: 0 0 12px; letter-spacing: -0.5px; }
+.pf-hero h1 { font-size: clamp(1.75rem, 1.25rem + 2.5vw, 2.5rem); margin: 0 0 12px; letter-spacing: -0.5px; }
 .pf-hero p { font-size: 17px; color: var(--pf-muted); max-width: 640px; line-height: 1.6; }
 .pf-section { margin-top: 48px; }
 .pf-section h2 { font-size: 22px; margin-bottom: 16px; }
@@ -106,7 +142,12 @@
     color: var(--pf-text);
     display: block;
 }
-.pf-card:hover { border-color: #a1a1aa; }
+@media (hover: hover) and (pointer: fine) {
+    .pf-card:hover { border-color: #a1a1aa; }
+    .bp-card:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); transform: translateY(-2px); }
+}
+.pf-card:active { border-color: #a1a1aa; }
+.bp-card:active { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); }
 .pf-card h3 { margin: 0 0 8px; font-size: 16px; }
 .pf-card p { margin: 0; font-size: 14px; color: var(--pf-muted); line-height: 1.55; }
 .pf-card .pf-tag {
@@ -153,14 +194,33 @@
     color: #111;
 }
 
-@media (max-width: 860px) {
-    .pf-shell { flex-direction: column; }
-    .pf-sidebar { width: 100%; height: auto; position: static; flex-direction: row; align-items: center; }
-    .pf-nav { flex-direction: row; flex-wrap: wrap; }
-    .pf-sidebar-foot { display: none; }
-    .pf-main { padding: 24px 20px 60px; }
+@media (max-width: 1024px) {
+    .pf-menu-btn { display: inline-flex; }
+    .pf-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 9999;
+        width: min(300px, 84vw);
+        height: 100dvh;
+        transform: translateX(-102%);
+        transition: transform 0.25s ease;
+        box-shadow: none;
+    }
+    .pf-sidebar.is-open { transform: none; box-shadow: 0 0 48px rgba(0, 0, 0, 0.25); }
+    .pf-main { padding: 76px 20px 60px; }
     .pf-workshop-grid { grid-template-columns: 1fr; }
     .pf-workshop-nav { position: static; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pf-sidebar { transition: none; }
+}
+
+/* Coarse pointers (touch): 16px minimum on text inputs stops iOS auto-zoom. */
+@media (pointer: coarse) {
+    .sfb-composer-input { font-size: 16px; }
 }
 
 /* ─── SiteFeedback point-and-comment ───────────────────────────────────── */
@@ -215,6 +275,7 @@
     position: fixed;
     z-index: 10001;
     width: 320px;
+    max-width: calc(100vw - 16px);
     background: #fff;
     border: 1px solid #e4e4e7;
     border-radius: 12px;
@@ -369,7 +430,6 @@
     color: inherit;
     transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
-.bp-card:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); transform: translateY(-2px); }
 .bp-card-preview {
     height: 220px;
     overflow: hidden;

@@ -37,6 +37,7 @@ body {
     color: #111;
     font-weight: 600;
     border-radius: 6px;
+    min-height: 36px;
     padding: 5px 8px;
     cursor: pointer;
 }
@@ -58,7 +59,7 @@ body {
 
 .pv-gallery-root {
     background: #f3f4f6;
-    min-height: 100vh;
+    min-height: 100dvh;
 }
 
 .pv-gallery {
@@ -71,7 +72,7 @@ body {
     position: sticky;
     top: 0;
     align-self: start;
-    height: 100vh;
+    height: 100dvh;
     overflow-y: auto;
     padding: 20px 16px 80px;
     background: #fff;
@@ -158,6 +159,7 @@ body {
     border: 1px solid #d1d5db;
     background: #fff;
     border-radius: 999px;
+    min-height: 36px;
     padding: 5px 11px;
     font: inherit;
     cursor: pointer;
@@ -311,13 +313,13 @@ body {
     color: #18181b;
     border: 1px solid #e4e4e7;
     border-radius: 16px;
-    padding: 32px;
+    padding: clamp(16px, 4vw, 32px);
     margin-bottom: 32px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .bp-doc-title {
-    font-size: 24px;
+    font-size: clamp(1.25rem, 1.1rem + 1.5vw, 1.5rem);
     font-weight: 650;
     letter-spacing: -0.02em;
     margin: 0 0 8px;
@@ -361,6 +363,7 @@ body {
 .bp-tab {
     border: 0;
     background: transparent;
+    min-height: 44px;
     padding: 6px 14px;
     border-radius: 8px;
     font-size: 13px;
@@ -373,7 +376,7 @@ body {
 .bp-tab.is-active { background: #fff; color: #09090b; box-shadow: 0 1px 2px rgba(0,0,0,.08); border: 1px solid #e4e4e7; }
 
 .bp-preview-body {
-    padding: 32px;
+    padding: clamp(16px, 4vw, 32px);
     background: #fff;
     display: flex;
     justify-content: center;
@@ -402,6 +405,7 @@ body {
     color: #e4e4e7;
     border: 1px solid #3f3f46;
     border-radius: 8px;
+    min-height: 44px;
     padding: 5px 12px;
     font-size: 12px;
     cursor: pointer;
@@ -456,11 +460,11 @@ body {
     background: #fff;
     border: 1px solid #e4e4e7;
     border-radius: 16px;
-    padding: 32px;
+    padding: clamp(16px, 4vw, 32px);
     margin-bottom: 24px;
     color: #18181b;
 }
-.bp-workshop-intro h1 { margin: 0 0 10px; font-size: 30px; letter-spacing: -0.02em; color: #09090b; }
+.bp-workshop-intro h1 { margin: 0 0 10px; font-size: clamp(1.5rem, 1.2rem + 2vw, 1.875rem); letter-spacing: -0.02em; color: #09090b; }
 .bp-workshop-intro p { margin: 0; color: #52525b; font-size: 15px; line-height: 1.65; max-width: 70ch; }
 .bp-workshop-intro code {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;

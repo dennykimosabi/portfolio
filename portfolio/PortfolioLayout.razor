@@ -1,15 +1,24 @@
 @inherits LayoutComponentBase
+@inject IJSRuntime JS
+@implements IAsyncDisposable
 
 <div class="pf-shell">
-    <aside class="pf-sidebar" aria-label="Portfolio navigation">
-        <a class="pf-brand" href="">
+    <button class="pf-menu-btn" @onclick="ToggleNav" aria-expanded="@_navOpen" aria-controls="pfSidebar" aria-label="Open navigation">
+        <i class="ri-menu-line" aria-hidden="true"></i>
+    </button>
+    @if (_navOpen)
+    {
+        <div class="pf-nav-overlay" @onclick="CloseNav" aria-hidden="true"></div>
+    }
+    <aside id="pfSidebar" class="pf-sidebar @(_navOpen ? "is-open" : "")" aria-label="Portfolio navigation" tabindex="-1">
+        <a class="pf-brand" href="" @onclick="CloseNav">
             <span class="pf-brand-mark">DK</span>
             <span class="pf-brand-text">
                 <strong>Denny Kim</strong>
                 <small>design component catalog</small>
             </span>
         </a>
-        <nav class="pf-nav">
+        <nav class="pf-nav" @onclick="CloseNav">
             <NavLink class="pf-nav-item" href="" Match="NavLinkMatch.All">
                 <span class="pf-nav-icon">&#8962;</span> Home
             </NavLink>
@@ -43,3 +52,42 @@
         @Body
     </main>
 </div>
+
+@code {
+    private bool _navOpen;
+    private DotNetObjectReference<PortfolioLayout>? _ref;
+
+    private async Task ToggleNav()
+    {
+        _navOpen = !_navOpen;
+        await JS.InvokeVoidAsync("pfDrawer.lockScroll", _navOpen);
+        if (_navOpen)
+            await JS.InvokeVoidAsync("pfDrawer.focus");
+    }
+
+    private async Task CloseNav()
+    {
+        if (!_navOpen) return;
+        _navOpen = false;
+        await JS.InvokeVoidAsync("pfDrawer.lockScroll", false);
+        StateHasChanged();
+    }
+
+    [JSInvokable]
+    public async Task CloseDrawer() => await CloseNav();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _ref = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("pfDrawer.init", _ref);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _ref?.Dispose();
+        try { await JS.InvokeVoidAsync("pfDrawer.lockScroll", false); } catch { /* shutdown */ }
+    }
+}
