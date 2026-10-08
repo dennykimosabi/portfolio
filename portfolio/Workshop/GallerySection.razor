@@ -2,28 +2,44 @@
    with Preview/Code tabs, and an auto-generated props table. *@
 
 <section id="@Id" class="bp-doc">
-    <h2 class="bp-doc-title">@Title</h2>
+    <div class="bp-doc-title-row">
+        <h2 class="bp-doc-title">@Title</h2>
+        <span class="bp-status bp-status-@StatusClass" title="@StatusTitle">@Status</span>
+    </div>
     @if (Description is not null)
     {
         <div class="bp-doc-desc">@Description</div>
     }
 
     <div class="bp-preview">
-        <div class="bp-preview-tabs" role="tablist" aria-label="Preview or code">
-            <button type="button" role="tab" aria-selected="@(_showCode == false)"
-                    class="bp-tab @(_showCode ? null : "is-active")" @onclick="() => _showCode = false">
+        <div class="bp-preview-tabs" role="tablist" aria-label="Preview, code, or accessibility">
+            <button type="button" role="tab" aria-selected="@(_tab == "preview")"
+                    class="bp-tab @(_tab == "preview" ? "is-active" : null)" @onclick='() => _tab = "preview"'>
                 Preview
             </button>
-            <button type="button" role="tab" aria-selected="@_showCode"
-                    class="bp-tab @(_showCode ? "is-active" : null)" @onclick="() => _showCode = true">
+            <button type="button" role="tab" aria-selected="@(_tab == "code")"
+                    class="bp-tab @(_tab == "code" ? "is-active" : null)" @onclick='() => _tab = "code"'>
                 Code
             </button>
+            @if (Accessibility is not null)
+            {
+                <button type="button" role="tab" aria-selected="@(_tab == "a11y")"
+                        class="bp-tab @(_tab == "a11y" ? "is-active" : null)" @onclick='() => _tab = "a11y"'>
+                    Accessibility
+                </button>
+            }
         </div>
-        @if (_showCode)
+        @if (_tab == "code")
         {
             <div class="bp-code">
                 <button type="button" class="bp-copy" @onclick="CopyCode" aria-label="Copy code">@(_copied ? "Copied" : "Copy")</button>
                 <pre><code>@Component</code></pre>
+            </div>
+        }
+        else if (_tab == "a11y")
+        {
+            <div class="bp-a11y-body">
+                @Accessibility
             </div>
         }
         else
@@ -52,7 +68,36 @@
     /// <summary>The component type, used to auto-generate the props table.</summary>
     [Parameter] public Type? ComponentType { get; set; }
 
-    private bool _showCode;
+    /// <summary>
+    /// Lifecycle maturity shown as a badge on the card. Defaults to
+    /// <see cref="ComponentStatus.Experimental"/>.
+    /// </summary>
+    [Parameter] public ComponentStatus Status { get; set; } = ComponentStatus.Experimental;
+
+    /// <summary>
+    /// Accessibility notes for the component. When set, an "Accessibility" tab
+    /// appears next to Preview/Code.
+    /// </summary>
+    [Parameter] public RenderFragment? Accessibility { get; set; }
+
+    private string _tab = "preview";
+
+    private string StatusClass => Status switch
+    {
+        ComponentStatus.Stable => "stable",
+        ComponentStatus.Legacy => "legacy",
+        ComponentStatus.Deprecated => "deprecated",
+        _ => "experimental"
+    };
+
+    private string StatusTitle => Status switch
+    {
+        ComponentStatus.Stable => "Stable: reviewed and dependable, safe for production use.",
+        ComponentStatus.Legacy => "Legacy: superseded but still supported; prefer the replacement.",
+        ComponentStatus.Deprecated => "Deprecated: do not use in new work.",
+        _ => "Experimental: the API may still change."
+    };
+
     private bool _copied;
 
     [Inject] private IJSRuntime JS { get; set; } = default!;
