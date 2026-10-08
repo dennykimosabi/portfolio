@@ -1,0 +1,14 @@
+@* Renders an SfActionDescriptor as an SfButton (or link when Href is set). *@
+
+<SfButton Variant="@Action.Variant"
+          Href="@Action.Href"
+          AriaLabel="@(Action.AccessibilityLabel ?? Action.Content)"
+          Disabled="@Action.Disabled"
+          OnClick="@Action.OnClick"
+          Class="@Action.Class"
+          AdditionalAttributes="@Action.AdditionalAttributes">@Action.Content</SfButton>
+
+@code {
+    /// <summary>The action descriptor to render.</summary>
+    [Parameter, EditorRequired] public SfActionDescriptor Action { get; set; } = new();
+}
