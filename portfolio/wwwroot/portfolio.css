@@ -261,13 +261,13 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
-    margin: 2px 0 6px 30px;
+    margin: 2px 0 4px 30px;
 }
 .pf-nav-child {
     display: flex;
     align-items: center;
-    min-height: 40px;
-    padding: 6px 12px;
+    min-height: 34px;
+    padding: 4px 12px;
     border-radius: 8px;
     color: var(--pf-muted);
     text-decoration: none;
@@ -279,6 +279,17 @@
 .pf-nav-child:active { background: var(--pf-muted-bg); color: var(--pf-text); }
 .pf-nav-child.active { background: var(--pf-muted-bg); color: var(--pf-text); font-weight: 600; }
 
+/* Transparent click-catcher behind the rail flyout: clicking anywhere else
+   dismisses it. Rendered only in rail mode while the flyout is open. */
+.pf-rail-flyout-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 10003;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: default;
+}
 /* Flyout shown from the icon rail. */
 .pf-rail-flyout {
     position: absolute;
@@ -298,8 +309,8 @@
 .pf-flyout-item {
     display: flex;
     align-items: center;
-    min-height: 44px;
-    padding: 8px 12px;
+    min-height: 40px;
+    padding: 6px 12px;
     border-radius: 8px;
     color: var(--pf-muted);
     text-decoration: none;
@@ -638,3 +649,27 @@
     background: #fff;
 }
 .bp-pager-link:hover { border-color: #2563a5; }
+
+/* Blazor framework error toast. Hidden by default; Blazor's JS sets
+   display:block only when a real unhandled exception occurs. Without the
+   display:none rule the div from index.html renders on every page load. */
+#blazor-error-ui {
+    background: #fef9c3;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    color: #27272a;
+    font-size: 14px;
+}
+
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
