@@ -1,0 +1,1266 @@
+@page "/workshop"
+
+@implements IAsyncDisposable
+@using Portfolio.Demo
+@inject VehicleFitmentState FitmentState
+@inject CartState CartState
+@inject IJSRuntime JS
+
+@* Preview-only gallery: every Storefront.Client component rendered on its own, against the demo
+   services. Service-driven components fetch their own (dummy) data; parameter-driven ones get
+   sample values defined in @code below. *@
+
+<PageTitle>Workshop · Denny Kim</PageTitle>
+
+<div class="pv-gallery">
+    <aside class="pv-nav" aria-label="Components">
+        <p class="pv-nav-title">Storefront components</p>
+        @foreach (var group in NavGroups)
+        {
+            <p class="pv-nav-group">@group.Title</p>
+            <ul>
+                @foreach (var (id, label) in group.Items)
+                {
+                    <li><a href="@($"workshop#{id}")">@label</a></li>
+                }
+            </ul>
+        }
+    </aside>
+
+    <div class="pv-main">
+        <header class="bp-workshop-intro">
+            <h1>Component workshop</h1>
+            <p>
+                Live <code>Storefront.Client</code> components compiled from <code>..\Storefront.Client</code>, backed by
+                in-memory dummy data. Service-driven components (RefineSearch, VehiclePicker, AssemblyResults, …) react to the
+                active fitment — switch it with the presets below. Each card shows a live preview, the usage snippet,
+                and an auto-generated properties table. Use the <strong>Preview</strong> pill (bottom-left) to open the full pages.
+            </p>
+        </header>
+
+        <div class="pv-fitment-bar" role="group" aria-label="Fitment presets">
+            <span class="pv-fitment-label">Active fitment: <strong>@CurrentFitmentLabel</strong></span>
+            <div class="pv-fitment-presets">
+                @foreach (var preset in Presets)
+                {
+                    <button type="button" class="pv-chip @(IsActive(preset) ? "is-active" : null)" @onclick="() => Apply(preset)">@preset.Label</button>
+                }
+            </div>
+        </div>
+
+        @* ───────────────────────── Foundation ───────────────────────── *@
+
+        <GallerySection Id="design-tokens" Title="Design Tokens" Component="@("Design tokens live in _tokens.scss")">
+            <Description>The single source of truth. Every component references these tokens — there are no hardcoded colors, radii, shadows, or font stacks in the library. Override them to re-skin (see the <code>dealer-acme</code> example in <code>_tokens.scss</code>).</Description>
+            <ChildContent>
+                <div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+                    @foreach (var group in _tokenGroups)
+                    {
+                        <div class="bp-doc-section">
+                            <h4>@group.Title</h4>
+                            <div class="bp-tokens-grid">
+                                @foreach (var token in group.Tokens)
+                                {
+                                    <div class="bp-token-swatch">
+                                        <div class="bp-token-color" style="background: var(@token.Var)"></div>
+                                        <div class="bp-token-name">@token.Var</div>
+                                        <div class="bp-token-value">@token.Value</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    <div class="bp-doc-section">
+                        <h4>Radius</h4>
+                        <div class="bp-token-demo-row">
+                            @foreach (var r in _radii)
+                            {
+                                <div class="bp-token-demo">
+                                    <div class="bp-token-demo-box" style="border-radius: var(@r.Var)"></div>
+                                    <div class="bp-token-demo-label">@r.Var</div>
+                                    <div class="bp-token-demo-value">@r.Value</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="bp-doc-section">
+                        <h4>Shadow</h4>
+                        <div class="bp-token-demo-row">
+                            @foreach (var sh in _shadows)
+                            {
+                                <div class="bp-token-demo">
+                                    <div class="bp-token-demo-box" style="border:none;box-shadow: var(@sh.Var)"></div>
+                                    <div class="bp-token-demo-label">@sh.Var</div>
+                                    <div class="bp-token-demo-value">@sh.Value</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="bp-doc-section">
+                        <h4>Space</h4>
+                        <div class="bp-token-demo-row">
+                            @foreach (var sp in _spacing)
+                            {
+                                <div class="bp-token-demo">
+                                    <div style="height:12px;background:var(--sf-color-primary);border-radius:2px;width:var(@sp.Var)"></div>
+                                    <div class="bp-token-demo-label">@sp.Var</div>
+                                    <div class="bp-token-demo-value">@sp.Value</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="bp-doc-section">
+                        <h4>Typography</h4>
+                        <p style="font-family:var(--sf-font-sans)">The quick brown fox jumps over the lazy dog</p>
+                        <div class="bp-token-demo-label">--sf-font-sans</div>
+                        <div class="bp-token-demo-value">'Helvetica Neue', Helvetica, Arial, sans-serif</div>
+                    </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        @* ───────────────────────── Atomic ───────────────────────── *@
+
+        <GallerySection Id="sf-button" Title="SfButton" Component="@("<SfButton Variant=\"SfButtonVariant.Primary\">Add to cart</SfButton>")" ComponentType="typeof(SfButton)" Status="ComponentStatus.Stable">
+            <Description>The atomic button. Replaces the 20+ hand-rolled <code>&lt;button&gt;</code> elements across the library.</Description>
+            <ChildContent>
+                <div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+                <div class="bp-doc-section">
+                    <h4>Variants</h4>
+                    <p>Use <code>Variant</code> to change the visual style: <code>Primary</code>, <code>Dark</code>, <code>Secondary</code>, <code>Outline</code>, <code>Ghost</code>, and <code>Danger</code>.</p>
+                    <div class="bp-doc-row">
+                        <SfButton Variant="SfButtonVariant.Primary">Primary</SfButton>
+                        <SfButton Variant="SfButtonVariant.Dark">Dark</SfButton>
+                        <SfButton Variant="SfButtonVariant.Secondary">Secondary</SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline">Outline</SfButton>
+                        <SfButton Variant="SfButtonVariant.Ghost">Ghost</SfButton>
+                        <SfButton Variant="SfButtonVariant.Danger">Danger</SfButton>
+                    </div>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>Sizes</h4>
+                    <p>Control dimensions with <code>Size</code>: <code>Sm</code>, <code>Md</code>, and <code>Lg</code>.</p>
+                    <div class="bp-doc-row">
+                        <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Sm">Small</SfButton>
+                        <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Md">Medium</SfButton>
+                        <SfButton Variant="SfButtonVariant.Primary" Size="SfButtonSize.Lg">Large</SfButton>
+                    </div>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>With icons</h4>
+                    <p>Pass an <code>Icon</code> fragment and set <code>IconPosition</code> to <code>Start</code> or <code>End</code>.</p>
+                    <div class="bp-doc-row">
+                        <SfButton Variant="SfButtonVariant.Primary" Icon="@_cartIcon">Add to cart</SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Icon="@_cartIcon" IconPosition="SfIconPosition.End">Add to cart</SfButton>
+                    </div>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>Icon-only</h4>
+                    <p>Dedicated square sizes: <code>IconSm</code>, <code>Icon</code>, <code>IconLg</code>. Always provide an <code>AriaLabel</code>.</p>
+                    <div class="bp-doc-row">
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Search"><SfIcon Name="search-line" /></SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Icon" AriaLabel="Search"><SfIcon Name="search-line" /></SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconLg" AriaLabel="Search"><SfIcon Name="search-line" /></SfButton>
+                    </div>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>States</h4>
+                    <p><code>Disabled</code> blocks interaction. <code>Loading</code> shows a spinner; add <code>LoadingText</code> to replace the label while busy.</p>
+                    <div class="bp-doc-row">
+                        <SfButton Variant="SfButtonVariant.Primary" Disabled>Disabled</SfButton>
+                        <SfButton Variant="SfButtonVariant.Primary" Loading>Loading</SfButton>
+                        <SfButton Variant="SfButtonVariant.Primary" Loading LoadingText="Saving…">Save</SfButton>
+                    </div>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>As link</h4>
+                    <p>Set <code>Href</code> to render an <code>&lt;a&gt;</code> anchor. <code>Type</code> accepts <code>Button</code>, <code>Submit</code>, or <code>Reset</code>.</p>
+                    <div class="bp-doc-row">
+                        <SfButton Variant="SfButtonVariant.Ghost" Href="#">Link button</SfButton>
+                    </div>
+                </div>
+                </div>
+            </ChildContent>
+            <Accessibility>
+                <div class="bp-doc-section">
+                    <h4>Keyboard</h4>
+                    <ul class="bp-a11y-list">
+                        <li><code>Tab</code> / <code>Shift+Tab</code> — move focus to and away from the button.</li>
+                        <li><code>Enter</code> or <code>Space</code> — activates a <code>&lt;button&gt;</code>. When <code>Href</code> renders an <code>&lt;a&gt;</code>, only <code>Enter</code> activates it (anchors ignore <code>Space</code>).</li>
+                        <li>Disabled buttons leave the tab order (native behavior) and never fire <code>OnClick</code>.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>ARIA roles and states the component manages</h4>
+                    <ul class="bp-a11y-list">
+                        <li>Renders a native <code>&lt;button&gt;</code> (implicit button role) or <code>&lt;a&gt;</code> (link role) — no custom roles invented.</li>
+                        <li>Sets <code>aria-disabled="true"</code> when <code>Disabled</code> or <code>Loading</code>, and <code>aria-busy="true"</code> while <code>Loading</code>.</li>
+                        <li>The loading spinner is <code>aria-hidden</code>; <code>LoadingText</code> replaces the visible label while busy.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>What you must supply</h4>
+                    <ul class="bp-a11y-list">
+                        <li><code>AriaLabel</code> on icon-only buttons (<code>IconSm</code> / <code>Icon</code> / <code>IconLg</code>) — without it the button has no accessible name.</li>
+                        <li>Use <code>Href</code> only for real navigation. Actions that change state should use <code>OnClick</code> so keyboard users get <code>Space</code> activation.</li>
+                    </ul>
+                </div>
+            </Accessibility>
+        </GallerySection>
+
+        <GallerySection Id="sf-badge" Title="SfBadge" Component="@("<SfBadge Variant=\"SfBadgeVariant.Success\">In stock</SfBadge>")" ComponentType="typeof(SfBadge)" Status="ComponentStatus.Stable">
+            <Description>Status pills. Five variants distilled from the availability badges, fitment badges, and stock indicators scattered across the library.</Description>
+            <ChildContent>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+                    <SfBadge Variant="SfBadgeVariant.Default">Default</SfBadge>
+                    <SfBadge Variant="SfBadgeVariant.Primary">Fits your vehicle</SfBadge>
+                    <SfBadge Variant="SfBadgeVariant.Success">In stock</SfBadge>
+                    <SfBadge Variant="SfBadgeVariant.Warning">Low stock</SfBadge>
+                    <SfBadge Variant="SfBadgeVariant.Danger">Out of stock</SfBadge>
+                </div>
+            </ChildContent>
+            <Accessibility>
+                <div class="bp-doc-section">
+                    <h4>Keyboard</h4>
+                    <ul class="bp-a11y-list">
+                        <li>None — the badge is not interactive and takes no focus.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>ARIA roles and states the component manages</h4>
+                    <ul class="bp-a11y-list">
+                        <li>Renders a plain <code>&lt;span&gt;</code> with no role. Its text is announced as ordinary text — the component adds nothing and hides nothing.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>What you must supply</h4>
+                    <ul class="bp-a11y-list">
+                        <li>Never rely on color alone. The badge always carries text, so this is satisfied by default — don't strip the label and leave a bare color dot.</li>
+                        <li>If the badge's meaning isn't clear from surrounding text, add the context nearby (e.g. "Availability: In stock").</li>
+                    </ul>
+                </div>
+            </Accessibility>
+        </GallerySection>
+
+        <GallerySection Id="sf-chip" Title="SfChip" Component="@("<SfChip OnRemove=\"Remove\">2024 Honda Civic</SfChip>")" ComponentType="typeof(SfChip)" Status="ComponentStatus.Stable">
+            <Description>Removable filter chips. Renders a close button only when <code>OnRemove</code> is set.</Description>
+            <ChildContent>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+                    <SfChip OnRemove="@(() => {})">2024</SfChip>
+                    <SfChip OnRemove="@(() => {})">Honda</SfChip>
+                    <SfChip OnRemove="@(() => {})">Civic</SfChip>
+                    <SfChip>Static label</SfChip>
+                </div>
+            </ChildContent>
+            <Accessibility>
+                <div class="bp-doc-section">
+                    <h4>Keyboard</h4>
+                    <ul class="bp-a11y-list">
+                        <li>The chip itself is not focusable. The × is a native <code>&lt;button&gt;</code>: <code>Tab</code> reaches it, <code>Enter</code> / <code>Space</code> removes the chip.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>ARIA roles and states the component manages</h4>
+                    <ul class="bp-a11y-list">
+                        <li>The × button gets its <code>aria-label</code> from <code>RemoveLabel</code> (default "Remove filter"). No other ARIA is added.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>What you must supply</h4>
+                    <ul class="bp-a11y-list">
+                        <li>With several chips on screen, set <code>RemoveLabel</code> per chip (e.g. "Remove 2024 filter") so screen-reader users can tell the × buttons apart.</li>
+                    </ul>
+                </div>
+            </Accessibility>
+        </GallerySection>
+
+        <GallerySection Id="sf-input" Title="SfInput" Component="@("<SfInput Label=\"Email\" Placeholder=\"you@example.com\" />")" ComponentType="typeof(SfInput)" Status="ComponentStatus.Stable">
+            <Description>Labeled text input with hint, error, and disabled states. Two-way binds <code>Value</code>.</Description>
+            <ChildContent>
+                <div style="display:grid;gap:16px;max-width:320px;">
+                    <SfInput Label="Email" Placeholder="you@example.com" Hint="Order updates go here." />
+                    <SfInput Label="ZIP code" Value="30301" Invalid Error="Enter a valid ZIP code." />
+                    <SfInput Label="Disabled" Placeholder="Can't type here" Disabled />
+                </div>
+            </ChildContent>
+            <Accessibility>
+                <div class="bp-doc-section">
+                    <h4>Keyboard</h4>
+                    <ul class="bp-a11y-list">
+                        <li>Standard text-field behavior: <code>Tab</code> to focus; typing, arrows, <code>Home</code> / <code>End</code> work natively.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>ARIA roles and states the component manages</h4>
+                    <ul class="bp-a11y-list">
+                        <li>Native <code>&lt;input&gt;</code> with a real <code>&lt;label&gt;</code> linked by <code>for</code> / <code>id</code> when <code>Label</code> is set.</li>
+                        <li><code>Invalid</code> sets <code>aria-invalid="true"</code>; <code>Error</code> renders with <code>role="alert"</code> so it is announced when it appears.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>What you must supply</h4>
+                    <ul class="bp-a11y-list">
+                        <li>Always set <code>Label</code> — a placeholder is not a label and disappears on input.</li>
+                        <li>Write error text as an instruction ("Enter a valid ZIP code"), not a bare state ("Invalid").</li>
+                    </ul>
+                </div>
+            </Accessibility>
+        </GallerySection>
+
+        <GallerySection Id="sf-select" Title="SfSelect" Component="@("<SfSelect Label=\"Year\" Placeholder=\"Select year\" />")" ComponentType="typeof(SfSelect)" Status="ComponentStatus.Stable">
+            <Description>Native select with consistent styling. For searchable dropdowns, see <code>SearchableSelect</code>.</Description>
+            <ChildContent>
+                <div style="display:grid;gap:16px;max-width:320px;">
+                    <SfSelect Label="Year" Placeholder="Select year" Options="@_years" />
+                    <SfSelect Label="Disabled" Placeholder="Select year" Options="@_years" Disabled />
+                </div>
+            </ChildContent>
+            <Accessibility>
+                <div class="bp-doc-section">
+                    <h4>Keyboard</h4>
+                    <ul class="bp-a11y-list">
+                        <li><code>Tab</code> to focus; <code>Up</code> / <code>Down</code>, <code>Home</code> / <code>End</code> move through options; <code>Enter</code> / <code>Space</code> opens the list; <code>Escape</code> closes it; typing jumps to a matching option. All native listbox keys.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>ARIA roles and states the component manages</h4>
+                    <ul class="bp-a11y-list">
+                        <li>Native <code>&lt;select&gt;</code> with a linked <code>&lt;label&gt;</code> — the platform supplies the listbox semantics. The chevron icon is decorative.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>What you must supply</h4>
+                    <ul class="bp-a11y-list">
+                        <li>Always set <code>Label</code>. For searchable dropdowns with custom popovers, see <code>SearchableSelect</code> — its keyboard contract differs.</li>
+                    </ul>
+                </div>
+            </Accessibility>
+        </GallerySection>
+
+        <GallerySection Id="sf-icon" Title="SfIcon" Component="@("<SfIcon Name=\"shopping-cart-line\" />")" ComponentType="typeof(SfIcon)" Status="ComponentStatus.Stable">
+            <Description>The default icon set is <a href="https://remixicon.com/" target="_blank" rel="noopener">Remix Icon</a>, loaded site-wide. Pass any icon name without the <code>ri-</code> prefix. Icons size with <code>font-size</code>.</Description>
+            <ChildContent>
+                <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;font-size:24px;">
+                    <SfIcon Name="shopping-cart-line" />
+                    <SfIcon Name="search-line" />
+                    <SfIcon Name="user-line" />
+                    <SfIcon Name="heart-line" />
+                    <SfIcon Name="star-fill" />
+                    <SfIcon Name="truck-line" />
+                    <SfIcon Name="shield-check-line" />
+                    <SfIcon Name="close-line" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-link" Title="SfLink" Component="@("<SfLink Href=\"#\">View all parts</SfLink>")" ComponentType="typeof(SfLink)" Status="ComponentStatus.Stable">
+            <Description>The link primitive. Replaces text that looks like a link but was built as a <code>Ghost</code> button.</Description>
+            <ChildContent>
+                <div style="display:flex;gap:20px;align-items:center;">
+                    <SfLink Href="#" Size="SfLinkSize.Xs">Extra small</SfLink>
+                    <SfLink Href="#" Size="SfLinkSize.Sm">Small</SfLink>
+                    <SfLink Href="#">Medium</SfLink>
+                    <SfLink Href="#" Size="SfLinkSize.Lg">Large</SfLink>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-quantity-stepper" Title="SfQuantityStepper" Component="@("<SfQuantityStepper Value=\"1\" />")" ComponentType="typeof(SfQuantityStepper)" Status="ComponentStatus.Stable">
+            <Description>Quantity stepper. Two-way binds <code>Value</code> with <code>Min</code>/<code>Max</code> clamping. Consolidates the hand-rolled steppers.</Description>
+            <ChildContent>
+                <SfQuantityStepper Value="2" Min="1" Max="10" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-divider" Title="SfDivider" Component="@("<SfDivider />")" ComponentType="typeof(SfDivider)" Status="ComponentStatus.Stable">
+            <Description>Thematic break with optional centered label and spacing scale.</Description>
+            <ChildContent>
+                <div style="width:100%;max-width:480px;">
+                    <SfDivider />
+                    <SfDivider Label="or" />
+                    <SfDivider Label="Specifications" Spacing="SfDividerSpacing.Lg" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-skeleton" Title="SfSkeleton" Component="@("<SfSkeleton Width=\"100%\" Height=\"16px\" />")" ComponentType="typeof(SfSkeleton)" Status="ComponentStatus.Stable">
+            <Description>Loading placeholder with shimmer. Shapes: rectangle, circle, pill. Honors <code>prefers-reduced-motion</code>.</Description>
+            <ChildContent>
+                <div style="display:grid;gap:12px;width:100%;max-width:320px;">
+                    <SfSkeleton Width="100%" Height="16px" />
+                    <SfSkeleton Width="60%" Height="16px" />
+                    <div style="display:flex;gap:12px;align-items:center;">
+                        <SfSkeleton Width="48px" Height="48px" Shape="SfSkeletonShape.Circle" />
+                        <SfSkeleton Width="120px" Height="24px" Shape="SfSkeletonShape.Pill" />
+                    </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-tooltip" Title="SfTooltip" Component="@("<SfTooltip Text=\"In stock at Memphis warehouse\">Hover me</SfTooltip>")" ComponentType="typeof(SfTooltip)" Status="ComponentStatus.Stable">
+            <Description>CSS-only tooltip. No JavaScript. Positions: top, bottom, left, right.</Description>
+            <ChildContent>
+                <div style="display:flex;gap:24px;align-items:center;padding:20px 0;">
+                    <SfTooltip Text="In stock at Memphis warehouse"><SfBadge Variant="SfBadgeVariant.Success">In stock</SfBadge></SfTooltip>
+                    <SfTooltip Text="Ships in 4-5 business days" Position="SfTooltipPosition.Bottom"><SfIcon Name="truck-line" /></SfTooltip>
+                </div>
+            </ChildContent>
+            <Accessibility>
+                <div class="bp-doc-section">
+                    <h4>Keyboard</h4>
+                    <ul class="bp-a11y-list">
+                        <li>The tooltip appears on hover and on keyboard focus (<code>:focus-visible</code>). The trigger must be focusable — a button, link, or <code>tabindex="0"</code> — or keyboard users never see it.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>Honest limitation</h4>
+                    <ul class="bp-a11y-list">
+                        <li>The tooltip text is rendered through CSS (<code>::after</code> from the <code>data-tip</code> attribute), which assistive technology does not reliably announce, and it never appears on touch devices.</li>
+                        <li>Never put essential information only in the tooltip. If it matters, make it visible text. The component adds no ARIA of its own.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>What you must supply</h4>
+                    <ul class="bp-a11y-list">
+                        <li>A focusable trigger. If the trigger's purpose needs a programmatic name, pass <code>aria-label</code> through <code>AdditionalAttributes</code>.</li>
+                    </ul>
+                </div>
+            </Accessibility>
+        </GallerySection>
+
+        <GallerySection Id="sf-button-group" Title="SfButtonGroup" Component="@("<SfButtonGroup><SfButton>One</SfButton><SfButton>Two</SfButton></SfButtonGroup>")" ComponentType="typeof(SfButtonGroup)" Status="ComponentStatus.Stable">
+            <Description>Joins buttons into a connected toolbar. Only the outer edges are rounded; shared borders collapse. Separators and muted labels divide sections.</Description>
+            <ChildContent>
+                <div style="display:grid;gap:20px;justify-items:start;">
+                    <SfButtonGroup AriaLabel="Text alignment">
+                        <SfButton Variant="SfButtonVariant.Outline">Left</SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline">Center</SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline">Right</SfButton>
+                    </SfButtonGroup>
+                    <SfButtonGroup AriaLabel="Editor toolbar">
+                        <SfButtonGroupText>Style</SfButtonGroupText>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Bold"><SfIcon Name="bold" /></SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Italic"><SfIcon Name="italic" /></SfButton>
+                        <SfButtonGroupSeparator />
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Align left"><SfIcon Name="align-left" /></SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.IconSm" AriaLabel="Align center"><SfIcon Name="align-center" /></SfButton>
+                    </SfButtonGroup>
+                    <SfButtonGroup AriaLabel="Sort direction" Orientation="SfButtonGroupOrientation.Vertical">
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Sm">Newest</SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Sm">Price: low to high</SfButton>
+                        <SfButton Variant="SfButtonVariant.Outline" Size="SfButtonSize.Sm">Price: high to low</SfButton>
+                    </SfButtonGroup>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="sf-action-descriptor" Title="SfActionDescriptor" Component="@("new SfActionDescriptor { Content = \"Save\", Variant = SfButtonVariant.Dark }")" ComponentType="typeof(SfActionDescriptor)" Status="ComponentStatus.Experimental">
+            <Description>One data shape for actions, reused wherever buttons repeat — dialog footers, page headers, toolbars. Rendered with <code>SfActionButton</code>: <code>Href</code> renders a link, <code>AccessibilityLabel</code> falls back to <code>Content</code>.</Description>
+            <ChildContent>
+                <div class="bp-doc-row">
+                    <SfActionButton Action="@(new SfActionDescriptor { Content = "Save changes", Variant = SfButtonVariant.Dark })" />
+                    <SfActionButton Action="@(new SfActionDescriptor { Content = "Cancel", Variant = SfButtonVariant.Ghost })" />
+                    <SfActionButton Action="@(new SfActionDescriptor { Content = "View docs", Variant = SfButtonVariant.Outline, Href = "workshop#sf-button" })" />
+                    <SfActionButton Action="@(new SfActionDescriptor { Content = "Delete", Variant = SfButtonVariant.Danger, Disabled = true })" />
+                </div>
+            </ChildContent>
+            <Accessibility>
+                <div class="bp-doc-section">
+                    <h4>Keyboard and ARIA</h4>
+                    <ul class="bp-a11y-list">
+                        <li>Inherits the <code>SfButton</code> contract: native <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code>, <code>Enter</code> / <code>Space</code> activation, disabled leaves the tab order.</li>
+                        <li><code>AccessibilityLabel</code> becomes the button's <code>aria-label</code>; when unset, <code>Content</code> is the accessible name.</li>
+                    </ul>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>What you must supply</h4>
+                    <ul class="bp-a11y-list">
+                        <li>Set <code>AccessibilityLabel</code> when the visible label is ambiguous out of context — e.g. several "Remove" actions in one dialog.</li>
+                    </ul>
+                </div>
+            </Accessibility>
+        </GallerySection>
+
+        @* ───────────────────────── Browse ───────────────────────── *@
+
+        <GallerySection Id="refine-search-categories" Title="Refine Search — Categories" Component="@("<RefineSearch Mode=\"RefineSearchMode.Categories\" />")" ComponentType="typeof(RefineSearch)" Wide="true">
+            <Description>Tile grid used for "Shop Parts by Category" on Home. Tile links include the active vehicle — pick a preset and hover a tile to see the URL change.</Description>
+            <ChildContent>
+                <RefineSearch @key="@("g-rs-categories")" Mode="RefineSearchMode.Categories" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="refine-search-accessories" Title="Refine Search — Accessory Categories" Component="@("<RefineSearch Mode=\"RefineSearchMode.AccessoryCategories\" UseAccessoryLinks=\"true\" />")" ComponentType="typeof(RefineSearch)" Wide="true">
+            <Description>Gradient-overlay tile style with the "View All Accessories" featured tile (FeaturedDefault placement) prepended.</Description>
+            <ChildContent>
+                <RefineSearch @key="@("g-rs-accessories")" Mode="RefineSearchMode.AccessoryCategories" UseAccessoryLinks="true" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="refine-search-accessories-page" Title="Refine Search — Accessories page variant" Component="@("<RefineSearch Mode=\"AccessoryCategories\" ShowFeaturedTile=\"false\" StyleVariant=\"accessorycategories\" … />")" ComponentType="typeof(RefineSearch)" Wide="true">
+            <Description>How <code>/accessories</code> uses it: no featured tile, custom heading placement.</Description>
+            <ChildContent>
+                <RefineSearch @key="@("g-rs-accessories-page")" Mode="RefineSearchMode.AccessoryCategories" PageUrl="/accessories" PlacementKey="AccessoriesCategoryHeader" StyleVariant="accessorycategories" ShowFeaturedTile="false" UseAccessoryLinks="true" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="refine-search-links" Title="Refine Search — Links" Component="@("<RefineSearch Mode=\"RefineSearchMode.Links\" />")" ComponentType="typeof(RefineSearch)" Wide="true">
+            <Description>Compact fitment-refinement links. The heading follows the first row's ClassName: no vehicle → "Shop by Model", vehicle without trim → "Shop by Trim Level", full vehicle → "Shop by Year".</Description>
+            <ChildContent>
+                <RefineSearch @key="@("g-rs-links")" Mode="RefineSearchMode.Links" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="vehicle-picker-inline" Title="Vehicle Picker — Inline" Component="@("<VehiclePicker Layout=\"VehiclePickerLayout.Inline\" PlacementKey=\"VehiclePickerHeading\" />")" ComponentType="typeof(VehiclePicker)" Wide="true">
+            <Description>Year → Model → Driveline → Trim cascade. Completing it sets the fitment and navigates to the vehicle's storefront URL (leaves this page).</Description>
+            <ChildContent>
+                <VehiclePicker @key="@("g-vp-inline")" Layout="VehiclePickerLayout.Inline" PlacementKey="VehiclePickerHeading" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="vehicle-picker-panel" Title="Vehicle Picker — Panel (header)" Component="@("<VehiclePicker Layout=\"VehiclePickerLayout.Panel\" />")" ComponentType="typeof(VehiclePicker)">
+            <Description>Button + dropdown. Opens to the saved garage when there is one, otherwise straight to the dropdowns.</Description>
+            <ChildContent>
+                <div class="pv-panel-host">
+                    <VehiclePicker @key="@("g-vp-panel")" Layout="VehiclePickerLayout.Panel" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="vehicle-picked" Title="Vehicle Picked" Component="@("<VehiclePicked />")" ComponentType="typeof(VehiclePicked)" Wide="true">
+            <Description>Replaces the inline picker once a vehicle is chosen. Title/image/text come from the fitment-keyed VehiclePickerHeading placement — pick a vehicle preset to see it populate.</Description>
+            <ChildContent>
+                <VehiclePicked @key="@("g-vp-picked")" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="home-garage" Title="Home Garage + Garage Vehicle Card" Component="@("<HomeGarage /> · <GarageVehicleCard />")" ComponentType="typeof(HomeGarage)" Wide="true">
+            <Description>Saved vehicles (seeded with three) with Show More/Less. Rename (pencil) and remove (trash) work against the in-memory garage; the row matching the active fitment is highlighted.</Description>
+            <ChildContent>
+                <HomeGarage />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="hero-placement" Title="Hero Placement" Component="@("<HeroPlacement />")" ComponentType="typeof(HeroPlacement)" Wide="true">
+            <Description>HeroArea placement. Re-fetches on fitment change — the title switches to the chosen vehicle.</Description>
+            <ChildContent>
+                <HeroPlacement />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="assembly-results" Title="Assembly Results" Component="@("<AssemblyResults />")" ComponentType="typeof(AssemblyResults)" Wide="true">
+            <Description>Only renders once a category is active. Use the <em>+ Brakes category</em> preset. Try the keyword filter box.</Description>
+            <ChildContent>
+                <AssemblyResults />
+                @if (FitmentState.UkeyCategory is not > 0)
+                {
+                    <p class="pv-empty">Nothing to show — select a parts category preset (e.g. <em>+ Brakes category</em>).</p>
+                }
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="assembly-card" Title="Assembly Card · Part Type Card" Component="@("<AssemblyCard /> · <PartTypeCard />")" ComponentType="typeof(AssemblyCard)">
+            <Description>The two tiles AssemblyResults renders, shown standalone with sample data.</Description>
+            <ChildContent>
+                <div class="assembly-results">
+                    <div class="assembly-results-body">
+                        <div class="assembly-list">
+                            <ul class="assembly-list-items">
+                                @foreach (var assembly in _sampleAssemblies.Assemblies.Take(2))
+                                {
+                                    <li class="assembly-list-item"><AssemblyCard Assembly="assembly" /></li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="part-type-list">
+                            <ul class="part-type-list-items">
+                                @foreach (var partType in _sampleAssemblies.PartTypes.Take(2))
+                                {
+                                    <li class="part-type-list-item"><PartTypeCard PartType="partType" /></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="accessory-results" Title="Accessory Results" Component="@("<AccessoryResults />")" ComponentType="typeof(AccessoryResults)" Wide="true">
+            <Description>Needs a vehicle <em>and</em> a category. Use the <em>+ Cargo &amp; Storage</em> preset.</Description>
+            <ChildContent>
+                <AccessoryResults />
+                @if (!FitmentState.HasVehicle || FitmentState.UkeyCategory is not > 0)
+                {
+                    <p class="pv-empty">Nothing to show — select the <em>+ Cargo &amp; Storage</em> preset.</p>
+                }
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="placement-content" Title="Placement Content" Component="@("<PlacementContent PlacementKey=\"HomeAccessories\" ClassName=\"LifestylePromoContainer\" />")" ComponentType="typeof(PlacementContent)" Wide="true">
+            <ChildContent>
+                <PlacementContent PlacementKey="HomeAccessories" ClassName="LifestylePromoContainer" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="extra-home-content" Title="Extra Home Content" Component="@("<ExtraHomeContent />")" ComponentType="typeof(ExtraHomeContent)" Wide="true">
+            <ChildContent>
+                <ExtraHomeContent />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="featured-products" Title="Featured Products" Component="@("<FeaturedProducts />")" ComponentType="typeof(FeaturedProducts)" Wide="true">
+            <ChildContent>
+                <FeaturedProducts />
+            </ChildContent>
+        </GallerySection>
+
+        @* ───────────────────────── Search ───────────────────────── *@
+
+        <GallerySection Id="search-toolbar" Title="Search Toolbar" Component="@("<SearchToolbar />")" ComponentType="typeof(SearchToolbar)">
+            <Description>Parameter-driven; callbacks are wired to local state here. Last callback: <code>@_toolbarEvent</code></Description>
+            <ChildContent>
+                <div class="search-page">
+                    <SearchToolbar FitmentString="2024 Volvo XC40 AWD Plus"
+                                   CatalogCount="1456"
+                                   CatalogTermLabel="Brake System"
+                                   IsGridView="_toolbarGrid"
+                                   ShowSidebar="_toolbarSidebar"
+                                   FilterCount="3"
+                                   SortOrder="@_toolbarSort"
+                                   OnSetListView="@(() => Toolbar("OnSetListView", () => _toolbarGrid = false))"
+                                   OnSetGridView="@(() => Toolbar("OnSetGridView", () => _toolbarGrid = true))"
+                                   OnShowSidebarChanged="@((bool show) => Toolbar($"OnShowSidebarChanged({show})", () => _toolbarSidebar = show))"
+                                   OnSortOrderChanged="@((string sort) => Toolbar($"OnSortOrderChanged({sort})", () => _toolbarSort = sort))" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="active-filters" Title="Active Filters Chips" Component="@("<ActiveFiltersChips />")" ComponentType="typeof(ActiveFiltersChips)">
+            <Description>Click × to remove a chip. <button type="button" class="pv-link-button" @onclick="ResetChips">Reset chips</button></Description>
+            <ChildContent>
+                <div class="search-page">
+                    <aside class="search-sidebar pv-sidebar-sample">
+                        <ActiveFiltersChips Year="_chipYear" UkeyMake="_chipMake" UkeyModel="_chipModel"
+                                            UkeyDriveline="_chipDriveline" UkeyTrimLevel="_chipTrim" UkeyCategory="_chipCategory"
+                                            MakeName="Volvo" ModelName="XC40" DrivelineName="AWD" TrimLevelName="Plus" CategoryName="Brakes"
+                                            OnRemoveYear="@(() => _chipYear = 0)"
+                                            OnRemoveMake="@(() => _chipMake = 0)"
+                                            OnRemoveModel="@(() => _chipModel = 0)"
+                                            OnRemoveDriveline="@(() => _chipDriveline = 0)"
+                                            OnRemoveTrim="@(() => _chipTrim = 0)"
+                                            OnRemoveCategory="@(() => _chipCategory = 0)" />
+                    </aside>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="product-grid" Title="Product Grid" Component="@("<ProductGrid />")" ComponentType="typeof(ProductGrid)">
+            <Description>Maps ProductSearchResult rows onto ProductCard. Add to Cart updates the cart (count shows in the header's cart widget). @_cartMessage</Description>
+            <ChildContent>
+                <div class="search-page">
+                    <ProductGrid Results="_gridProducts" OnAddToCart="AddSearchResultToCart" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="product-card" Title="Product Card" Component="@("<ProductCard />")" ComponentType="typeof(ProductCard)">
+            <Description>With and without the Add to Cart button, and with no image.</Description>
+            <ChildContent>
+                <div class="product-grid">
+                    <ProductCard Title="Cargo Area Organizer" StockCode="VA-90011" Price="86.40m" Url="/product/VA-90011/cargo-area-organizer" ImageUrl="@_cardImage" />
+                    <ProductCard Title="Front Brake Pad Set" StockCode="VP-10421" Price="89.95m" Url="/product/VP-10421/front-brake-pad-set" ImageUrl="@_cardImage2" ShowAddToCart="false" />
+                    <ProductCard Title="Product with no image" StockCode="VP-00000" Price="12.00m" Url="#" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        @* ───────────────────────── Product page ───────────────────────── *@
+
+        <GallerySection Id="guided-navigation" Title="Guided Navigation" Component="@("<GuidedNavigation />")" ComponentType="typeof(GuidedNavigation)" Wide="true">
+            <Description>Fitment-aware PDP header. Wired to the active fitment here — switch presets to flip between "fits" and "does this fit?".</Description>
+            <ChildContent>
+                <div class="product-page">
+                    <GuidedNavigation UkeyProduct="2001"
+                                      PageUrl="/product/VA-90011/cargo-area-organizer"
+                                      UkeyMake="FitmentState.UkeyMake"
+                                      UkeyModel="FitmentState.UkeyModel"
+                                      ModelYear="FitmentState.Year"
+                                      UkeyDriveline="FitmentState.UkeyDriveline"
+                                      UkeyTrimLevel="FitmentState.UkeyTrimLevel" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="fitment-banner" Title="Product Fitment Banner" Component="@("<ProductFitmentBanner />")" ComponentType="typeof(ProductFitmentBanner)">
+            <Description>Not currently used by Product.razor, shown in both states. Last callback: <code>@_bannerEvent</code></Description>
+            <ChildContent>
+                <div class="pv-stack">
+                    <ProductFitmentBanner Fits="true" VehicleDescription="2024 Volvo XC40 AWD Plus"
+                                          OnMoreProducts="@(() => _bannerEvent = "OnMoreProducts")"
+                                          OnChangeVehicle="@(() => _bannerEvent = "OnChangeVehicle")" />
+                    <ProductFitmentBanner Fits="false"
+                                          OnMoreProducts="@(() => _bannerEvent = "OnMoreProducts")"
+                                          OnChangeVehicle="@(() => _bannerEvent = "OnChangeVehicle")" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="product-gallery" Title="Product Gallery" Component="@("<ProductGallery />")" ComponentType="typeof(ProductGallery)">
+            <Description>Three explorable versions of the product image gallery: thumbnail strip, responsive grid, and lightbox.</Description>
+            <ChildContent>
+                <div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+                <div class="bp-doc-section">
+                    <h4>Thumbnails</h4>
+                    <p>One large primary image over a thumbnail strip. Five images + seven empty slots (placeholders), so the strip shows nine thumbnails and a "3 More" tile.</p>
+                    <div class="pv-narrow">
+                        <section class="product-panel product-summary">
+                            <ProductGallery Images="_galleryImages" AltText="Cargo Area Organizer" />
+                        </section>
+                    </div>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>Grid</h4>
+                    <p>Swipes as a carousel on small screens and becomes a three-column grid with a full-width lead image on larger screens. Resize the browser to see the switch.</p>
+                    <div class="pv-narrow">
+                        <section class="product-panel product-summary">
+                            <ProductGalleryGrid Images="_galleryImagesReal" AltText="Cargo Area Organizer" />
+                        </section>
+                    </div>
+                </div>
+                <div class="bp-doc-section">
+                    <h4>Lightbox</h4>
+                    <p>Carousel with arrow navigation and dot indicators. Click the stage to open a fullscreen viewer with prev/next arrows, a close button, and an image counter.</p>
+                    <div class="pv-narrow">
+                        <section class="product-panel product-summary">
+                            <ProductGalleryLightbox Images="_galleryImagesReal" AltText="Cargo Area Organizer" />
+                        </section>
+                    </div>
+                </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="price-box" Title="Product Price Box" Component="@("<ProductPriceBox />")" ComponentType="typeof(ProductPriceBox)">
+            <Description>Try the ZIP edit, Deliver/Pick Up toggle, quantity stepper and Estimate Shipping. Quantity = @_quantity · last action: <code>@_priceBoxEvent</code></Description>
+            <ChildContent>
+                <div class="pv-narrow">
+                    <section class="product-panel product-buy">
+                        <ProductPriceBox Price="86.40m"
+                                         Msrp="99.99m"
+                                         DealerRating="4.5m"
+                                         SavingsText="All Discounts $13.59 (14%)"
+                                         PriceBoxMessage="Prices shown are <strong>dealer prices</strong> and may differ from MSRP."
+                                         Availability="AvailabilityLevel.InStock"
+                                         AvailabilityText="In Stock"
+                                         Delivery="_delivery"
+                                         Pickup="_pickup"
+                                         IsEstimatingShipping="_estimating"
+                                         ShippingEstimateText="@_estimateText"
+                                         OnEstimateShipping="EstimateShippingAsync"
+                                         OnZipCodeChanged="ZipChanged"
+                                         OnAddToCart="@(() => _priceBoxEvent = $"OnAddToCart (qty {_quantity})")"
+                                         OnBuyNow="@(() => _priceBoxEvent = "OnBuyNow")"
+                                         @bind-Quantity="_quantity" />
+                    </section>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="dealer-info" Title="Dealer Info Card" Component="@("<DealerInfoCard />")" ComponentType="typeof(DealerInfoCard)">
+            <ChildContent>
+                <div class="pv-narrow">
+                    <section class="product-panel">
+                        <DealerInfoCard Dealer="_dealer" WarrantyUrl="#" ReturnPolicyUrl="/policy" />
+                    </section>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="product-information" Title="Product Information" Component="@("<ProductInformation />")" ComponentType="typeof(ProductInformation)">
+            <Description>Tags are data rows (the Prop 65 warning is just one tag), then features, note and supersessions.</Description>
+            <ChildContent>
+                <div class="product-panel product-sections">
+                    <ProductInformation Tags="_tags" Features="_features" Note="All w/ Carpeted Cargo Area Mat/Protector" Supersessions="_supersessions" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="accordion" Title="Accordion Section" Component="@("<AccordionSection />")" ComponentType="typeof(AccordionSection)">
+            <Description>Plain meta text, markup meta (star rating), and a two-way bound instance (expanded = @_accordionOpen).</Description>
+            <ChildContent>
+                <div class="product-panel product-sections">
+                    <AccordionSection Title="What This Fits" Meta="4 Vehicles">
+                        <p>2020–2025 Volvo XC40, XC60, XC90 and S60.</p>
+                    </AccordionSection>
+                    <AccordionSection Title="Product Reviews" MetaContent="_ratingMeta">
+                        <p>Reviews render here.</p>
+                    </AccordionSection>
+                    <AccordionSection Title="Bound section" Meta="@(_accordionOpen ? "open" : "closed")" @bind-Expanded="_accordionOpen">
+                        <p>The parent observes this section's state through <code>@@bind-Expanded</code>.</p>
+                    </AccordionSection>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="related-products" Title="Related Products" Component="@("<RelatedProducts />")" ComponentType="typeof(RelatedProducts)" Wide="true">
+            <Description>Three per page with prev/next arrows. @_cartMessage</Description>
+            <ChildContent>
+                <div class="product-page">
+                    <div class="product-panel">
+                        <RelatedProducts Products="_related" OnAddToCart="AddRelatedToCart" />
+                    </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="also-bought" Title="People Also Bought" Component="@("<PeopleAlsoBought />")" ComponentType="typeof(PeopleAlsoBought)">
+            <ChildContent>
+                <div class="product-page">
+                    <div class="product-panel">
+                        <PeopleAlsoBought Products="_alsoBought" OnAddToCart="AddRelatedToCart" />
+                    </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="star-rating" Title="Star Rating" Component="@("<StarRating />")" ComponentType="typeof(StarRating)">
+            <ChildContent>
+                <div class="pv-stack">
+                    <StarRating Rating="5m" Label="5 (full)" />
+                    <StarRating Rating="4.5m" Label="4.5 (half star)" />
+                    <StarRating Rating="3.2m" Label="3.2" />
+                    <StarRating Rating="0m" Label="No reviews" />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        @* ───────────────────────── Cart & trust ───────────────────────── *@
+
+        <GallerySection Id="cart-widget" Title="Cart Widget" Component="@("<CartWidget />")" ComponentType="typeof(CartWidget)">
+            <Description>Click to open the slide-out cart (seeded with two items).</Description>
+            <ChildContent>
+                <div class="pv-panel-host">
+                    <CartWidget />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="reviews-panel" Title="Reviews Panel · Confidence Panel" Component="@("<ReviewsPanel /> · <ConfidencePanel />")" ComponentType="typeof(ReviewsPanel)">
+            <Description>Side by side, as on the cart page.</Description>
+            <ChildContent>
+                <div class="cart-page">
+                    <div class="cart-secondary-row">
+                        <ReviewsPanel NumReviews="3" />
+                        <ConfidencePanel />
+                    </div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="recommended-products" Title="Recommended Products Panel" Component="@("<RecommendedProductsPanel />")" ComponentType="typeof(RecommendedProductsPanel)">
+            <Description>The demo service returns one blank "ghost" row, which the panel filters out.</Description>
+            <ChildContent>
+                <div class="cart-page">
+                    <RecommendedProductsPanel />
+                </div>
+            </ChildContent>
+        </GallerySection>
+
+        @* ───────────────────────── Site chrome ───────────────────────── *@
+
+        <GallerySection Id="header" Title="Storefront Header" Component="@("<StorefrontHeader />")" ComponentType="typeof(StorefrontHeader)" Wide="true">
+            <Description>Includes its own VehiclePicker (Panel) and CartWidget. Searching navigates to /search.</Description>
+            <ChildContent>
+                <StorefrontHeader H1TagText="Genuine Volvo Parts Online" />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="main-banner" Title="Main Banner" Component="@("<MainBanner />")" ComponentType="typeof(MainBanner)" Wide="true">
+            <Description>Dismissal is remembered in localStorage (key <code>bannerDismissed:1:demo-banner-1</code>) — clear it to bring the banner back.</Description>
+            <ChildContent>
+                <MainBanner />
+            </ChildContent>
+        </GallerySection>
+
+        <GallerySection Id="footer" Title="Storefront Footer" Component="@("<StorefrontFooter />")" ComponentType="typeof(StorefrontFooter)" Wide="true">
+            <ChildContent>
+                <StorefrontFooter />
+            </ChildContent>
+        </GallerySection>
+
+        @* ───────────────────────── Primitives ───────────────────────── *@
+
+        <GallerySection Id="primitives" Title="Loading Indicator · Image Placeholder · Cart Icon" Component="@("<LoadingIndicator /> · <ImagePlaceholder /> · <CartIcon />")" ComponentType="typeof(LoadingIndicator)">
+            <Description><code>HeadConfigInjector</code> isn't shown: it renders nothing visible (it only pushes favicon/stylesheet/script tags into &lt;head&gt;).</Description>
+            <ChildContent>
+                <div class="pv-row">
+                    <LoadingIndicator Text="Loading results…" />
+                    <div class="pv-icon-box pv-icon-box-lg"><ImagePlaceholder /></div>
+                    <div class="pv-icon-box"><CartIcon /></div>
+                </div>
+            </ChildContent>
+        </GallerySection>
+    </div>
+</div>
+
+@code {
+    // ─── Navigation ──────────────────────────────────────────────────────
+    private sealed record NavGroup(string Title, (string Id, string Label)[] Items);
+
+    private static readonly SfSelect.SfSelectOption[] _years =
+    [
+        new("2024", "2024"),
+        new("2023", "2023"),
+        new("2022", "2022"),
+    ];
+
+    private static readonly RenderFragment _cartIcon = b =>
+    {
+        b.OpenComponent(0, typeof(SfIcon));
+        b.AddAttribute(1, "Name", "shopping-cart-line");
+        b.CloseComponent();
+    };
+
+    private sealed record TokenSwatch(string Var, string Value);
+    private sealed record TokenGroup(string Title, TokenSwatch[] Tokens);
+    private sealed record TokenDemo(string Var, string Value);
+
+    private static readonly TokenGroup[] _tokenGroups = new[]
+    {
+        new TokenGroup("Brand", new[]
+        {
+            new TokenSwatch("--sf-color-primary", "#2563a5"),
+            new TokenSwatch("--sf-color-primary-dark", "#1d4f84"),
+            new TokenSwatch("--sf-color-brand", "#113458"),
+            new TokenSwatch("--sf-color-brand-deep", "#0d2840"),
+        }),
+        new TokenGroup("Text", new[]
+        {
+            new TokenSwatch("--sf-color-text", "#1a1a1a"),
+            new TokenSwatch("--sf-color-text-2", "#333333"),
+            new TokenSwatch("--sf-color-text-3", "#555555"),
+            new TokenSwatch("--sf-color-text-muted", "#888888"),
+            new TokenSwatch("--sf-color-text-faint", "#aaaaaa"),
+            new TokenSwatch("--sf-color-text-inverse", "#ffffff"),
+        }),
+        new TokenGroup("Surfaces", new[]
+        {
+            new TokenSwatch("--sf-color-bg", "#ffffff"),
+            new TokenSwatch("--sf-color-bg-2", "#f5f5f5"),
+            new TokenSwatch("--sf-color-bg-3", "#eeeeee"),
+            new TokenSwatch("--sf-color-bg-inverse", "#1a1a1a"),
+        }),
+        new TokenGroup("Borders", new[]
+        {
+            new TokenSwatch("--sf-color-border", "#d0d0d0"),
+            new TokenSwatch("--sf-color-border-light", "#e0e0e0"),
+            new TokenSwatch("--sf-color-border-strong", "#999999"),
+        }),
+        new TokenGroup("Feedback", new[]
+        {
+            new TokenSwatch("--sf-color-success", "#2e7d32"),
+            new TokenSwatch("--sf-color-warning", "#f5b400"),
+            new TokenSwatch("--sf-color-danger", "#c62828"),
+            new TokenSwatch("--sf-color-warning-deep", "#92680f"),
+            new TokenSwatch("--sf-color-visited", "#7e57c2"),
+        }),
+        new TokenGroup("Feedback tints", new[]
+        {
+            new TokenSwatch("--sf-color-primary-tint", "#eaf2fb"),
+            new TokenSwatch("--sf-color-success-tint", "#eaf6ed"),
+            new TokenSwatch("--sf-color-warning-tint", "#fef6e0"),
+            new TokenSwatch("--sf-color-danger-tint", "#fdeeee"),
+        }),
+        new TokenGroup("Tint borders", new[]
+        {
+            new TokenSwatch("--sf-color-primary-tint-border", "#cfe0f5"),
+            new TokenSwatch("--sf-color-success-tint-border", "#c7e5d1"),
+            new TokenSwatch("--sf-color-warning-tint-border", "#f5dfa8"),
+            new TokenSwatch("--sf-color-danger-tint-border", "#f5c6c6"),
+        }),
+    };
+
+    private static readonly TokenDemo[] _radii =
+    [
+        new("--sf-radius-sm", "2px"),
+        new("--sf-radius-md", "4px"),
+        new("--sf-radius-lg", "8px"),
+        new("--sf-radius-pill", "999px"),
+        new("--sf-radius-full", "50%"),
+    ];
+
+    private static readonly TokenDemo[] _shadows =
+    [
+        new("--sf-shadow-sm", "0 1px 4px rgba(0,0,0,.15)"),
+        new("--sf-shadow-md", "0 6px 16px rgba(20,30,40,.08)"),
+        new("--sf-shadow-lg", "0 8px 20px rgba(20,30,40,.1)"),
+        new("--sf-shadow-drawer", "-2px 0 10px rgba(0,0,0,.15)"),
+        new("--sf-shadow-popover", "0 6px 24px rgba(0,0,0,.1)"),
+    ];
+
+    private static readonly TokenDemo[] _spacing =
+    [
+        new("--sf-space-1", "4px"),
+        new("--sf-space-2", "8px"),
+        new("--sf-space-3", "12px"),
+        new("--sf-space-4", "16px"),
+        new("--sf-space-5", "20px"),
+        new("--sf-space-6", "24px"),
+        new("--sf-space-8", "32px"),
+    ];
+
+    private static readonly NavGroup[] NavGroups =
+    [
+        new("Foundation",
+        [
+            ("design-tokens", "Design Tokens"),
+        ]),
+        new("Atomic",
+        [
+            ("sf-button", "SfButton"),
+            ("sf-button-group", "SfButtonGroup"),
+            ("sf-badge", "SfBadge"),
+            ("sf-chip", "SfChip"),
+            ("sf-input", "SfInput"),
+            ("sf-select", "SfSelect"),
+            ("sf-icon", "SfIcon"),
+            ("sf-link", "SfLink"),
+            ("sf-quantity-stepper", "SfQuantityStepper"),
+            ("sf-divider", "SfDivider"),
+            ("sf-skeleton", "SfSkeleton"),
+            ("sf-tooltip", "SfTooltip"),
+            ("sf-action-descriptor", "SfActionDescriptor"),
+        ]),
+        new("Browse",
+        [
+            ("refine-search-categories", "RefineSearch · Categories"),
+            ("refine-search-accessories", "RefineSearch · Accessories"),
+            ("refine-search-accessories-page", "RefineSearch · /accessories"),
+            ("refine-search-links", "RefineSearch · Links"),
+            ("vehicle-picker-inline", "VehiclePicker · Inline"),
+            ("vehicle-picker-panel", "VehiclePicker · Panel"),
+            ("vehicle-picked", "VehiclePicked"),
+            ("home-garage", "HomeGarage"),
+            ("hero-placement", "HeroPlacement"),
+            ("assembly-results", "AssemblyResults"),
+            ("assembly-card", "AssemblyCard · PartTypeCard"),
+            ("accessory-results", "AccessoryResults"),
+            ("placement-content", "PlacementContent"),
+            ("extra-home-content", "ExtraHomeContent"),
+            ("featured-products", "FeaturedProducts"),
+        ]),
+        new("Search",
+        [
+            ("search-toolbar", "SearchToolbar"),
+            ("active-filters", "ActiveFiltersChips"),
+            ("product-grid", "ProductGrid"),
+            ("product-card", "ProductCard"),
+        ]),
+        new("Product page",
+        [
+            ("guided-navigation", "GuidedNavigation"),
+            ("fitment-banner", "ProductFitmentBanner"),
+            ("product-gallery", "ProductGallery"),
+            ("price-box", "ProductPriceBox"),
+            ("dealer-info", "DealerInfoCard"),
+            ("product-information", "ProductInformation"),
+            ("accordion", "AccordionSection"),
+            ("related-products", "RelatedProducts"),
+            ("also-bought", "PeopleAlsoBought"),
+            ("star-rating", "StarRating"),
+        ]),
+        new("Cart & trust",
+        [
+            ("cart-widget", "CartWidget"),
+            ("reviews-panel", "ReviewsPanel · ConfidencePanel"),
+            ("recommended-products", "RecommendedProductsPanel"),
+        ]),
+        new("Site chrome",
+        [
+            ("header", "StorefrontHeader"),
+            ("main-banner", "MainBanner"),
+            ("footer", "StorefrontFooter"),
+        ]),
+        new("Primitives",
+        [
+            ("primitives", "Loading · Placeholder · CartIcon"),
+        ]),
+    ];
+
+    // ─── Fitment presets ─────────────────────────────────────────────────
+    private sealed record Preset(string Label, int? Year, int? Model, int? Driveline, int? Trim, int? Category);
+
+    private static readonly Preset[] Presets =
+    [
+        new("No vehicle", null, null, null, null, null),
+        new("2024 XC40 AWD", 2024, 101, 201, null, null),
+        new("2024 XC40 AWD Plus", 2024, 101, 201, 302, null),
+        new("+ Brakes category", 2024, 101, 201, 302, 11),
+        new("+ Cargo & Storage", 2024, 101, 201, 302, 51),
+    ];
+
+    private bool IsActive(Preset p) =>
+        FitmentState.Year == p.Year && FitmentState.UkeyModel == p.Model && FitmentState.UkeyDriveline == p.Driveline
+        && FitmentState.UkeyTrimLevel == p.Trim && FitmentState.UkeyCategory == p.Category;
+
+    private void Apply(Preset p) =>
+        FitmentState.SetVehicleAndCategory(DemoCatalog.MakeUkey, p.Year, p.Model, p.Driveline, p.Trim, p.Category);
+
+    private string CurrentFitmentLabel
+    {
+        get
+        {
+            var vehicle = FitmentState.HasVehicle
+                ? DemoCatalog.FitmentString(FitmentState.Year, FitmentState.UkeyModel, FitmentState.UkeyDriveline, FitmentState.UkeyTrimLevel)
+                : "No vehicle";
+            return CategoryByUkey(FitmentState.UkeyCategory) is { } c ? $"{vehicle} · {c.Name}" : vehicle;
+        }
+    }
+
+    private static DemoCategory? CategoryByUkey(int? ukey) => DemoCatalog.CategoryByUkey(ukey);
+
+    protected override void OnInitialized() => FitmentState.OnChange += HandleFitmentChanged;
+
+    private void HandleFitmentChanged() => _ = InvokeAsync(StateHasChanged);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try { await JS.InvokeVoidAsync("pvSpy.init"); } catch { /* JS unavailable */ }
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        FitmentState.OnChange -= HandleFitmentChanged;
+        try { await JS.InvokeVoidAsync("pvSpy.dispose"); } catch { /* shutting down */ }
+    }
+
+    // ─── Sample data for parameter-driven components ─────────────────────
+    private static readonly DemoProduct SampleProduct = DemoCatalog.ProductByStockCode("VA-90011")!;
+
+    private readonly GetAssemblyResultsResponse _sampleAssemblies = DemoHomeService.Build(DemoCatalog.CategoryByUkey(11)!);
+
+    private readonly List<ProductSearchResult> _gridProducts =
+        DemoCatalog.Products.Take(4).Select(DemoProductSearchService.ToSearchResult).ToList();
+
+    private readonly string _cardImage = SampleProduct.Image();
+    private readonly string _cardImage2 = DemoCatalog.ProductByStockCode("VP-10421")!.Image();
+
+    private readonly IReadOnlyList<string> _galleryImages =
+        Enumerable.Range(0, 5).Select(i => SampleProduct.Image(i, 800))
+            .Concat(Enumerable.Repeat(string.Empty, 7))
+            .ToList();
+
+    private readonly IReadOnlyList<string> _galleryImagesReal =
+        Enumerable.Range(0, 5).Select(i => SampleProduct.Image(i, 800)).ToList();
+
+    private readonly DealerInfo _dealer = new(
+        Name: "Demo Motors of Springfield",
+        AddressLine1: "100 Example Way",
+        AddressLine2: "Springfield, IL 62701",
+        Phone: "555-010-0199",
+        Email: "parts@example.com",
+        Rating: 4.5m);
+
+    private readonly IReadOnlyList<ProductTag> _tags =
+    [
+        new() { TagTitle = "California Specific Warning", Description = "WARNING: Cancer and Reproductive Harm - www.P65Warnings.ca.gov", TagType = "warning" },
+        new() { TagTitle = "Genuine Accessory", Description = "Covered by the manufacturer's accessory warranty.", TagType = "Genuine Part", TargetURL = "#" },
+    ];
+
+    private readonly IReadOnlyList<string> _features =
+    [
+        "Designed to help organize cargo",
+        "Helps prevent cargo from sliding around with super-grippy underside",
+        "Requires Carpeted Cargo Area Protector"
+    ];
+
+    private readonly IReadOnlyList<string> _supersessions = ["T99C54RA0A", "VA-90011-OLD"];
+
+    private readonly IReadOnlyList<RelatedProduct> _related =
+        DemoCatalog.Products.Where(p => p.Category.IsAccessory).Take(7).Select(ToRelated).ToList();
+
+    private readonly IReadOnlyList<RelatedProduct> _alsoBought =
+        DemoCatalog.Products.Where(p => !p.Category.IsAccessory).Skip(4).Take(6).Select(ToRelated).ToList();
+
+    private static RelatedProduct ToRelated(DemoProduct p) => new(
+        Title: p.Description,
+        StockCode: p.StockCode,
+        Price: p.Price,
+        UkeyProduct: p.Ukey,
+        ListPrice: p.ListPrice,
+        SavingsText: $"${p.ListPrice - p.Price:F2}",
+        Category: p.Category.Name,
+        ImageUrl: p.Image(),
+        Url: p.Url);
+
+    private readonly RenderFragment _ratingMeta = @<StarRating Rating="4.3m" Label="3 Reviews" />;
+
+    // ─── Interactive state ───────────────────────────────────────────────
+    private bool _toolbarGrid;
+    private bool _toolbarSidebar = true;
+    private string _toolbarSort = "relevance";
+    private string _toolbarEvent = "—";
+
+    private void Toolbar(string eventName, Action apply)
+    {
+        apply();
+        _toolbarEvent = eventName;
+    }
+
+    private int _chipYear = 2024, _chipMake = 1, _chipModel = 101, _chipDriveline = 201, _chipTrim = 302, _chipCategory = 11;
+
+    private void ResetChips()
+    {
+        _chipYear = 2024;
+        _chipMake = 1;
+        _chipModel = 101;
+        _chipDriveline = 201;
+        _chipTrim = 302;
+        _chipCategory = 11;
+    }
+
+    private string? _cartMessage;
+
+    private async Task AddSearchResultToCart(ProductSearchResult p)
+    {
+        await CartState.AddToCartAsync(p.Ukey);
+        _cartMessage = $"Added “{p.ProductDescription}” — cart now has {CartState.ItemCount} items.";
+    }
+
+    private async Task AddRelatedToCart(RelatedProduct p)
+    {
+        await CartState.AddToCartAsync(p.UkeyProduct);
+        _cartMessage = $"Added “{p.Title}” — cart now has {CartState.ItemCount} items.";
+    }
+
+    private string _bannerEvent = "—";
+
+    private int _quantity = 1;
+    private string _priceBoxEvent = "—";
+    private bool _estimating;
+    private string? _estimateText;
+    private DeliveryOption _delivery = new(ZipCode: "62701", Promise: "Ships in 1-2 business days");
+    private readonly PickupOption _pickup = new(Promise: "Ready for pickup today", CostText: "FREE");
+
+    private async Task EstimateShippingAsync()
+    {
+        _estimating = true;
+        _priceBoxEvent = "OnEstimateShipping";
+        StateHasChanged();
+        await Task.Delay(600);
+        _estimateText = $"Estimated shipping: {7.95m + 1.50m * Math.Max(0, _quantity - 1):C}";
+        _estimating = false;
+    }
+
+    private void ZipChanged(string zip)
+    {
+        _delivery = _delivery with { ZipCode = zip };
+        _estimateText = null;
+        _priceBoxEvent = $"OnZipCodeChanged(\"{zip}\")";
+    }
+
+    private bool _accordionOpen;
+}
