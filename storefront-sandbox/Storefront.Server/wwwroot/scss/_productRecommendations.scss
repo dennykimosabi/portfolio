@@ -33,7 +33,7 @@
     display: grid;
     grid-template-columns: 5.5rem 1fr;
     gap: 0.875rem;
-    align-items: start;
+    align-items: stretch;
     border: 1px solid var(--sf-color-border-light);
     padding: 0.625rem;
 }
@@ -77,12 +77,24 @@
 
 // Pricing sits left, add-to-cart right; the button is pinned to the bottom of the card
 // so it lines up across the row regardless of how many lines the title takes.
+.related-product-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
 .related-product-footer {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     gap: 0.5rem;
-    margin-top: 0.625rem;
+    margin-top: auto;
+    padding-top: 0.625rem;
+
+    // Square corners on the add-to-cart button per design feedback.
+    .sf-button {
+        border-radius: 0;
+    }
 }
 
 .related-product-pricing {

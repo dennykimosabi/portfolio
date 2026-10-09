@@ -63,7 +63,7 @@
     color: var(--sf-color-text-inverse);
 
     &:hover:not(:disabled) {
-        background: var(--sf-color-brand-deep);
+        filter: brightness(1.25);
     }
 }
 
