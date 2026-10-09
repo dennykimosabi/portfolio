@@ -2,13 +2,14 @@
    from the storefront's own css/main.css; this file is portfolio framing only. */
 
 :root {
-    --pf-bg: #ffffff;
-    --pf-panel: #ffffff;
-    --pf-border: #e4e4e7;
-    --pf-text: #09090b;
-    --pf-muted: #71717a;
-    --pf-accent: #18181b;
-    --pf-muted-bg: #f4f4f5;
+    --pf-bg: var(--sf-color-bg);
+    --pf-panel: var(--sf-color-bg);
+    --pf-border: var(--sf-color-border-light);
+    --pf-text: var(--sf-color-text);
+    --pf-muted: var(--sf-color-text-3);
+    --pf-accent: var(--sf-color-primary);
+    --pf-accent-dark: var(--sf-color-primary-dark);
+    --pf-muted-bg: var(--sf-color-bg-2);
 }
 
 .pf-shell {
@@ -16,7 +17,7 @@
     min-height: 100dvh;
     background: var(--pf-bg);
     color: var(--pf-text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--sf-font-sans);
 }
 
 /* Touch: kill tap highlight flash, remove 300ms tap delay behaviors. */
@@ -48,7 +49,7 @@
     align-items: center;
     justify-content: center;
     border: 1px solid var(--pf-border);
-    border-radius: 12px;
+    border-radius: var(--sf-radius-lg);
     background: var(--pf-panel);
     color: var(--pf-text);
     font-size: 20px;
@@ -75,14 +76,14 @@
 .pf-brand-mark {
     width: 38px;
     height: 38px;
-    border-radius: 10px;
-    background: #18181b;
+    border-radius: var(--sf-radius-lg);
+    background: var(--sf-color-text);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
     font-size: 15px;
-    color: #fff;
+    color: var(--sf-color-text-inverse);
 }
 
 .pf-brand-text { display: flex; flex-direction: column; line-height: 1.25; }
@@ -96,7 +97,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #a1a1aa;
+    color: var(--sf-color-text-faint);
     user-select: none;
 }
 
@@ -107,7 +108,7 @@
     padding: 9px 12px;
     min-height: 44px;
     box-sizing: border-box;
-    border-radius: 8px;
+    border-radius: var(--sf-radius-lg);
     color: var(--pf-muted);
     text-decoration: none;
     font-size: 14px;
@@ -153,17 +154,17 @@
 .pf-card {
     background: var(--pf-panel);
     border: 1px solid var(--pf-border);
-    border-radius: 12px;
+    border-radius: var(--sf-radius-lg);
     padding: 20px;
     text-decoration: none;
     color: var(--pf-text);
     display: block;
 }
 @media (hover: hover) and (pointer: fine) {
-    .pf-card:hover { border-color: #a1a1aa; }
+    .pf-card:hover { border-color: var(--sf-color-text-faint); }
     .bp-card:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); transform: translateY(-2px); }
 }
-.pf-card:active { border-color: #a1a1aa; }
+.pf-card:active { border-color: var(--sf-color-text-faint); }
 .bp-card:active { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); }
 .pf-card h3 { margin: 0 0 8px; font-size: 16px; }
 .pf-card p { margin: 0; font-size: 14px; color: var(--pf-muted); line-height: 1.55; }
@@ -203,12 +204,12 @@
 .pf-ws-section { margin-bottom: 40px; }
 .pf-ws-section > h3 { font-size: 18px; padding-bottom: 8px; border-bottom: 1px solid var(--pf-border); }
 .pf-ws-demo {
-    background: #fff;
+    background: var(--sf-color-bg);
     border: 1px solid var(--pf-border);
-    border-radius: 12px;
+    border-radius: var(--sf-radius-lg);
     padding: 24px;
     margin-top: 12px;
-    color: #111;
+    color: var(--sf-color-text);
 }
 
 /* Workshop demo: render the vehicle panel in-flow so its open state expands
@@ -267,7 +268,7 @@
     align-items: center;
     justify-content: center;
     border: 0;
-    border-radius: 8px;
+    border-radius: var(--sf-radius-lg);
     background: none;
     color: var(--pf-muted);
     font-size: 16px;
@@ -287,7 +288,7 @@
     align-items: center;
     min-height: 34px;
     padding: 4px 12px;
-    border-radius: 8px;
+    border-radius: var(--sf-radius-lg);
     color: var(--pf-muted);
     text-decoration: none;
     font-size: 13px;
@@ -309,7 +310,7 @@
     width: 44px;
     height: 44px;
     border: 1px solid transparent;
-    border-radius: 10px;
+    border-radius: var(--sf-radius-lg);
     background: none;
     color: var(--pf-muted);
     font-size: 20px;
@@ -347,15 +348,15 @@
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
-    border: 1px solid #2563a5;
+    border: 1px solid var(--sf-color-primary);
     border-radius: 999px;
-    background: #2563a5;
-    color: #fff;
-    font: 600 13px/1 system-ui, sans-serif;
+    background: var(--sf-color-primary);
+    color: var(--sf-color-text-inverse);
+    font: 600 13px/1 var(--sf-font-sans);
     cursor: pointer;
     box-shadow: 0 4px 16px rgba(37, 99, 165, 0.35);
 }
-.sfb-fab:hover { background: #1d4f84; }
+.sfb-fab:hover { background: var(--pf-accent-dark); }
 
 .sfb-banner {
     position: fixed;
@@ -367,17 +368,17 @@
     align-items: center;
     gap: 12px;
     padding: 10px 16px;
-    border: 1px solid #e4e4e7;
-    border-radius: 10px;
-    background: #fff;
-    color: #18181b;
-    font: 500 13px/1.4 system-ui, sans-serif;
+    border: 1px solid var(--pf-border);
+    border-radius: var(--sf-radius-lg);
+    background: var(--sf-color-bg);
+    color: var(--sf-color-text);
+    font: 500 13px/1.4 var(--sf-font-sans);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 .sfb-link {
     border: 0;
     background: none;
-    color: #2563a5;
+    color: var(--sf-color-primary);
     font: inherit;
     cursor: pointer;
     text-decoration: underline;
@@ -390,11 +391,11 @@
     z-index: 10001;
     width: 320px;
     max-width: calc(100vw - 16px);
-    background: #fff;
-    border: 1px solid #e4e4e7;
-    border-radius: 12px;
+    background: var(--sf-color-bg);
+    border: 1px solid var(--pf-border);
+    border-radius: var(--sf-radius-lg);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.20);
-    font-family: system-ui, sans-serif;
+    font-family: var(--sf-font-sans);
     overflow: hidden;
 }
 .sfb-composer-caption {
@@ -402,9 +403,9 @@
     align-items: center;
     gap: 8px;
     padding: 8px 8px 8px 12px;
-    border-bottom: 1px solid #f4f4f5;
+    border-bottom: 1px solid var(--pf-muted-bg);
     font-size: 11px;
-    color: #71717a;
+    color: var(--pf-muted);
 }
 .sfb-composer-caption span {
     flex: 1;
@@ -417,8 +418,8 @@
     box-sizing: border-box;
     border: 0;
     padding: 10px 12px;
-    font: 14px/1.5 system-ui, sans-serif;
-    color: #18181b;
+    font: 14px/1.5 var(--sf-font-sans);
+    color: var(--sf-color-text);
     resize: none;
 }
 .sfb-composer-input:focus { outline: none; }
@@ -427,7 +428,7 @@
     align-items: center;
     gap: 2px;
     padding: 6px 8px;
-    border-top: 1px solid #f4f4f5;
+    border-top: 1px solid var(--pf-muted-bg);
 }
 .sfb-tool {
     display: inline-flex;
@@ -437,14 +438,14 @@
     height: 30px;
     padding: 0 4px;
     border: 0;
-    border-radius: 8px;
+    border-radius: var(--sf-radius-lg);
     background: none;
-    color: #52525b;
+    color: var(--sf-color-text-2);
     font-size: 16px;
     cursor: pointer;
 }
-.sfb-tool:hover { background: #f4f4f5; }
-.sfb-tool-text { font: 600 13px/1 system-ui, sans-serif; }
+.sfb-tool:hover { background: var(--pf-muted-bg); }
+.sfb-tool-text { font: 600 13px/1 var(--sf-font-sans); }
 .sfb-composer-spacer { flex: 1; }
 .sfb-send {
     display: inline-flex;
@@ -453,15 +454,15 @@
     width: 32px;
     height: 32px;
     border: 0;
-    border-radius: 8px;
-    background: #2563eb;
-    color: #fff;
+    border-radius: var(--sf-radius-lg);
+    background: var(--sf-color-primary);
+    color: var(--sf-color-text-inverse);
     font-size: 16px;
     cursor: pointer;
 }
-.sfb-send:hover { background: #1d4ed8; }
+.sfb-send:hover { background: var(--pf-accent-dark); }
 .sfb-send:disabled { opacity: 0.4; cursor: default; }
-.sfb-copied { font-size: 12px; color: #15803d; padding-right: 4px; }
+.sfb-copied { font-size: 12px; color: var(--sf-color-success); padding-right: 4px; }
 
 /* ─── Flows page ───────────────────────────────────────────────────────── */
 .flow-lane {
@@ -474,21 +475,21 @@
 .flow-node {
     flex: 0 0 auto;
     width: 176px;
-    border: 1px solid #e4e4e7;
-    border-radius: 10px;
-    background: #fff;
+    border: 1px solid var(--pf-border);
+    border-radius: var(--sf-radius-lg);
+    background: var(--sf-color-bg);
     padding: 12px 14px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
-.flow-node-title { font-size: 13.5px; font-weight: 650; color: #18181b; }
+.flow-node-title { font-size: 13.5px; font-weight: 650; color: var(--sf-color-text); }
 .flow-node-route {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 11px;
-    color: #2563a5;
+    color: var(--sf-color-primary);
     margin: 3px 0 6px;
     word-break: break-all;
 }
-.flow-node-note { font-size: 12px; color: #71717a; line-height: 1.45; }
+.flow-node-note { font-size: 12px; color: var(--pf-muted); line-height: 1.45; }
 .flow-arrow {
     flex: 0 0 auto;
     display: flex;
@@ -501,7 +502,7 @@
     font-size: 10.5px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: #a1a1aa;
+    color: var(--sf-color-text-faint);
     margin-bottom: 6px;
     text-align: center;
     white-space: nowrap;
@@ -511,7 +512,7 @@
     display: block;
     height: 2px;
     width: 100%;
-    background: #d4d4d8;
+    background: var(--sf-color-border);
     border-radius: 1px;
 }
 .flow-arrow-line::after {
@@ -520,10 +521,10 @@
     right: -1px;
     top: -4px;
     border: 5px solid transparent;
-    border-left-color: #d4d4d8;
+    border-left-color: var(--sf-color-border);
 }
 .flow-hub { display: flex; align-items: stretch; gap: 0; padding: 8px 4px 12px; }
-.flow-hub-center { align-self: center; border-color: #2563a5; box-shadow: 0 1px 6px rgba(37, 99, 165, 0.15); }
+.flow-hub-center { align-self: center; border-color: var(--sf-color-primary); box-shadow: 0 1px 6px rgba(37, 99, 165, 0.15); }
 .flow-hub-spokes { display: flex; flex-direction: column; gap: 10px; }
 .flow-spoke { display: flex; align-items: center; }
 .flow-spoke .flow-arrow-line { width: 56px; flex: 0 0 auto; }
@@ -536,10 +537,10 @@
 }
 .bp-card {
     display: block;
-    border: 1px solid #e4e4e7;
-    border-radius: 12px;
+    border: 1px solid var(--pf-border);
+    border-radius: var(--sf-radius-lg);
     overflow: hidden;
-    background: #fff;
+    background: var(--sf-color-bg);
     text-decoration: none;
     color: inherit;
     transition: box-shadow 0.15s ease, transform 0.15s ease;
@@ -548,8 +549,8 @@
     height: 220px;
     overflow: hidden;
     position: relative;
-    background: #fafafa;
-    border-bottom: 1px solid #f4f4f5;
+    background: var(--sf-color-bg-2);
+    border-bottom: 1px solid var(--pf-muted-bg);
 }
 .bp-preview-scale {
     transform: scale(0.32);
@@ -559,17 +560,17 @@
     user-select: none;
 }
 .bp-card-body { padding: 14px 16px 16px; }
-.bp-card-title { font-size: 15px; font-weight: 650; color: #18181b; display: flex; align-items: baseline; gap: 8px; }
+.bp-card-title { font-size: 15px; font-weight: 650; color: var(--sf-color-text); display: flex; align-items: baseline; gap: 8px; }
 .bp-card-count {
     font-size: 11px;
     font-weight: 500;
-    color: #2563a5;
-    background: #eaf2fb;
+    color: var(--sf-color-primary);
+    background: var(--sf-color-primary-tint);
     border-radius: 999px;
     padding: 2px 8px;
     white-space: nowrap;
 }
-.bp-card-desc { margin: 6px 0 0; font-size: 13px; color: #71717a; line-height: 1.5; }
+.bp-card-desc { margin: 6px 0 0; font-size: 13px; color: var(--pf-muted); line-height: 1.5; }
 
 /* ─── Blueprint detail page ──────────────────────────────────────────── */
 .bp-detail { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem 3rem; }
@@ -578,29 +579,29 @@
     align-items: center;
     gap: 8px;
     font-size: 13px;
-    color: #71717a;
+    color: var(--pf-muted);
     margin: 0 0 12px;
 }
-.bp-detail-crumb a { color: #2563a5; text-decoration: none; }
+.bp-detail-crumb a { color: var(--sf-color-primary); text-decoration: none; }
 .bp-detail-crumb a:hover { text-decoration: underline; }
-.bp-detail-crumb-sep { color: #d4d4d8; }
+.bp-detail-crumb-sep { color: var(--sf-color-border); }
 .bp-detail-head { margin-bottom: 24px; }
-.bp-detail-head h1 { margin: 0 0 6px; font-size: 28px; letter-spacing: -0.02em; color: #18181b; }
-.bp-detail-head p { margin: 0 0 12px; font-size: 14px; color: #52525b; max-width: 640px; }
+.bp-detail-head h1 { margin: 0 0 6px; font-size: 28px; letter-spacing: -0.02em; color: var(--sf-color-text); }
+.bp-detail-head p { margin: 0 0 12px; font-size: 14px; color: var(--sf-color-text-2); max-width: 640px; }
 .bp-detail-components { display: flex; flex-wrap: wrap; gap: 6px; }
 .bp-detail-chip {
     font-size: 11.5px;
     font-weight: 500;
-    color: #3f3f46;
-    background: #f4f4f5;
-    border: 1px solid #e4e4e7;
+    color: var(--sf-color-text-2);
+    background: var(--pf-muted-bg);
+    border: 1px solid var(--pf-border);
     border-radius: 999px;
     padding: 3px 10px;
 }
 .bp-detail-body {
-    border: 1px solid #e4e4e7;
-    border-radius: 12px;
-    background: #fff;
+    border: 1px solid var(--pf-border);
+    border-radius: var(--sf-radius-lg);
+    background: var(--sf-color-bg);
     overflow: hidden;
 }
 .bp-detail-pager {
@@ -616,14 +617,14 @@
     gap: 6px;
     font-size: 13.5px;
     font-weight: 600;
-    color: #2563a5;
+    color: var(--sf-color-primary);
     text-decoration: none;
-    border: 1px solid #e4e4e7;
-    border-radius: 8px;
+    border: 1px solid var(--pf-border);
+    border-radius: var(--sf-radius-lg);
     padding: 8px 14px;
-    background: #fff;
+    background: var(--sf-color-bg);
 }
-.bp-pager-link:hover { border-color: #2563a5; }
+.bp-pager-link:hover { border-color: var(--sf-color-primary); }
 
 /* Blazor framework error toast. Hidden by default; Blazor's JS sets
    display:block only when a real unhandled exception occurs. Without the
