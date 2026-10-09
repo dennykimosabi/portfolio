@@ -211,6 +211,23 @@
     color: #111;
 }
 
+/* Workshop demo: render the vehicle panel in-flow so its open state expands
+   the preview instead of overlapping the docs below like an overlay would. */
+.pv-panel-host {
+    position: relative;
+}
+.pv-panel-host .vehicle-panel {
+    position: static;
+    transform: none;
+    width: 100%;
+    min-width: 0;
+    margin-top: 8px;
+    animation: none;
+}
+.pv-panel-host .vehicle-panel-overlay {
+    display: none;
+}
+
 @media (max-width: 1024px) {
     .pf-menu-btn { display: inline-flex; }
     .pf-sidebar {
