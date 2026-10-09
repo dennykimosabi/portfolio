@@ -215,6 +215,8 @@
    the preview instead of overlapping the docs below like an overlay would. */
 .pv-panel-host {
     position: relative;
+    width: 100%;
+    max-width: 720px;
 }
 .pv-panel-host .vehicle-panel {
     position: static;
