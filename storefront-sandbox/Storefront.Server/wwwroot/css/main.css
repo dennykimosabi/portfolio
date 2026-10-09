@@ -112,7 +112,7 @@
   color: var(--sf-color-text-inverse);
 }
 .sf-button-dark:hover:not(:disabled) {
-  background: var(--sf-color-brand-deep);
+  filter: brightness(1.25);
 }
 
 .sf-button-secondary {
@@ -4183,6 +4183,7 @@
   font-size: 0.6875rem;
   font-weight: 600;
   color: var(--sf-color-text);
+  white-space: nowrap;
 }
 
 .price-box-fulfillment-icon {
@@ -4542,7 +4543,7 @@ button.price-box-fulfillment-foot:disabled {
   display: grid;
   grid-template-columns: 5.5rem 1fr;
   gap: 0.875rem;
-  align-items: start;
+  align-items: stretch;
   border: 1px solid var(--sf-color-border-light);
   padding: 0.625rem;
 }
@@ -4582,12 +4583,22 @@ button.price-box-fulfillment-foot:disabled {
   color: var(--sf-color-text-muted);
 }
 
+.related-product-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
 .related-product-footer {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 0.5rem;
-  margin-top: 0.625rem;
+  margin-top: auto;
+  padding-top: 0.625rem;
+}
+.related-product-footer .sf-button {
+  border-radius: 0;
 }
 
 .related-product-pricing {
