@@ -3571,7 +3571,7 @@
   width: 100%;
   aspect-ratio: 4/3;
   background: var(--sf-color-bg);
-  border: 1px solid var(--sf-color-border-light);
+  border-radius: var(--sf-radius-sm);
   overflow: hidden;
 }
 .product-gallery-main img {
@@ -3608,6 +3608,7 @@
   padding: 0;
   background: var(--sf-color-bg);
   border: 1px solid var(--sf-color-border-light);
+  border-radius: var(--sf-radius-sm);
   cursor: pointer;
   overflow: hidden;
 }
@@ -3994,23 +3995,23 @@
 }
 
 .price-box-label {
-  font-size: 0.9375rem;
+  font-size: 1.0625rem;
   font-weight: 700;
   color: var(--sf-color-text);
 }
 
 .price-box-price {
-  font-size: 1.5rem;
+  font-size: 1.625rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--sf-color-success);
+  letter-spacing: 0;
+  color: var(--sf-color-text);
 }
 
 .price-box-rating {
   display: inline-flex;
   align-items: center;
   gap: var(--sf-space-1);
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   color: var(--sf-color-text-muted);
 }
 
@@ -4023,7 +4024,7 @@
 }
 
 .price-box-msrp {
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   color: var(--sf-color-text-muted);
   text-decoration: line-through;
 }
