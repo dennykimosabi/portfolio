@@ -508,6 +508,7 @@ public partial class BlueprintProduct : ComponentBase
 
     // ─── Identity ──────────────────────────────────────────────────────────
     private string PartTitle => _productDetail?.ProductHeading ?? "Part Title";
+    private string CategoryName => "Brakes";
     private string PartNumber => _productDetail?.StockCode ?? "T99C5-4RA0A";
     private string VehicleDescription => FitmentState.HasVehicle || _modelYear.HasValue ? $"{_modelYear ?? FitmentState.Year}" : "Year Make Model Driveline Trim";
 

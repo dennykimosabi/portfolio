@@ -51,33 +51,40 @@ else
             UkeyTrimLevel="@(_ukeyTrimLevel ?? FitmentState.UkeyTrimLevel)" />
     }
 
+    <nav class="product-breadcrumb" aria-label="Breadcrumb">
+        <a href="blueprints/search">Parts</a>
+        <span aria-hidden="true">/</span>
+        <a href="blueprints/search">@CategoryName</a>
+        <span aria-hidden="true">/</span>
+        <span class="product-breadcrumb-current">@PartTitle</span>
+    </nav>
+
     <div class="product-page-main">
 
         @* ── Left: identity + imagery ───────────────────────────────── *@
         <section class="product-panel product-summary">
             <header class="product-summary-header">
-                <h1 class="product-summary-title">@PartTitle</h1>
-
-                <div class="product-summary-subhead">
+                <div class="product-summary-title-block">
+                    <p class="product-summary-category">@CategoryName</p>
+                    <h1 class="product-summary-title">@PartTitle</h1>
                     <p class="product-summary-partnumber">
-                        <span class="product-summary-partnumber-label">Part Number:</span>
-                        @PartNumber
+                        Part number <strong>@PartNumber</strong>
                     </p>
-
-                    <ul class="product-summary-meta">
-                        <li>
-                            <span class="product-summary-meta-icon" aria-hidden="true">👁</span>
-                            @ViewCount people viewed
-                        </li>
-                        <li>
-                            <span class="product-summary-meta-icon" aria-hidden="true">▣</span>
-                            @VideoCount Videos
-                        </li>
-                        <li>
-                            <StarRating Rating="Rating" Label="@($"{ReviewCount} Reviews")" />
-                        </li>
-                    </ul>
                 </div>
+
+                <ul class="product-summary-meta">
+                    <li>
+                        <SfIcon Name="eye-line" />
+                        @ViewCount viewed
+                    </li>
+                    <li>
+                        <SfIcon Name="play-circle-line" />
+                        @VideoCount Videos
+                    </li>
+                    <li>
+                        <StarRating Rating="Rating" Label="@($"{ReviewCount} Reviews")" />
+                    </li>
+                </ul>
             </header>
 
             <ProductGallery Images="GalleryImages" AltText="@PartTitle" />
