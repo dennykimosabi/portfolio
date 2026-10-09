@@ -68,8 +68,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--sf-space-1);
-    margin: var(--sf-space-4) 0 0;
-    padding: var(--sf-space-2) var(--sf-space-3);
+    margin: var(--sf-space-4) 0 14px;
+    padding: 10px 13px;
     border-radius: var(--sf-radius-sm);
     font-size: 0.6875rem;
     font-weight: 600;
@@ -133,7 +133,7 @@
 .price-box-fulfillment {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    margin-top: var(--sf-space-4);
+    margin: 0 0 18px;
     border: 1px solid var(--sf-color-border-light);
 
     // Single shared divider rather than a border on each cell.
@@ -154,7 +154,7 @@
 .price-box-fulfillment-option {
     display: flex;
     flex-direction: column;
-    padding: var(--sf-space-2) var(--sf-space-3) 0;
+    padding: 12px 13px;
     cursor: pointer;
 
     // Inset rather than a real border — an added border would grow the box beyond its
@@ -188,8 +188,8 @@
 .price-box-fulfillment-head {
     display: flex;
     align-items: center;
-    gap: var(--sf-space-1);
-    margin: 0;
+    gap: 7px;
+    margin: 0 0 var(--sf-space-1);
     font-size: 0.6875rem;
     font-weight: 600;
     color: var(--sf-color-text);
@@ -212,7 +212,7 @@
 // The postal code is editable but reads as text, not a button — bold + underline is the
 // only affordance for that.
 .price-box-fulfillment-promise {
-    margin: var(--sf-space-1) 0 var(--sf-space-2);
+    margin: 0 0 6px;
     font-size: 0.625rem;
     line-height: 1.45;
     color: var(--sf-color-text-muted);
@@ -281,7 +281,7 @@ button.price-box-fulfillment-foot {
     align-items: center;
     justify-content: space-between;
     gap: var(--sf-space-3);
-    margin-top: var(--sf-space-4);
+    margin: 0 0 14px;
 }
 
 .price-box-quantity-label {
@@ -307,9 +307,9 @@ button.price-box-fulfillment-foot {
 // Layout for full-width CTA buttons (visuals come from SfButton).
 .price-box-cta {
     width: 100%;
-    margin-top: var(--sf-space-3);
+    margin: 0 0 10px;
 }
 
 .price-box-cta + .price-box-cta {
-    margin-top: var(--sf-space-2);
+    margin: 0 0 14px;
 }

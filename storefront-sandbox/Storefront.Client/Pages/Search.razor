@@ -198,10 +198,10 @@
                                 <div class="product-actions">
                                     <p class="product-price">@result.Price.ToString("C")</p>
                                     <div class="product-action-buttons">
-                                        <a href="@result.ProductURL" class="view-product-btn">View Product</a>
-                                        <button type="button" class="add-to-cart-btn" aria-label="Add to cart" @onclick="() => HandleAddToCart(result)">
-                                            <img src="/imgs/cart-add-primary.png" alt="" />
-                                        </button>
+                                        <SfButton Href="@result.ProductURL" Variant="SfButtonVariant.Outline" Size="SfButtonSize.Sm">View Product</SfButton>
+                                        <SfButton Variant="SfButtonVariant.Dark" Size="SfButtonSize.Icon" AriaLabel="Add to cart" OnClick="() => HandleAddToCart(result)">
+                                            <Icon><SfIcon Name="shopping-cart-line" /></Icon>
+                                        </SfButton>
                                     </div>
                                     <p class="product-meta"><span class="meta-label">Additional Images</span></p>
                                     @if (_additionalImages.TryGetValue(result.Ukey, out var images) && images.Count > 0)

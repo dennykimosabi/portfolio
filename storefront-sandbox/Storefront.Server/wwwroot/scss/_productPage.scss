@@ -95,7 +95,7 @@
 .product-page-main {
     display: grid;
     grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
-    gap: var(--sf-space-6);
+    gap: clamp(24px, 3.5vw, 48px);
     align-items: start;
 
     @media (max-width: 900px) {
@@ -162,4 +162,9 @@
     display: flex;
     flex-direction: column;
     gap: var(--sf-space-6);
+}
+
+// Price box card uses the reference catalog's 20px padding (shared panel is 24px).
+.product-buy {
+    padding: var(--sf-space-5);
 }
