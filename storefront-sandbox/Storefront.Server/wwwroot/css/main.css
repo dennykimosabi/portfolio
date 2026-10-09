@@ -1336,48 +1336,6 @@
   align-items: stretch;
   gap: 0.375rem;
 }
-.matching-products .view-product-btn {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background: var(--sf-color-bg);
-  border: 1px solid var(--sf-color-border-strong);
-  border-radius: var(--sf-radius-sm);
-  font-size: 0.8125rem;
-  color: var(--sf-color-text-2);
-  text-decoration: none;
-  text-align: center;
-  white-space: nowrap;
-}
-.matching-products .view-product-btn:hover {
-  background: var(--sf-color-bg-2);
-  border-color: var(--sf-color-text-3);
-}
-.matching-products .add-to-cart-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 36px;
-  padding: 0.5rem 0.625rem;
-  background: var(--sf-color-brand);
-  border: 1px solid var(--sf-color-brand-deep);
-  border-radius: var(--sf-radius-sm);
-  color: var(--sf-color-text-inverse);
-  cursor: pointer;
-  line-height: 1;
-}
-.matching-products .add-to-cart-btn:hover {
-  background: var(--sf-color-brand-deep);
-  border-color: var(--sf-color-brand-deep);
-}
-.matching-products .add-to-cart-btn:focus-visible {
-  outline: 2px solid var(--sf-color-brand);
-  outline-offset: 2px;
-}
-.matching-products .add-to-cart-btn img {
-  display: block;
-  width: 20px;
-  height: 20px;
-}
 
 .product-grid {
   display: grid;
@@ -2381,6 +2339,10 @@
 }
 .vehicle-picker-panel .vehicle-panel .vehicle-panel-body .vehicle-select-group {
   flex: 1;
+}
+.vehicle-picker-panel .vehicle-panel .vehicle-panel-body .vehicle-select,
+.vehicle-picker-panel .vehicle-panel .vehicle-panel-body .sf-button {
+  height: 2.25rem;
 }
 .vehicle-picker-panel .vehicle-panel .vehicle-panel-vin {
   padding: 0 1.25rem 1.25rem;
@@ -3531,7 +3493,7 @@
 .product-page-main {
   display: grid;
   grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
-  gap: var(--sf-space-6);
+  gap: clamp(24px, 3.5vw, 48px);
   align-items: start;
 }
 @media (max-width: 900px) {
@@ -3596,6 +3558,10 @@
   display: flex;
   flex-direction: column;
   gap: var(--sf-space-6);
+}
+
+.product-buy {
+  padding: var(--sf-space-5);
 }
 
 .product-gallery-main {
@@ -4080,8 +4046,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--sf-space-1);
-  margin: var(--sf-space-4) 0 0;
-  padding: var(--sf-space-2) var(--sf-space-3);
+  margin: var(--sf-space-4) 0 14px;
+  padding: 10px 13px;
   border-radius: var(--sf-radius-sm);
   font-size: 0.6875rem;
   font-weight: 600;
@@ -4130,7 +4096,7 @@
 .price-box-fulfillment {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-top: var(--sf-space-4);
+  margin: 0 0 18px;
   border: 1px solid var(--sf-color-border-light);
 }
 .price-box-fulfillment .price-box-fulfillment-option + .price-box-fulfillment-option {
@@ -4149,7 +4115,7 @@
 .price-box-fulfillment-option {
   display: flex;
   flex-direction: column;
-  padding: var(--sf-space-2) var(--sf-space-3) 0;
+  padding: 12px 13px;
   cursor: pointer;
 }
 .price-box-fulfillment-option.is-selected {
@@ -4178,8 +4144,8 @@
 .price-box-fulfillment-head {
   display: flex;
   align-items: center;
-  gap: var(--sf-space-1);
-  margin: 0;
+  gap: 7px;
+  margin: 0 0 var(--sf-space-1);
   font-size: 0.6875rem;
   font-weight: 600;
   color: var(--sf-color-text);
@@ -4200,7 +4166,7 @@
 }
 
 .price-box-fulfillment-promise {
-  margin: var(--sf-space-1) 0 var(--sf-space-2);
+  margin: 0 0 6px;
   font-size: 0.625rem;
   line-height: 1.45;
   color: var(--sf-color-text-muted);
@@ -4257,7 +4223,7 @@ button.price-box-fulfillment-foot:disabled {
   align-items: center;
   justify-content: space-between;
   gap: var(--sf-space-3);
-  margin-top: var(--sf-space-4);
+  margin: 0 0 14px;
 }
 
 .price-box-quantity-label {
@@ -4279,11 +4245,11 @@ button.price-box-fulfillment-foot:disabled {
 
 .price-box-cta {
   width: 100%;
-  margin-top: var(--sf-space-3);
+  margin: 0 0 10px;
 }
 
 .price-box-cta + .price-box-cta {
-  margin-top: var(--sf-space-2);
+  margin: 0 0 14px;
 }
 
 .dealer-info-name {
@@ -4993,5 +4959,3 @@ button.price-box-fulfillment-foot:disabled {
     font-size: 0.75rem;
   }
 }
-
-/*# sourceMappingURL=main.css.map */
