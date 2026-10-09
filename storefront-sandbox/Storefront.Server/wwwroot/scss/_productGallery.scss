@@ -9,7 +9,7 @@
     width: 100%;
     aspect-ratio: 4 / 3;
     background: var(--sf-color-bg);
-    border: 1px solid var(--sf-color-border-light);
+    border-radius: var(--sf-radius-sm);
     overflow: hidden;
 
     img {
@@ -47,6 +47,7 @@
     padding: 0;
     background: var(--sf-color-bg);
     border: 1px solid var(--sf-color-border-light);
+    border-radius: var(--sf-radius-sm);
     cursor: pointer;
     overflow: hidden;
 
