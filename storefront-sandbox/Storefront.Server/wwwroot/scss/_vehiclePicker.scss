@@ -134,6 +134,7 @@
                 letter-spacing: 0.08em;
                 text-transform: uppercase;
             }
+        }
 
         .vehicle-panel-body {
             display: flex;
@@ -143,13 +144,6 @@
 
             .vehicle-select-group {
                 flex: 1;
-            }
-
-                &:disabled {
-                    background: var(--sf-color-border);
-                    color: var(--sf-color-text-muted);
-                    cursor: not-allowed;
-                }
             }
         }
 
