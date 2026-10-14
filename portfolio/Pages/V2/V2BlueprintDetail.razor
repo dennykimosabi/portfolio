@@ -1,0 +1,70 @@
+@* v2 Blueprint detail — renders the existing Blueprint snapshot components inside the v2 shell.
+   The section sidebar (from V2Layout) acts as the artifact tree; the page itself is the canvas.
+   v1 /blueprints/* routes are untouched. *@
+@page "/v2/blueprints/{Name}"
+@layout V2Layout
+@using Storefront.Client.Pages.BlueprintPages
+
+<PageTitle>@_title · v2 · Denny Kim</PageTitle>
+
+<div class="v2-detail">
+    <nav class="v2-detail-crumb" aria-label="Breadcrumb">
+        <a href="v2/blueprints">Blueprints</a>
+        <span aria-hidden="true">/</span>
+        <span>@_title</span>
+    </nav>
+
+    @switch (Name?.ToLowerInvariant())
+    {
+        case "home":
+            <BlueprintHome Preview="false" />
+            break;
+        case "search":
+            <BlueprintSearch Preview="false" />
+            break;
+        case "product":
+            <BlueprintProduct Preview="false" />
+            break;
+        case "cart":
+            <BlueprintCart Preview="false" />
+            break;
+        case "accessories":
+            <BlueprintAccessories Preview="false" />
+            break;
+        default:
+            <p>Unknown blueprint. <a href="v2/blueprints">Back to all blueprints</a>.</p>
+            break;
+    }
+
+    <nav class="v2-detail-pager" aria-label="More blueprints">
+        @if (_prev is not null)
+        {
+            <a href="@_prev.Value.Href">← @_prev.Value.Label</a>
+        }
+        else { <span></span> }
+        @if (_next is not null)
+        {
+            <a href="@_next.Value.Href">@_next.Value.Label →</a>
+        }
+    </nav>
+</div>
+
+@code {
+    [Parameter] public string? Name { get; set; }
+
+    private string _title = "Blueprint";
+    private (string Href, string Label)? _prev;
+    private (string Href, string Label)? _next;
+
+    protected override void OnParametersSet()
+    {
+        var items = V2NavData.Blueprints;
+        var idx = items.FindIndex(b => b.Href.EndsWith("/" + (Name ?? ""), StringComparison.OrdinalIgnoreCase));
+        if (idx >= 0)
+        {
+            _title = items[idx].Label;
+            _prev = idx > 0 ? items[idx - 1] : null;
+            _next = idx < items.Count - 1 ? items[idx + 1] : null;
+        }
+    }
+}

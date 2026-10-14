@@ -1,0 +1,37 @@
+@* v2 Docs index — mirrors the Design Studio Documentation section:
+   centered header + card list of guides. *@
+@page "/v2/docs"
+@layout V2Layout
+
+<PageTitle>Docs · v2 · Denny Kim</PageTitle>
+
+<div class="v2-index">
+    <header class="v2-index-head">
+        <h1>Docs</h1>
+        <p>Process notes, build history, and design documentation.</p>
+    </header>
+
+    <div class="v2-card-grid">
+        @foreach (var (href, label, desc) in _guides)
+        {
+            <a class="v2-card v2-card-row" href="@href">
+                <span class="v2-card-row-icon"><i class="ri-book-open-line" aria-hidden="true"></i></span>
+                <span>
+                    <span class="v2-card-title">@label</span>
+                    <span class="v2-card-desc">@desc</span>
+                </span>
+                <i class="ri-arrow-right-line v2-card-row-arrow" aria-hidden="true"></i>
+            </a>
+        }
+    </div>
+</div>
+
+@code {
+    private static readonly (string Href, string Label, string Desc)[] _guides = new[]
+    {
+        ("v2/docs/build-log", "Build log", "Timeline of what was built and why."),
+        ("v2/docs/flows", "Flows", "User flows and navigation studies."),
+        ("v2/docs/experiments", "Experiments", "Spikes, trials, and discarded directions."),
+        ("v2/docs/tokens", "Design tokens", "The --sf-* token system and how to use it."),
+    };
+}

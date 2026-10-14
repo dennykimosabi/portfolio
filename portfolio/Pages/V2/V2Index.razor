@@ -1,0 +1,8 @@
+@* v2 landing — redirects to the Blueprints section (home page intentionally skipped per Denny). *@
+@page "/v2"
+@layout V2Layout
+@inject NavigationManager Nav
+
+@code {
+    protected override void OnInitialized() => Nav.NavigateTo("v2/blueprints", replace: true);
+}

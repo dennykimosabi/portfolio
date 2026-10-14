@@ -1,0 +1,69 @@
+@* v2 Blueprints index — mirrors the Design Studio Prototypes index:
+   centered header (title, description, search) + card grid. *@
+@page "/v2/blueprints"
+@layout V2Layout
+@using Storefront.Client.Pages.BlueprintPages
+
+<PageTitle>Blueprints · v2 · Denny Kim</PageTitle>
+
+<div class="v2-index">
+    <header class="v2-index-head">
+        <h1>Blueprints</h1>
+        <p>Complete pages composed from the component library — the same real pages, snapshotted as full-page examples.</p>
+        <div class="v2-index-search">
+            <i class="ri-search-line" aria-hidden="true"></i>
+            <input placeholder="Filter blueprints…" @bind="_filter" @bind:event="oninput" aria-label="Filter blueprints" />
+        </div>
+    </header>
+
+    <div class="v2-card-grid">
+        @foreach (var bp in FilteredBlueprints())
+        {
+            <a class="v2-card" href="@bp.Href">
+                <div class="v2-card-preview">
+                    <div class="bp-preview-scale">
+                        @bp.Preview
+                    </div>
+                </div>
+                <div class="v2-card-body">
+                    <div class="v2-card-title">@bp.Title</div>
+                    <p class="v2-card-desc">@bp.Description</p>
+                    <span class="v2-card-meta">@bp.ComponentCount components</span>
+                </div>
+            </a>
+        }
+    </div>
+</div>
+
+@code {
+    private string _filter = "";
+
+    private sealed record BlueprintCard(string Title, string Href, string Description, int ComponentCount, RenderFragment Preview);
+
+    private static readonly BlueprintCard[] _blueprints = new[]
+    {
+        new BlueprintCard("Home", "v2/blueprints/home",
+            "Hero, vehicle picker, garage, assembly results, refine search, featured products.",
+            9, b => { b.OpenComponent<BlueprintHome>(0); b.AddAttribute(1, "Preview", true); b.CloseComponent(); }),
+        new BlueprintCard("Search", "v2/blueprints/search",
+            "Toolbar, filter sidebar with active-filter chips, sortable product grid.",
+            4, b => { b.OpenComponent<BlueprintSearch>(0); b.AddAttribute(1, "Preview", true); b.CloseComponent(); }),
+        new BlueprintCard("Product", "v2/blueprints/product",
+            "Gallery, price box, fitment guidance, related products, reviews.",
+            9, b => { b.OpenComponent<BlueprintProduct>(0); b.AddAttribute(1, "Preview", true); b.CloseComponent(); }),
+        new BlueprintCard("Cart", "v2/blueprints/cart",
+            "Line items, quantities, confidence panel, recommendations.",
+            4, b => { b.OpenComponent<BlueprintCart>(0); b.AddAttribute(1, "Preview", true); b.CloseComponent(); }),
+        new BlueprintCard("Accessories", "v2/blueprints/accessories",
+            "Category landing with vehicle context and accessory results.",
+            5, b => { b.OpenComponent<BlueprintAccessories>(0); b.AddAttribute(1, "Preview", true); b.CloseComponent(); }),
+    };
+
+    private IEnumerable<BlueprintCard> FilteredBlueprints()
+    {
+        var q = _filter.Trim();
+        if (string.IsNullOrEmpty(q)) return _blueprints;
+        return _blueprints.Where(b => b.Title.Contains(q, StringComparison.OrdinalIgnoreCase)
+            || b.Description.Contains(q, StringComparison.OrdinalIgnoreCase));
+    }
+}

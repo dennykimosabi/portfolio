@@ -1,0 +1,50 @@
+@* v2 Workshop index — mirrors the Design Studio Systems index:
+   centered header + grouped card grid of components. *@
+@page "/v2/workshop"
+@layout V2Layout
+
+<PageTitle>Workshop · v2 · Denny Kim</PageTitle>
+
+<div class="v2-index">
+    <header class="v2-index-head">
+        <h1>Workshop</h1>
+        <p>Live <code>Storefront.Client</code> components — the design component catalog. Each card opens the component's documentation.</p>
+        <div class="v2-index-search">
+            <i class="ri-search-line" aria-hidden="true"></i>
+            <input placeholder="Filter components…" @bind="_filter" @bind:event="oninput" aria-label="Filter components" />
+        </div>
+    </header>
+
+    @foreach (var group in FilteredGroups())
+    {
+        <section class="v2-index-group">
+            <h2>@group.Title</h2>
+            <div class="v2-card-grid v2-card-grid-sm">
+                @foreach (var (href, label) in group.Items)
+                {
+                    <a class="v2-card v2-card-row" href="@href">
+                        <span class="v2-card-row-icon"><i class="ri-box-3-line" aria-hidden="true"></i></span>
+                        <span class="v2-card-title">@label</span>
+                        <i class="ri-arrow-right-line v2-card-row-arrow" aria-hidden="true"></i>
+                    </a>
+                }
+            </div>
+        </section>
+    }
+</div>
+
+@code {
+    private string _filter = "";
+
+    private IEnumerable<V2NavGroup> FilteredGroups()
+    {
+        var q = _filter.Trim();
+        foreach (var g in V2NavData.WorkshopGroups)
+        {
+            var items = string.IsNullOrEmpty(q)
+                ? g.Items
+                : g.Items.Where(i => i.Label.Contains(q, StringComparison.OrdinalIgnoreCase)).ToList();
+            if (items.Any()) yield return new V2NavGroup(g.Title, items);
+        }
+    }
+}

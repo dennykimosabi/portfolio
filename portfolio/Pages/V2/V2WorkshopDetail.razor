@@ -1,0 +1,108 @@
+@* v2 Workshop detail — component documentation page with "On this page" TOC,
+   mirroring the Design Studio's system resource pages.
+   The live interactive demo lives on the v1 workshop page; this page documents
+   the component and deep-links to its anchor. *@
+@page "/v2/workshop/{Id}"
+@layout V2Layout
+
+<PageTitle>@_label · v2 · Denny Kim</PageTitle>
+
+<div class="v2-doc">
+    <nav class="v2-detail-crumb" aria-label="Breadcrumb">
+        <a href="v2/workshop">Workshop</a>
+        <span aria-hidden="true">/</span>
+        <span>@_label</span>
+    </nav>
+
+    <div class="v2-doc-grid">
+        <article class="v2-doc-main">
+            <h1>@_label</h1>
+            <p class="v2-doc-lead">@_description</p>
+
+            <h2 id="overview">Overview</h2>
+            <p>
+                <code>@_label</code> is part of the <code>Storefront.Client</code> component library.
+                It accepts <code>Class</code> and <code>AdditionalAttributes</code> for Blueprint-style
+                escape hatches, and all parameters carry XML doc comments.
+            </p>
+
+            <h2 id="demo">Live demo</h2>
+            <p>
+                The interactive demo with Preview/Code tabs, copy button, and auto-generated props table
+                lives on the workshop page.
+            </p>
+            <p>
+                <a class="v2-btn" href="@($"workshop#{_anchor}")">
+                    Open live demo <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                </a>
+            </p>
+
+            <h2 id="usage">Usage</h2>
+            <pre class="v2-code"><code>@_usage</code></pre>
+
+            <h2 id="tokens">Tokens</h2>
+            <p>Styled entirely with <code>--sf-*</code> design tokens — no hardcoded colors, radii, or shadows.</p>
+        </article>
+
+        <aside class="v2-doc-toc" aria-label="On this page">
+            <p class="v2-doc-toc-title">On this page</p>
+            <ul>
+                <li><a href="@($"v2/workshop/{Id}#overview")">Overview</a></li>
+                <li><a href="@($"v2/workshop/{Id}#demo")">Live demo</a></li>
+                <li><a href="@($"v2/workshop/{Id}#usage")">Usage</a></li>
+                <li><a href="@($"v2/workshop/{Id}#tokens")">Tokens</a></li>
+            </ul>
+        </aside>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+
+    private string _label = "Component";
+    private string _anchor = "";
+    private string _description = "";
+    private string _usage = "";
+
+    private static readonly Dictionary<string, (string Label, string Description, string Usage)> _docs = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["design-tokens"] = ("Design Tokens", "The single source of truth — colors, radii, shadows, spacing, typography.", ":root {\n  --sf-color-primary: #2563a5;\n}"),
+        ["sf-button"] = ("SfButton", "Atomic button — 6 variants, 3 sizes, loading and disabled states.", "<SfButton Variant=\"SfButtonVariant.Primary\">\n  Add to cart\n</SfButton>"),
+        ["sf-badge"] = ("SfBadge", "Status badge — 5 variants for fitment, stock, and promo states.", "<SfBadge Variant=\"SfBadgeVariant.Success\">\n  In stock\n</SfBadge>"),
+        ["sf-chip"] = ("SfChip", "Removable chip — used for active filter selections.", "<SfChip Removable=\"true\">4Runner</SfChip>"),
+        ["sf-input"] = ("SfInput", "Text input with label, hint, and error states.", "<SfInput Label=\"ZIP code\" />"),
+        ["sf-select"] = ("SfSelect", "Dropdown select with native fallback on touch.", "<SfSelect Label=\"Year\" />"),
+        ["sf-icon"] = ("SfIcon", "Remix Icon wrapper — the default icon set.", "<SfIcon Name=\"search-line\" />"),
+        ["sf-link"] = ("SfLink", "Styled anchor with consistent interactive states.", "<SfLink Href=\"/parts\">Shop parts</SfLink>"),
+        ["sf-quantity-stepper"] = ("SfQuantityStepper", "Quantity stepper used in the price box.", "<SfQuantityStepper Value=\"1\" />"),
+        ["sf-divider"] = ("SfDivider", "Horizontal rule with optional label.", "<SfDivider />"),
+        ["sf-skeleton"] = ("SfSkeleton", "Loading placeholder with shimmer.", "<SfSkeleton />"),
+        ["sf-tooltip"] = ("SfTooltip", "Hover tooltip for icon-only controls.", "<SfTooltip Text=\"Add to cart\" />"),
+        ["assembly-results"] = ("AssemblyResults", "Exploded-diagram assembly viewer with fitment filtering.", "<AssemblyResults />"),
+        ["vehicle-picker"] = ("VehiclePicker", "Year/make/model picker with garage support.", "<VehiclePicker />"),
+        ["featured-products"] = ("FeaturedProducts", "Product carousel for the home page.", "<FeaturedProducts />"),
+        ["search-toolbar"] = ("SearchToolbar", "Search input with sort and view controls.", "<SearchToolbar />"),
+        ["product-grid"] = ("ProductGrid", "Responsive product card grid.", "<ProductGrid />"),
+        ["product-card"] = ("ProductCard", "Product summary card with price and fitment.", "<ProductCard />"),
+        ["product-gallery"] = ("ProductGallery", "Image gallery with thumbnails and lightbox.", "<ProductGallery />"),
+        ["price-box"] = ("ProductPriceBox", "Buy box — price, fitment, quantity, CTAs.", "<ProductPriceBox />"),
+        ["related-products"] = ("RelatedProducts", "Related-items carousel.", "<RelatedProducts />"),
+    };
+
+    protected override void OnParametersSet()
+    {
+        _anchor = Id ?? "";
+        if (Id != null && _docs.TryGetValue(Id, out var doc))
+        {
+            _label = doc.Label;
+            _description = doc.Description;
+            _usage = doc.Usage;
+        }
+        else
+        {
+            _label = Id ?? "Component";
+            _description = "Component documentation.";
+            _usage = $"<!-- See workshop#{_anchor} -->";
+        }
+    }
+}

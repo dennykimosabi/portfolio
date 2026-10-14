@@ -1,0 +1,86 @@
+@* v2 Doc detail — article with "On this page" TOC.
+   Content summaries link out to the full v1 pages where the canonical content lives. *@
+@page "/v2/docs/{Slug}"
+@layout V2Layout
+
+<PageTitle>@_title · v2 · Denny Kim</PageTitle>
+
+<div class="v2-doc">
+    <nav class="v2-detail-crumb" aria-label="Breadcrumb">
+        <a href="v2/docs">Docs</a>
+        <span aria-hidden="true">/</span>
+        <span>@_title</span>
+    </nav>
+
+    <div class="v2-doc-grid">
+        <article class="v2-doc-main">
+            <h1>@_title</h1>
+            <p class="v2-doc-lead">@_lead</p>
+            @((MarkupString)_body)
+            <p class="v2-doc-more">
+                <a class="v2-btn" href="@_v1Href">Open full page in v1 <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+            </p>
+        </article>
+
+        <aside class="v2-doc-toc" aria-label="On this page">
+            <p class="v2-doc-toc-title">On this page</p>
+            <ul>
+                @foreach (var h in _toc)
+                {
+                    <li><a href="@($"v2/docs/{Slug}#{h.Id}")">@h.Label</a></li>
+                }
+            </ul>
+        </aside>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string? Slug { get; set; }
+
+    private string _title = "Doc";
+    private string _lead = "";
+    private string _body = "";
+    private string _v1Href = "";
+    private List<(string Id, string Label)> _toc = new();
+
+    protected override void OnParametersSet()
+    {
+        switch (Slug?.ToLowerInvariant())
+        {
+            case "build-log":
+                _title = "Build log";
+                _lead = "Timeline of what was built and why — decisions, iterations, and outcomes.";
+                _v1Href = "build-log";
+                _toc = new() { ("recent", "Recent"), ("archive", "Archive") };
+                _body = "<h2 id=\"recent\">Recent</h2><p>The build log tracks every significant change: component API cleanups, token migrations, Blueprint snapshots, and workshop improvements. Each entry notes what changed and the reason behind it.</p><h2 id=\"archive\">Archive</h2><p>Older entries are preserved for reference — the full history of how the catalog evolved.</p>";
+                break;
+            case "flows":
+                _title = "Flows";
+                _lead = "User flows and navigation studies.";
+                _v1Href = "flows";
+                _toc = new() { ("overview", "Overview") };
+                _body = "<h2 id=\"overview\">Overview</h2><p>Flow studies for the storefront experience: vehicle selection, search refinement, product evaluation, and checkout.</p>";
+                break;
+            case "experiments":
+                _title = "Experiments";
+                _lead = "Spikes, trials, and discarded directions.";
+                _v1Href = "experiments";
+                _toc = new() { ("overview", "Overview") };
+                _body = "<h2 id=\"overview\">Overview</h2><p>Time-boxed experiments — some shipped, some didn't. The failures are documented too.</p>";
+                break;
+            case "tokens":
+                _title = "Design tokens";
+                _lead = "The --sf-* token system: colors, radii, shadows, spacing, typography.";
+                _v1Href = "workshop#design-tokens";
+                _toc = new() { ("colors", "Colors"), ("radii", "Radii"), ("type", "Typography") };
+                _body = "<h2 id=\"colors\">Colors</h2><p>Primary <code>#2563a5</code>, zinc text scale, feedback colors with tints.</p><h2 id=\"radii\">Radii</h2><p>2px / 4px / 8px / pill — no arbitrary values.</p><h2 id=\"type\">Typography</h2><p>Helvetica Neue stack, fluid clamp() sizing.</p>";
+                break;
+            default:
+                _title = "Doc";
+                _lead = "";
+                _body = "<p>Unknown page.</p>";
+                _v1Href = "";
+                break;
+        }
+    }
+}

@@ -1,0 +1,120 @@
+@* v2 portfolio shell — mirrors the Design Studio navigation pattern from Patrick Morgan's
+   design-studio-starter (studied Oct 2026): icon rail + collapsible section sidebar + ⌘K palette.
+   v1 routes are untouched; all v2 pages live under /v2/* and use this layout. *@
+@inherits LayoutComponentBase
+@inject NavigationManager Nav
+@inject IJSRuntime JS
+
+<div class="v2-shell">
+    @* Icon rail — always visible, one icon per section *@
+    <nav class="v2-rail" aria-label="v2 sections">
+        <a class="v2-rail-btn" href="v2/blueprints" title="v2 home">
+            <span class="v2-rail-mark">v2</span>
+        </a>
+        <button type="button" class="v2-rail-btn" @onclick="OpenPalette" title="Search (⌘K)" aria-label="Open command palette">
+            <i class="ri-search-line" aria-hidden="true"></i>
+        </button>
+        <div class="v2-rail-sep"></div>
+        <NavLink class="v2-rail-btn" href="v2/blueprints" title="Blueprints">
+            <i class="ri-draft-line" aria-hidden="true"></i>
+        </NavLink>
+        <NavLink class="v2-rail-btn" href="v2/workshop" title="Workshop">
+            <i class="ri-tools-line" aria-hidden="true"></i>
+        </NavLink>
+        <NavLink class="v2-rail-btn" href="v2/docs" title="Docs">
+            <i class="ri-book-open-line" aria-hidden="true"></i>
+        </NavLink>
+        <div class="v2-rail-spacer"></div>
+        @if (_sectionNavVisible)
+        {
+            <button type="button" class="v2-rail-btn" @onclick="ToggleSectionNav"
+                    title="@(_sectionNavOpen ? "Hide section navigation (⌘;)" : "Show section navigation (⌘;)")"
+                    aria-label="Toggle section navigation" aria-expanded="@_sectionNavOpen">
+                <i class="@(_sectionNavOpen ? "ri-side-bar-line" : "ri-side-bar-fill")" aria-hidden="true"></i>
+            </button>
+        }
+        <a class="v2-rail-btn v2-rail-v1" href="" title="Back to v1 portfolio">
+            <i class="ri-arrow-left-line" aria-hidden="true"></i>
+        </a>
+    </nav>
+
+    @* Section sidebar — tree for the current section, collapsible *@
+    @if (_sectionNavVisible && _sectionNavOpen)
+    {
+        <aside class="v2-section-nav" aria-label="@_sectionTitle">
+            <p class="v2-section-nav-title">@_sectionTitle</p>
+            @foreach (var group in _sectionGroups)
+            {
+                <p class="v2-section-nav-group">@group.Title</p>
+                <ul>
+                    @foreach (var (href, label) in group.Items)
+                    {
+                        <li>
+                            <NavLink class="v2-section-nav-link" href="@href">@label</NavLink>
+                        </li>
+                    }
+                </ul>
+            }
+        </aside>
+    }
+
+    <main class="v2-main">
+        @Body
+    </main>
+</div>
+
+<V2CommandPalette @ref="_palette" />
+
+@code {
+    private V2CommandPalette? _palette;
+    private bool _sectionNavOpen = true;
+    private bool _sectionNavVisible;
+    private string _sectionTitle = "";
+    private List<V2NavGroup> _sectionGroups = new();
+
+    protected override void OnParametersSet()
+    {
+        var path = Nav.ToBaseRelativePath(Nav.Uri).TrimEnd('/');
+        _sectionNavVisible = false;
+        _sectionGroups.Clear();
+
+        if (path.StartsWith("v2/blueprints", StringComparison.OrdinalIgnoreCase))
+        {
+            _sectionNavVisible = true;
+            _sectionTitle = "Blueprints";
+            _sectionGroups.Add(new V2NavGroup("Pages", V2NavData.Blueprints));
+        }
+        else if (path.StartsWith("v2/workshop", StringComparison.OrdinalIgnoreCase))
+        {
+            _sectionNavVisible = true;
+            _sectionTitle = "Workshop";
+            foreach (var g in V2NavData.WorkshopGroups)
+                _sectionGroups.Add(g);
+        }
+        else if (path.StartsWith("v2/docs", StringComparison.OrdinalIgnoreCase))
+        {
+            _sectionNavVisible = true;
+            _sectionTitle = "Docs";
+            _sectionGroups.Add(new V2NavGroup("Guides", V2NavData.Docs));
+        }
+    }
+
+    private void ToggleSectionNav() => _sectionNavOpen = !_sectionNavOpen;
+
+    private void OpenPalette() => _palette?.Open();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try { await JS.InvokeVoidAsync("v2keys.init", DotNetObjectReference.Create(this)); }
+            catch { /* prerender */ }
+        }
+    }
+
+    [JSInvokable]
+    public void ToggleSectionNavFromKey() => ToggleSectionNav();
+
+    [JSInvokable]
+    public void OpenPaletteFromKey() => OpenPalette();
+}
